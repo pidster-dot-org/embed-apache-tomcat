@@ -1,6 +1,6 @@
 package org.pidster.tomcat.embed.impl;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,8 +9,11 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.startup.Catalina;
+import org.pidster.tomcat.embed.Callback;
 import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatRuntime;
+import org.pidster.tomcat.embed.TomcatRuntimeException;
+import org.pidster.tomcat.embed.TomcatStatus;
 
 public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
@@ -18,8 +21,33 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     private final Catalina catalina;
 
+    private volatile TomcatStatus status;
+
+    private final Semaphore semaphore = new Semaphore(0);
+
     TomcatRuntimeImpl(Catalina catalina) {
         this.catalina = catalina;
+        this.status = TomcatStatus.UNKNOWN;
+
+        catalina.getServer().addLifecycleListener(new LifecycleListener() {
+            @Override
+            public void lifecycleEvent(LifecycleEvent event) {
+                String type = event.getType().toUpperCase();
+                status = TomcatStatus.valueOf(type);
+                if (Lifecycle.AFTER_START_EVENT.equals(event.getType())) {
+                    semaphore.release();
+                }
+                else if (Lifecycle.AFTER_STOP_EVENT.equals(event.getType())) {
+                    semaphore.release();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public TomcatStatus status() {
+        return status;
     }
 
     @Override
@@ -28,69 +56,43 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
         try {
             catalina.start();
-        } catch (Exception e) {
-            throw new TomcatStartupException(e);
-        }
+            semaphore.acquire();
+            return this;
 
-        return this;
+        } catch (Exception e) {
+            throw new TomcatRuntimeException(e);
+        }
     }
 
     @Override
     public TomcatRuntime start(long timeout) {
         log.log(Level.INFO, "Starting Tomcat, will wait for {0}ms", timeout);
 
-        final CountDownLatch latch = new CountDownLatch(1);
-        catalina.getServer().addLifecycleListener(new LifecycleListener() {
-            @Override
-            public void lifecycleEvent(LifecycleEvent event) {
-                if (Lifecycle.AFTER_START_EVENT.equals(event.getType())) {
-                    latch.countDown();
-                }
-            }
-        });
-
         try {
             catalina.start();
+            semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
+            return this;
 
-            latch.await(timeout, TimeUnit.MILLISECONDS);
-
-        } catch (InterruptedException e) {
-            log.log(Level.WARNING, "Interrupted during startup", e);
         } catch (Exception e) {
-            throw new TomcatStartupException(e);
+            throw new TomcatRuntimeException(e);
         }
-
-        return this;
     }
 
     @Override
-    public TomcatRuntime start(Runnable runnable) {
+    public void start(final Callback<TomcatRuntime> callback) {
         log.log(Level.INFO, "Starting Tomcat with callback...");
-
-        final CountDownLatch latch = new CountDownLatch(1);
-        catalina.getServer().addLifecycleListener(new LifecycleListener() {
+        new Thread("tomcat-embed-startup") {
             @Override
-            public void lifecycleEvent(LifecycleEvent event) {
-                if (Lifecycle.AFTER_START_EVENT.equals(event.getType())) {
-                    latch.countDown();
+            public void run() {
+                try {
+                    catalina.start();
+                    semaphore.acquire();
+                    callback.success(TomcatRuntimeImpl.this);
+                } catch (Exception e) {
+                    callback.failure(e);
                 }
             }
-        });
-
-        try {
-            catalina.start();
-
-            latch.await();
-
-            runnable.run();
-
-        } catch (InterruptedException e) {
-            log.log(Level.WARNING, "Interrupted during startup", e);
-        } catch (Exception e) {
-            throw new TomcatStartupException(e);
-        }
-
-        return this;
+        }.start();
     }
 
     @Override
@@ -115,27 +117,22 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
     @Override
     public void stop() {
         log.log(Level.INFO, "Stopping Tomcat");
-        catalina.stop();
+
+        try {
+            catalina.stop();
+            semaphore.acquire();
+        } catch (Exception e) {
+            log.log(Level.WARNING, "Interrupted during shutdown", e);
+        }
     }
 
     @Override
     public void stop(long timeout) {
         log.log(Level.INFO, "Stopping Tomcat, will wait for {0}ms", timeout);
 
-        final CountDownLatch latch = new CountDownLatch(1);
-        catalina.getServer().addLifecycleListener(new LifecycleListener() {
-            @Override
-            public void lifecycleEvent(LifecycleEvent event) {
-                if (Lifecycle.AFTER_STOP_EVENT.equals(event.getType())) {
-                    latch.countDown();
-                }
-            }
-        });
-
         try {
             catalina.stop();
-
-            latch.await(timeout, TimeUnit.MILLISECONDS);
+            semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
 
         } catch (Exception e) {
             log.log(Level.WARNING, "Interrupted during shutdown", e);
@@ -143,17 +140,16 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
     }
 
     @Override
-    public void stopWhen(Thread waiting) {
+    public void stopOnCompletion(Thread waiting) {
         try {
             log.log(Level.INFO, "Stopping Tomcat when thread {0} completes", waiting.getId());
-
             waiting.join();
 
         } catch (InterruptedException e) {
             log.log(Level.WARNING, "Interrupted TomcatRuntime", e);
         }
         finally {
-            catalina.stop();
+            stop();
         }
     }
 

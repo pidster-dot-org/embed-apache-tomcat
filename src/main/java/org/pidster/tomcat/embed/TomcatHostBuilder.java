@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.catalina.Context;
 
 
-public interface TomcatHostBuilder extends Builder<Tomcat>, ContainerBuilder<TomcatServiceBuilder, TomcatHostBuilder>, Collector<TomcatHostBuilder, Context> {
+public interface TomcatHostBuilder extends Builder<Tomcat>, TomcatContainerBuilder<TomcatServiceBuilder, TomcatHostBuilder>, Collector<TomcatHostBuilder, Context> {
 
     TomcatServiceBuilder parent();
 

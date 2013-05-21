@@ -16,7 +16,7 @@ import org.apache.catalina.deploy.LoginConfig;
 import org.apache.catalina.deploy.SecurityConstraint;
 
 
-public interface TomcatApplicationBuilder extends Builder<Tomcat>, ContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder>, Collector<TomcatApplicationBuilder, Container> {
+public interface TomcatApplicationBuilder extends Builder<Tomcat>, TomcatContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder>, Collector<TomcatApplicationBuilder, Container> {
 
     TomcatHostBuilder parent();
 

@@ -10,11 +10,11 @@ import org.apache.catalina.ContainerListener;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.Realm;
 import org.pidster.tomcat.embed.Builder;
-import org.pidster.tomcat.embed.ContainerBuilder;
+import org.pidster.tomcat.embed.TomcatContainerBuilder;
 import org.pidster.tomcat.embed.Tomcat;
 
 
-public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> extends AbstractParentalBuilder<P, T> implements ContainerBuilder<P, T> {
+public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> extends AbstractParentalBuilder<P, T> implements TomcatContainerBuilder<P, T> {
 
     private static final Logger logger = Logger.getLogger(AbstractContainerBuilder.class.getName());
 

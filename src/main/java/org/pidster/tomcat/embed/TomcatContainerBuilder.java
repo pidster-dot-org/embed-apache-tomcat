@@ -8,7 +8,7 @@ import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.Realm;
 
 
-public interface ContainerBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> {
+public interface TomcatContainerBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> {
 
     T addLifecycleListener(LifecycleListener listener);
 

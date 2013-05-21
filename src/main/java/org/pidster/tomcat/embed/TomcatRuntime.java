@@ -6,10 +6,12 @@ public interface TomcatRuntime extends AutoCloseable {
 
     TomcatRuntime undeploy(String appName);
 
+    TomcatStatus status();
+
     void stop();
 
     void stop(long timeout);
 
-    void stopWhen(Thread waiting);
+    void stopOnCompletion(Thread waiting);
 
 }
