@@ -1,0 +1,42 @@
+// This is a single project
+
+// apply plugin: 'eclipse'         // adds support for eclipse project generation
+// apply plugin: 'idea'            // adds support for IDEA project generation
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    // mavenLocal()
+    // maven { url 'http://repo.springsource.org/release' }
+    // maven { url 'http://dist.gemstone.com/maven/release' }
+    // maven { url 'http://repo.typesafe.com/typesafe/releases' }
+    // maven { url 'http://download.java.net/maven/2' }
+    maven { url 'https://repository.apache.org/content/groups/snapshots' }
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.apache.tomcat:tomcat-annotations-api:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-el-api:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-jsp-api:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-servlet-api:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-websocket-api:$tomcatVersion"
+
+    compile "org.apache.tomcat:tomcat-api:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-catalina:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-catalina-ha:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-coyote:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-jasper:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-juli:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-util:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-websocket:$tomcatVersion"
+
+    testCompile "junit:junit:$junitVersion"
+}
+
+task wrapper(type: Wrapper, description: "Create a Gradle self-download wrapper") {
+    group = 'Project Setup'
+    gradleVersion = "$gradleVersion"
+}
