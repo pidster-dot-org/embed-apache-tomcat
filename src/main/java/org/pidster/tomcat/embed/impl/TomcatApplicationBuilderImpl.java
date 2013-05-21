@@ -25,6 +25,7 @@ import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.deploy.LoginConfig;
 import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.catalina.startup.ContextConfig;
+import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 
@@ -55,7 +56,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     }
 
     @Override
-    public TomcatApplicationBuilder addDefaultConfig() {
+    public TomcatApplicationBuilder withDefaultConfig() {
         ContextConfig contextConfig = new ContextConfig();
         context.addLifecycleListener(contextConfig);
         return this;
@@ -86,6 +87,11 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     }
 
     @Override
+    public TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass) {
+        return addServletContextListener(listenerClass, Tomcat.EMPTY);
+    }
+
+    @Override
     public TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass, Map<String, String> config) {
         try {
             ServletContextListener instance = listenerClass.newInstance();
@@ -104,6 +110,11 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         // context.addApplicationListener();
         // InstanceConfigurer.configure(instance, config);
         return this;
+    }
+
+    @Override
+    public TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, String... patterns) {
+        return addServletFilter(filterClass, Tomcat.EMPTY, patterns);
     }
 
     @Override
@@ -134,6 +145,11 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
         context.addFilterMap(filterMap);
         return this;
+    }
+
+    @Override
+    public TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... patterns) {
+        return addServlet(servletClass, servletClass.getName(), Tomcat.EMPTY, patterns);
     }
 
     @Override

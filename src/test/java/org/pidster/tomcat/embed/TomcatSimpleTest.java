@@ -1,6 +1,5 @@
 package org.pidster.tomcat.embed;
 
-import static org.pidster.tomcat.embed.Tomcat.EMPTY;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,14 +7,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import java.util.Properties;
-
-import org.apache.catalina.servlets.DefaultServlet;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TomcatTest {
+
+public class TomcatSimpleTest {
 
     private TomcatRuntime runtime;
 
@@ -29,40 +27,13 @@ public class TomcatTest {
         File catalinaBase = new File("src/test/resources");
 
         Tomcat tomcat = new TomcatFactory().create()
-            .setProperties(properties)
-            .newServer("localhost", 8005, "SHUTDOWN")
-                .setCatalinaBase(catalinaBase)
-                .setCatalinaHome(catalinaBase)
-                .addService("Catalina", "node1")
-                    // .addStandardConnectors()
-                    .setBackgroundProcessorDelay(0)
-                    .setStartStopThreads(0)
-                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY)
-                    .addConnector("HTTP/1.1", 8090, EMPTY)
-                    .addConnector("AJP/1.3", 8019, EMPTY)
-//                        .setCluster(cluster)
-//                        .setRealm(realm)
-                        .addHost("localhost", "webapps")
-//                            .setCluster(cluster)
-//                            .setRealm(realm)
-                            .createApplication("/test0", "test0", EMPTY)
-                                .withDefaultConfig()
-                                .addServletContextListener(DummyListener.class, EMPTY)
-                                .addServletFilter(DummyFilter.class, EMPTY, "/*")
-                                .addServlet(DummyServlet.class, "dummy", EMPTY, "/foo")
-//                                .setCluster(cluster)
-//                                .setRealm(realm)
-                            .parent()
-                            .createApplication("/test1", "test1", EMPTY)
-                                .addServletContextListener(DummyListener.class, EMPTY)
-                                .addServletFilter(DummyFilter.class, EMPTY, "/*")
-                                .addServlet(DummyServlet.class, "dummy", EMPTY, "/foo")
-                                .addServlet(DefaultServlet.class, "default", EMPTY, "/")
-                                .addWelcomeFile("index.html")
-                            .parent()
-                            .addApplication("/test2", "test2", "test2", EMPTY)
-                            .addApplication("/test3", "test3", "test3", EMPTY)
-                        .build();
+            .newStandardServer(catalinaBase)
+                .createApplication("/test0", "test0")
+                .withDefaultConfig()
+                .addServletContextListener(DummyListener.class)
+                .addServletFilter(DummyFilter.class, "/*")
+                .addServlet(DummyServlet.class, "/foo")
+            .build();
 
         this.runtime = tomcat.start(5000L);
     }

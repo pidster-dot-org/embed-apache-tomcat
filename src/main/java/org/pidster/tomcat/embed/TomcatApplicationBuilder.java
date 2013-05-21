@@ -20,7 +20,7 @@ public interface TomcatApplicationBuilder extends Builder<Tomcat>, ContainerBuil
 
     TomcatHostBuilder parent();
 
-    TomcatApplicationBuilder addDefaultConfig();
+    TomcatApplicationBuilder withDefaultConfig();
 
     TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes);
 
@@ -28,13 +28,19 @@ public interface TomcatApplicationBuilder extends Builder<Tomcat>, ContainerBuil
 
     TomcatApplicationBuilder addServletContainerInitializer(ServletContainerInitializer sci, Set<Class<?>> classes);
 
+    TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass);
+
     TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass, Map<String, String> config);
 
     TomcatApplicationBuilder addServletContextListener(ServletContextListener listener);
 
+    TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, String... mappings);
+
     TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, Map<String, String> config, String... mappings);
 
     TomcatApplicationBuilder addServletFilter(Filter filter, String... patterns);
+
+    TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... mappings);
 
     TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, Map<String, String> config, String... mappings);
 

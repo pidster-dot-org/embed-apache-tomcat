@@ -1,5 +1,7 @@
 package org.pidster.tomcat.embed.impl;
 
+import static org.pidster.tomcat.embed.Tomcat.EMPTY;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +12,7 @@ import org.apache.catalina.startup.Catalina;
 import org.pidster.tomcat.embed.Builder;
 import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatBuilder;
+import org.pidster.tomcat.embed.TomcatHostBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 
 
@@ -108,7 +111,27 @@ public class TomcatBuilderImpl extends AbstractParentalBuilder<TomcatBuilderImpl
         config.put("address", host);
         config.put("port", String.valueOf(port));
         config.put("shutdown", password);
+
         return new TomcatServerBuilderImpl(this, config);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer(File baseDir) {
+        return newStandardServer(-1, baseDir);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer(int port, File baseDir) {
+        return newServer(port)
+                .setCatalinaBase(baseDir)
+                .setCatalinaHome(baseDir)
+                .addService("Catalina")
+                    .setBackgroundProcessorDelay(0)
+                    .setStartStopThreads(0)
+                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY)
+                    .addConnector("HTTP/1.1", 8090, EMPTY)
+                    .addConnector("AJP/1.3", 8019, EMPTY)
+                        .addHost("localhost", "webapps");
     }
 
 }

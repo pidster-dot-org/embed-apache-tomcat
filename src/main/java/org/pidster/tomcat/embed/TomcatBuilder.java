@@ -32,4 +32,8 @@ public interface TomcatBuilder extends Builder<Tomcat>, Collector<TomcatBuilder,
 
     TomcatServerBuilder newServer(String host, int port, String password);
 
+    TomcatHostBuilder newStandardServer(int port, File baseDir);
+
+    TomcatHostBuilder newStandardServer(File catalinaBase);
+
 }
