@@ -7,6 +7,7 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleListener;
 import org.pidster.tomcat.embed.Builder;
 import org.pidster.tomcat.embed.Tomcat;
+import org.pidster.tomcat.embed.TomcatComponentException;
 import org.pidster.tomcat.embed.TomcatLifecyleBuilder;
 
 
@@ -30,9 +31,9 @@ public abstract class AbstractLifecycleBuilder<P extends Builder<Tomcat>, T exte
             LifecycleListener listener = listenerClass.newInstance();
             return addLifecycleListener(listener);
         } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
+            throw new TomcatComponentException(e);
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
+            throw new TomcatComponentException(e);
         }
     }
 

@@ -23,6 +23,8 @@ public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatH
 
     TomcatApplicationBuilder withDefaultConfig();
 
+    TomcatApplicationBuilder makeDirs();
+
     TomcatApplicationBuilder setContextAttribute(String attribute, Object value);
 
     TomcatApplicationBuilder setContextInitParameter(String initParameter, String value);

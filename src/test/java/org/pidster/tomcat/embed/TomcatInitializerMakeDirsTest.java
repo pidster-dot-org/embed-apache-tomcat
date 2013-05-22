@@ -13,9 +13,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class TomcatInitializerTest {
+public class TomcatInitializerMakeDirsTest {
 
-    private static final String TARGET = "http://127.0.0.1:8081/test/dummy";
+    private static final String TARGET = "http://127.0.0.1:8081/test-make-dirs/dummy";
 
     private TomcatRuntime runtime;
 
@@ -29,11 +29,11 @@ public class TomcatInitializerTest {
 
         Properties properties = new Properties();
         properties.put("catalina.base", "build/resources/test");
-        properties.put("catalina.home", "build/resources/test");
 
         Tomcat tomcat = new TomcatFactory(properties).create()
             .newMinimalServer(url.getPort())
-                .createApplication("test")
+                .createApplication("test-make-dirs")
+                .makeDirs()
                 .addServletContainerInitializer(DummyContainerInitializer.class)
             .build();
 

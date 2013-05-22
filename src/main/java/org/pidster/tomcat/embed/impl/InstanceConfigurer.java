@@ -6,18 +6,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.tomcat.util.IntrospectionUtils;
+import org.pidster.tomcat.embed.TomcatComponentException;
 
 public class InstanceConfigurer {
 
     private static final Logger logger = Logger.getLogger(InstanceConfigurer.class.getName());
 
-    public static <Z> Z instantiate(Class<Z> clazz) {
+    public static <Z> Z newInstance(Class<Z> clazz) {
         try {
             return clazz.newInstance();
         } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
+            throw new TomcatComponentException(e);
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
+            throw new TomcatComponentException(e);
         }
     }
 
@@ -36,11 +37,11 @@ public class InstanceConfigurer {
             return instance;
 
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException(e);
+            throw new TomcatComponentException(e);
         } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
+            throw new TomcatComponentException(e);
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
+            throw new TomcatComponentException(e);
         }
     }
 

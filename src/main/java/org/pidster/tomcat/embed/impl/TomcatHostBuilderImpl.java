@@ -7,6 +7,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.Host;
 import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
+import org.pidster.tomcat.embed.TomcatBuilderException;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
@@ -41,7 +42,7 @@ public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServic
     public TomcatHostBuilder addApplication(String path, String name, String docBase, Map<String, String> config) {
 
         if (applications.containsKey(path)) {
-            throw new IllegalStateException("Path already exists: " + path);
+            throw new TomcatBuilderException("Path already exists: " + path);
         }
 
         Map<String, String> aconfig = new HashMap<>();
@@ -73,7 +74,7 @@ public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServic
     public TomcatApplicationBuilder createApplication(String path, String name, Map<String, String> config) {
 
         if (applications.containsKey(path)) {
-            throw new IllegalStateException("Path already exists: " + path);
+            throw new TomcatBuilderException("Path already exists: " + path);
         }
 
         Map<String, String> aconfig = new HashMap<>();

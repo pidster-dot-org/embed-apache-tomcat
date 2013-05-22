@@ -28,8 +28,8 @@ public class TomcatSimpleTest {
         this.url = new URL(TARGET);
 
         Properties properties = new Properties();
-        properties.put("catalina.base", "src/test/resources");
-        properties.put("catalina.home", "src/test/resources");
+        properties.put("catalina.base", "build/resources/test");
+        properties.put("catalina.home", "build/resources/test");
 
         Tomcat tomcat = new TomcatFactory(properties).create()
             .newMinimalServer(url.getPort())

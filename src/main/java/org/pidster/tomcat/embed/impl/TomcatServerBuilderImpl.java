@@ -47,11 +47,7 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
         this.server = InstanceConfigurer.instantiate(loader(), Server.class, className, config);
 
         for (String s : silences) {
-            if (silentLogging) {
-                Logger.getLogger(s).setLevel(Level.WARNING);
-            } else {
-                // Logger.getLogger(s).setLevel(Level.INFO);
-            }
+            Logger.getLogger(s).setLevel(Level.WARNING);
         }
 
         setLifecycle(server);

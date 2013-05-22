@@ -1,5 +1,6 @@
 package org.pidster.tomcat.embed.impl;
 
+import java.io.File;
 import java.net.URL;
 import java.util.EnumSet;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
+import org.apache.catalina.Host;
 import org.apache.catalina.Manager;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.deploy.ApplicationParameter;
@@ -29,7 +31,10 @@ import org.pidster.tomcat.embed.TomcatHostBuilder;
 public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder> implements TomcatApplicationBuilder {
 
     private final Context context;
+
     private final InternalContainerInitializer initializer;
+
+    private boolean makeDirs = false;
 
     public TomcatApplicationBuilderImpl(TomcatHostBuilderImpl parent, Map<String, String> config) {
         super(parent);
@@ -55,13 +60,29 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatHostBuilder parent() {
-        return super.parent().collect(context);
+        super.parent().collect(context);
+
+        if (makeDirs) {
+            // MUST to do this only after collection
+            Host host = (Host) context.getParent();
+            File appBase = new File(host.getAppBase());
+            File docBase = new File(appBase, context.getPath());
+            docBase.mkdirs();
+        }
+
+        return super.parent();
     }
 
     @Override
     public TomcatApplicationBuilder withDefaultConfig() {
         ContextConfig contextConfig = new ContextConfig();
         context.addLifecycleListener(contextConfig);
+        return this;
+    }
+
+    @Override
+    public TomcatApplicationBuilder makeDirs() {
+        this.makeDirs = true;
         return this;
     }
 
@@ -84,14 +105,8 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes) {
-        try {
-            ServletContainerInitializer instance = listenerClass.newInstance();
-            return addServletContainerInitializer(instance, classes);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        }
+        ServletContainerInitializer instance = InstanceConfigurer.newInstance(listenerClass);
+        return addServletContainerInitializer(instance, classes);
     }
 
     @Override
@@ -112,14 +127,8 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass, Map<String, String> config) {
-        try {
-            ServletContextListener instance = listenerClass.newInstance();
-            return addServletContextListener(instance);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        }
+        ServletContextListener instance = InstanceConfigurer.newInstance(listenerClass);
+        return addServletContextListener(instance);
     }
 
     @Override
@@ -156,14 +165,8 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, Map<String, String> initParameters, String... patterns) {
-        try {
-            Filter instance = filterClass.newInstance();
-            return addServletFilter(instance, patterns);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        }
+        Filter instance = InstanceConfigurer.newInstance(filterClass);
+        return addServletFilter(instance, patterns);
     }
 
     @Override
@@ -183,14 +186,8 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, Map<String, String> config, String... patterns) {
-        try {
-            Servlet instance = servletClass.newInstance();
-            return addServlet(instance, name, config, patterns);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        }
+        Servlet instance = InstanceConfigurer.newInstance(servletClass);
+        return addServlet(instance, name, config, patterns);
     }
 
     @Override

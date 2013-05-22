@@ -35,7 +35,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
 
     @Override
     public T addValve(Class<? extends Valve> clazz) {
-        Valve instance = InstanceConfigurer.instantiate(clazz);
+        Valve instance = InstanceConfigurer.newInstance(clazz);
         return addValve(instance);
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
 
     @Override
     public T addContainerListener(Class<? extends ContainerListener> clazz) {
-        ContainerListener instance = InstanceConfigurer.instantiate(clazz);
+        ContainerListener instance = InstanceConfigurer.newInstance(clazz);
         return addContainerListener(instance);
     }
 
@@ -63,7 +63,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
 
     @Override
     public T addPropertyChangeListener(Class<? extends PropertyChangeListener> clazz) {
-        PropertyChangeListener instance = InstanceConfigurer.instantiate(clazz);
+        PropertyChangeListener instance = InstanceConfigurer.newInstance(clazz);
         return addPropertyChangeListener(instance);
     }
 

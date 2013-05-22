@@ -22,13 +22,9 @@ public class TomcatTest {
     @Before
     public void setupTomcat() throws Exception {
 
-        Properties properties = new Properties();
-        properties.put("catalina.base", "src/test/resources");
-        properties.put("catalina.home", "src/test/resources");
+        File catalinaBase = new File("build/resources/test");
 
-        File catalinaBase = new File("src/test/resources");
-
-        Tomcat tomcat = new TomcatFactory(properties).create()
+        Tomcat tomcat = new TomcatFactory().create()
             .newServer("localhost", 8005, "SHUTDOWN")
                 .setCatalinaBase(catalinaBase)
                 .setCatalinaHome(catalinaBase)
