@@ -39,52 +39,52 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
         super(parent);
     }
 
-    protected void setContainer(Container container) {
+    protected final void setContainer(Container container) {
         super.setLifecycle(container);
         this.container = container;
     }
 
-    protected Container getContainer() {
+    protected final Container getContainer() {
         return container;
     }
 
     @Override
-    public T addValve(Class<? extends Valve> clazz) {
+    public final T addValve(Class<? extends Valve> clazz) {
         Valve instance = InstanceConfigurer.newInstance(clazz);
         return addValve(instance);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public T addValve(Valve valve) {
+    public final T addValve(Valve valve) {
         logger.log(Level.FINE, "addValve({0})", valve.getClass().getName());
         container.getPipeline().addValve(valve);
         return (T) this;
     }
 
     @Override
-    public T addContainerListener(Class<? extends ContainerListener> clazz) {
+    public final T addContainerListener(Class<? extends ContainerListener> clazz) {
         ContainerListener instance = InstanceConfigurer.newInstance(clazz);
         return addContainerListener(instance);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public T addContainerListener(ContainerListener listener) {
+    public final T addContainerListener(ContainerListener listener) {
         logger.log(Level.FINE, "addContainerListener({0})", listener.getClass().getName());
         container.addContainerListener(listener);
         return (T) this;
     }
 
     @Override
-    public T addPropertyChangeListener(Class<? extends PropertyChangeListener> clazz) {
+    public final T addPropertyChangeListener(Class<? extends PropertyChangeListener> clazz) {
         PropertyChangeListener instance = InstanceConfigurer.newInstance(clazz);
         return addPropertyChangeListener(instance);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T addPropertyChangeListener(PropertyChangeListener listener) {
+    public final T addPropertyChangeListener(PropertyChangeListener listener) {
         logger.log(Level.FINE, "addPropertyChangeListener({0})", listener.getClass().getName());
         container.addPropertyChangeListener(listener);
         return (T) this;
@@ -92,7 +92,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
 
     @Override
     @SuppressWarnings("unchecked")
-    public T setCluster(Cluster cluster) {
+    public final T setCluster(Cluster cluster) {
         logger.log(Level.FINE, "setCluster({0})", cluster.getClass().getName());
         cluster.setContainer(getContainer());
         container.setCluster(cluster);
@@ -101,7 +101,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
 
     @Override
     @SuppressWarnings("unchecked")
-    public T setRealm(Realm realm) {
+    public final T setRealm(Realm realm) {
         logger.log(Level.FINE, "setRealm({0})", realm.getClass().getName());
         realm.setContainer(getContainer());
         container.setRealm(realm);
@@ -110,14 +110,14 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
 
     @SuppressWarnings("unchecked")
     @Override
-    public T setBackgroundProcessorDelay(int delay) {
+    public final T setBackgroundProcessorDelay(int delay) {
         container.setBackgroundProcessorDelay(delay);
         return (T) this;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public T setStartStopThreads(int startStopThreads) {
+    public final T setStartStopThreads(int startStopThreads) {
         container.setStartStopThreads(startStopThreads);
         return (T) this;
     }

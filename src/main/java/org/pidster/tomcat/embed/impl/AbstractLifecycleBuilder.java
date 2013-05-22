@@ -36,12 +36,12 @@ public abstract class AbstractLifecycleBuilder<P extends Builder<Tomcat>, T exte
         super(parent);
     }
 
-    protected void setLifecycle(Lifecycle lifecycle) {
+    protected final void setLifecycle(Lifecycle lifecycle) {
         this.lifecycle = lifecycle;
     }
 
     @Override
-    public T addLifecycleListener(Class<? extends LifecycleListener> listenerClass) {
+    public final T addLifecycleListener(Class<? extends LifecycleListener> listenerClass) {
         try {
             LifecycleListener listener = listenerClass.newInstance();
             return addLifecycleListener(listener);
@@ -54,7 +54,7 @@ public abstract class AbstractLifecycleBuilder<P extends Builder<Tomcat>, T exte
 
     @SuppressWarnings("unchecked")
     @Override
-    public T addLifecycleListener(LifecycleListener listener) {
+    public final T addLifecycleListener(LifecycleListener listener) {
         logger.log(Level.FINE, "addLifecycleListener() {0}", listener.getClass().getName());
         lifecycle.addLifecycleListener(listener);
         return (T) this;

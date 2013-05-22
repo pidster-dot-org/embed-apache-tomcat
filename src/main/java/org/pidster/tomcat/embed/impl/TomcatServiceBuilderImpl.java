@@ -20,11 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.catalina.Cluster;
 import org.apache.catalina.Engine;
 import org.apache.catalina.Executor;
 import org.apache.catalina.Host;
-import org.apache.catalina.Realm;
 import org.apache.catalina.Service;
 import org.apache.catalina.connector.Connector;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
@@ -137,20 +135,6 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
         connector.setService(service);
         service.addConnector(connector);
         connectorCount.incrementAndGet();
-        return this;
-    }
-
-    @Override
-    public TomcatServiceBuilder setCluster(Cluster cluster) {
-        cluster.setContainer(engine);
-        engine.setCluster(cluster);
-        return this;
-    }
-
-    @Override
-    public TomcatServiceBuilder setRealm(Realm realm) {
-        realm.setContainer(engine);
-        engine.setRealm(realm);
         return this;
     }
 
