@@ -14,7 +14,7 @@ public class DummyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String foo = (String) req.getAttribute("man");
-        resp.getWriter().println(String.format("foo:%s%n", foo));
+        resp.getWriter().println(String.format("foo:%s %s %n", foo, Thread.currentThread().getId()));
     }
 
 }

@@ -27,6 +27,7 @@ public class TomcatSimpleTest {
         File catalinaBase = new File("src/test/resources");
 
         Tomcat tomcat = new TomcatFactory().create()
+            .setProperties(properties)
             .newStandardServer(catalinaBase)
                 .createApplication("/test0", "test0")
                 .withDefaultConfig()
@@ -80,25 +81,6 @@ public class TomcatSimpleTest {
     public void test0Foo() throws Exception {
 
         URL url = new URL("http://127.0.0.1:8090/test0/foo");
-
-        HttpURLConnection connection = connect(url);
-        connection.connect();
-
-        try (InputStream is = connection.getInputStream()) {
-
-            int responseCode = connection.getResponseCode();
-            Assert.assertEquals(200, responseCode);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    @Test
-    public void test1IndexFile() throws Exception {
-
-        URL url = new URL("http://127.0.0.1:8090/test1/");
 
         HttpURLConnection connection = connect(url);
         connection.connect();

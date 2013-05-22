@@ -15,6 +15,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
+import org.apache.catalina.Manager;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.authenticator.NonLoginAuthenticator;
 import org.apache.catalina.core.StandardContext;
@@ -24,7 +25,10 @@ import org.apache.catalina.deploy.FilterDef;
 import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.deploy.LoginConfig;
 import org.apache.catalina.deploy.SecurityConstraint;
+import org.apache.catalina.servlets.DefaultServlet;
+import org.apache.catalina.session.StandardManager;
 import org.apache.catalina.startup.ContextConfig;
+import org.apache.jasper.servlet.JspServlet;
 import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
@@ -39,6 +43,9 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         String className = "org.apache.catalina.core.StandardContext";
         this.context = InstanceConfigurer.instantiate(loader(), StandardContext.class, className, config);
         context.addLifecycleListener(new FixContextListener());
+        StandardManager manager = new StandardManager();
+        manager.setSecureRandomAlgorithm("SHA1PRNG");
+        context.setManager(manager);
 
         setContainer(context);
     }
@@ -206,6 +213,12 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     @Override
     public TomcatApplicationBuilder setConfigFile(URL configFile) {
         context.setConfigFile(configFile);
+        return this;
+    }
+
+    @Override
+    public TomcatApplicationBuilder setSessionManager(Manager sessionManager) {
+        context.setManager(sessionManager);
         return this;
     }
 

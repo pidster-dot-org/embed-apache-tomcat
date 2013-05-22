@@ -5,9 +5,7 @@ import java.io.File;
 import org.apache.catalina.Service;
 
 
-public interface TomcatServerBuilder extends Builder<Tomcat>, Collector<TomcatServerBuilder, Service> {
-
-    TomcatBuilder parent();
+public interface TomcatServerBuilder extends TomcatLifecyleBuilder<TomcatServerBuilder>, Collector<TomcatServerBuilder, Service>, ParentalBuilder<TomcatBuilder, Tomcat> {
 
     TomcatServerBuilder setCatalinaBase(File catalinaBase);
 

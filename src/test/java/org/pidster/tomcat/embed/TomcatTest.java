@@ -52,7 +52,7 @@ public class TomcatTest {
                                 .addServlet(DummyServlet.class, "dummy", EMPTY, "/foo")
 //                                .setCluster(cluster)
 //                                .setRealm(realm)
-                            .parent()
+                                .parent()
                             .createApplication("/test1", "test1", EMPTY)
                                 .addServletContextListener(DummyListener.class, EMPTY)
                                 .addServletFilter(DummyFilter.class, EMPTY, "/*")

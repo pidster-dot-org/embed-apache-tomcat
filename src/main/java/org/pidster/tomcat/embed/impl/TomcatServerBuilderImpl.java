@@ -13,7 +13,7 @@ import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
 
-public class TomcatServerBuilderImpl extends AbstractParentalBuilder<TomcatBuilder, TomcatServerBuilder> implements Builder<Tomcat>, TomcatServerBuilder {
+public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<TomcatBuilder, TomcatServerBuilder> implements Builder<Tomcat>, TomcatServerBuilder {
 
     private final Server server;
 

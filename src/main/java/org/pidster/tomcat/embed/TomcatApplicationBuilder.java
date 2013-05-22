@@ -10,15 +10,14 @@ import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContextListener;
 
 import org.apache.catalina.Container;
+import org.apache.catalina.Manager;
 import org.apache.catalina.deploy.ApplicationParameter;
 import org.apache.catalina.deploy.ErrorPage;
 import org.apache.catalina.deploy.LoginConfig;
 import org.apache.catalina.deploy.SecurityConstraint;
 
 
-public interface TomcatApplicationBuilder extends Builder<Tomcat>, TomcatContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder>, Collector<TomcatApplicationBuilder, Container> {
-
-    TomcatHostBuilder parent();
+public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder>, Collector<TomcatApplicationBuilder, Container> {
 
     TomcatApplicationBuilder withDefaultConfig();
 
@@ -50,7 +49,29 @@ public interface TomcatApplicationBuilder extends Builder<Tomcat>, TomcatContain
 
     TomcatApplicationBuilder addServlet(Servlet servlet, String name, Map<String, String> config, String... patterns);
 
+    TomcatApplicationBuilder addApplicationParameter(ApplicationParameter parameter);
+
+    TomcatApplicationBuilder addConstraint(SecurityConstraint constraint);
+
+    TomcatApplicationBuilder addErrorPage(ErrorPage errorPage);
+
+    TomcatApplicationBuilder addLocaleEncodingMappingParameter(String locale, String encoding);
+
+    TomcatApplicationBuilder addMimeMapping(String extension, String mimeType);
+
+    TomcatApplicationBuilder addParameter(String name, String value);
+
+    TomcatApplicationBuilder addRoleMapping(String role, String link);
+
+    TomcatApplicationBuilder addSecurityRole(String role);
+
+    TomcatApplicationBuilder addWatchedResource(String name);
+
+    TomcatApplicationBuilder addWelcomeFile(String name);
+
     TomcatApplicationBuilder setAllowCasualMultipartParsing(boolean allowCasualMultipartParsing);
+
+    TomcatApplicationBuilder setSessionManager(Manager sessionManager);
 
     TomcatApplicationBuilder setConfigFile(URL configFile);
 
@@ -89,26 +110,6 @@ public interface TomcatApplicationBuilder extends Builder<Tomcat>, TomcatContain
     TomcatApplicationBuilder setTldValidation(boolean tldValidation);
 
     TomcatApplicationBuilder setTldNamespaceAware(boolean tldNamespaceAware);
-
-    TomcatApplicationBuilder addApplicationParameter(ApplicationParameter parameter);
-
-    TomcatApplicationBuilder addConstraint(SecurityConstraint constraint);
-
-    TomcatApplicationBuilder addErrorPage(ErrorPage errorPage);
-
-    TomcatApplicationBuilder addLocaleEncodingMappingParameter(String locale, String encoding);
-
-    TomcatApplicationBuilder addMimeMapping(String extension, String mimeType);
-
-    TomcatApplicationBuilder addParameter(String name, String value);
-
-    TomcatApplicationBuilder addRoleMapping(String role, String link);
-
-    TomcatApplicationBuilder addSecurityRole(String role);
-
-    TomcatApplicationBuilder addWatchedResource(String name);
-
-    TomcatApplicationBuilder addWelcomeFile(String name);
 
     TomcatApplicationBuilder setResourceOnlyServlets(String resourceOnlyServlets);
 

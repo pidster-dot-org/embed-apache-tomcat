@@ -144,7 +144,6 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
     @Override
     public TomcatHostBuilderImpl addHost(String name, String appBase) {
 
-        // TODO Add Engine instance
         Map<String, String> config = new HashMap<>();
         config.put("name", name);
         config.put("appBase", appBase);

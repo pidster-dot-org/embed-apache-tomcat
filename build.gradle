@@ -24,13 +24,17 @@ dependencies {
     compile "org.apache.tomcat:tomcat-servlet-api:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-websocket-api:$tomcatVersion"
 
+    compile "org.apache.tomcat:tomcat:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-api:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-catalina:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-catalina-ha:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-coyote:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-jasper:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-jasper-el:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-juli:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-util:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-tribes:$tomcatVersion"
+    compile "org.apache.tomcat:tomcat-spdy:$tomcatVersion"
     compile "org.apache.tomcat:tomcat-websocket:$tomcatVersion"
 
     testCompile "junit:junit:$junitVersion"

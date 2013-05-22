@@ -5,9 +5,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.catalina.Container;
+import org.apache.catalina.Context;
+import org.apache.catalina.Engine;
+import org.apache.catalina.Host;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
+import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.mapper.Mapper;
 import org.apache.catalina.startup.Catalina;
 import org.pidster.tomcat.embed.Callback;
 import org.pidster.tomcat.embed.Tomcat;
@@ -34,10 +40,8 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
             public void lifecycleEvent(LifecycleEvent event) {
                 String type = event.getType().toUpperCase();
                 status = TomcatStatus.valueOf(type);
-                if (Lifecycle.AFTER_START_EVENT.equals(event.getType())) {
-                    semaphore.release();
-                }
-                else if (Lifecycle.AFTER_STOP_EVENT.equals(event.getType())) {
+
+                if (Lifecycle.AFTER_START_EVENT.equals(event.getType()) || Lifecycle.AFTER_STOP_EVENT.equals(event.getType())) {
                     semaphore.release();
                 }
             }
@@ -51,12 +55,15 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
     }
 
     @Override
-    public TomcatRuntime start() {
-        log.log(Level.INFO, "Starting Tomcat");
+    public TomcatRuntimeImpl start() {
+        log.log(Level.CONFIG, "Starting Tomcat");
 
         try {
+            long started = System.currentTimeMillis();
+
             catalina.start();
             semaphore.acquire();
+            log.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
             return this;
 
         } catch (Exception e) {
@@ -65,12 +72,15 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
     }
 
     @Override
-    public TomcatRuntime start(long timeout) {
-        log.log(Level.INFO, "Starting Tomcat, will wait for {0}ms", timeout);
+    public TomcatRuntimeImpl start(long timeout) {
+        log.log(Level.CONFIG, "Starting Tomcat, will wait for {0}ms", timeout);
 
         try {
+            long started = System.currentTimeMillis();
+
             catalina.start();
             semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
+            log.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
             return this;
 
         } catch (Exception e) {
@@ -80,14 +90,18 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public void start(final Callback<TomcatRuntime> callback) {
-        log.log(Level.INFO, "Starting Tomcat with callback...");
+        log.log(Level.CONFIG, "Starting Tomcat with callback...");
         new Thread("tomcat-embed-startup") {
             @Override
             public void run() {
                 try {
+                    long started = System.currentTimeMillis();
+
                     catalina.start();
                     semaphore.acquire();
+
                     callback.success(TomcatRuntimeImpl.this);
+                    log.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
                 } catch (Exception e) {
                     callback.failure(e);
                 }
@@ -97,14 +111,23 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public TomcatRuntime deploy(String appName) {
-        log.log(Level.INFO, "Deploying {0}", appName);
+        log.log(Level.CONFIG, "Deploying {0}", appName);
+
+        String serviceName = "Catalina";
+        Container container = catalina.getServer().findService(serviceName).getContainer();
+        Engine engine = (Engine) container;
+        Host host = (Host) engine.findChild(engine.getDefaultHost());
+
+        Context context = new StandardContext();
+        host.addChild(context);
+
         throw new RuntimeException("Not implemented yet");
 //        return this;
     }
 
     @Override
     public TomcatRuntime undeploy(String appName) {
-        log.log(Level.INFO, "Undeploying {0}", appName);
+        log.log(Level.CONFIG, "Undeploying {0}", appName);
         throw new RuntimeException("Not implemented yet");
 //      return this;
     }
@@ -116,7 +139,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public void stop() {
-        log.log(Level.INFO, "Stopping Tomcat");
+        log.log(Level.CONFIG, "Stopping Tomcat");
 
         try {
             catalina.stop();
@@ -128,7 +151,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public void stop(long timeout) {
-        log.log(Level.INFO, "Stopping Tomcat, will wait for {0}ms", timeout);
+        log.log(Level.CONFIG, "Stopping Tomcat, will wait for {0}ms", timeout);
 
         try {
             catalina.stop();
@@ -142,7 +165,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
     @Override
     public void stopOnCompletion(Thread waiting) {
         try {
-            log.log(Level.INFO, "Stopping Tomcat when thread {0} completes", waiting.getId());
+            log.log(Level.CONFIG, "Stopping Tomcat when thread {0} completes", waiting.getId());
             waiting.join();
 
         } catch (InterruptedException e) {
