@@ -1,5 +1,7 @@
 package org.pidster.tomcat.embed;
 
+import org.apache.catalina.Server;
+
 public interface TomcatRuntime extends AutoCloseable {
 
     TomcatRuntime deploy(String appName);
@@ -7,6 +9,8 @@ public interface TomcatRuntime extends AutoCloseable {
     TomcatRuntime undeploy(String appName);
 
     TomcatStatus status();
+
+    Server getServer();
 
     void stop();
 

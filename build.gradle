@@ -1,6 +1,6 @@
 // This is a single project
 
-// apply plugin: 'eclipse'         // adds support for eclipse project generation
+apply plugin: 'eclipse'         // adds support for eclipse project generation
 // apply plugin: 'idea'            // adds support for IDEA project generation
 apply plugin: 'java'
 

@@ -206,6 +206,9 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
             serverBuilder.setCatalinaHome(baseDir);
         }
 
+        Map<String, String> connConfig = new HashMap<>();
+        connConfig.put("executor", "embed-pool-1");
+
         return serverBuilder
                 .addService(DEFAULT_SERVICE_NAME)
                     .setBackgroundProcessorDelay(0)

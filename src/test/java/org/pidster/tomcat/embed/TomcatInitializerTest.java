@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import java.util.HashSet;
 import java.util.Properties;
 import org.junit.After;
 import org.junit.Assert;
@@ -13,9 +14,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class TomcatSimpleTest {
+public class TomcatInitializerTest {
 
-    private static final String TARGET = "http://127.0.0.1:8081/test/dummy";
+    private static final String TARGET = "http://127.0.0.1:8081/test0/dummy";
 
     private TomcatRuntime runtime;
 
@@ -33,17 +34,15 @@ public class TomcatSimpleTest {
 
         Tomcat tomcat = new TomcatFactory(properties).create()
             .newMinimalServer(url.getPort())
-                .createApplication("test")
-                .addServletContextListener(DummyListener.class)
-                .addServletFilter(DummyFilter.class, "/*")
-                .addServlet(DummyServlet.class, "/dummy")
+                .createApplication("test0")
+                .addServletContainerInitializer(DummyContainerInitializer.class, new HashSet<Class<?>>())
             .build();
 
         this.runtime = tomcat.start(5000L);
     }
 
     @Test
-    public void testListenerFilterServlet() throws Exception {
+    public void testInitializer() throws Exception {
 
         HttpURLConnection connection = connect(url);
         connection.connect();

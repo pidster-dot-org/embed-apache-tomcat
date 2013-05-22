@@ -12,6 +12,7 @@ import org.apache.catalina.Host;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
+import org.apache.catalina.Server;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Catalina;
 import org.pidster.tomcat.embed.Callback;
@@ -51,6 +52,11 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
     @Override
     public TomcatStatus status() {
         return status;
+    }
+
+    @Override
+    public Server getServer() {
+        return new SafeServerImpl(catalina.getServer());
     }
 
     @Override
