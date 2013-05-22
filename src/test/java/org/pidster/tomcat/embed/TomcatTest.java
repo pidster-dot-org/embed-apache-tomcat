@@ -22,8 +22,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import java.util.Properties;
-
 import org.apache.catalina.servlets.DefaultServlet;
 import org.junit.After;
 import org.junit.Assert;
@@ -55,13 +53,14 @@ public class TomcatTest {
                         .addHost("localhost", "webapps")
 //                            .setCluster(cluster)
 //                            .setRealm(realm)
-                            .createApplication("/test0", "test0", EMPTY)
+                            .createApplication("/test0", "test0")
                                 .withDefaultConfig()
-                                .addServletContextListener(DummyListener.class, EMPTY)
-                                .addServletFilter(DummyFilter.class, EMPTY, "/*")
-                                .addServlet("dummy", DummyServlet.class, EMPTY, "/foo")
+                                .addServletContextListener(DummyListener.class)
+                                .addServletFilter(DummyFilter.class, "/*")
+                                .addServlet(DummyServlet.class, "/foo")
 //                                .setCluster(cluster)
 //                                .setRealm(realm)
+                                .addValve(DummyValve.class)
                                 .parent()
                             .createApplication("/test1", "test1", EMPTY)
                                 .addServletContextListener(DummyListener.class, EMPTY)
