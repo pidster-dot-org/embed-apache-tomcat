@@ -78,6 +78,11 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     }
 
     @Override
+    public TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass) {
+        return addServletContainerInitializer(listenerClass, null);
+    }
+
+    @Override
     public TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes) {
         try {
             ServletContainerInitializer instance = listenerClass.newInstance();
@@ -87,6 +92,11 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         } catch (IllegalAccessException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public TomcatApplicationBuilder addServletContainerInitializer(ServletContainerInitializer sci) {
+        return addServletContainerInitializer(sci, null);
     }
 
     @Override

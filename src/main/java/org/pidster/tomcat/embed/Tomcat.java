@@ -6,6 +6,10 @@ import java.util.Map;
 
 public interface Tomcat extends Buildable {
 
+    public static final String HTTP11 = "HTTP/1.1";
+
+    public static final String AJP13 = "AJP/1.3";
+
     public static final String PROTOCOL_NIO = "org.apache.coyote.http11.Http11NioProtocol";
 
     public static final String PROTOCOL_BIO = "org.apache.coyote.http11.Http11Protocol";

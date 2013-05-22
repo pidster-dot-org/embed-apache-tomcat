@@ -27,7 +27,11 @@ public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatH
 
     TomcatApplicationBuilder setContextInitParameter(String initParameter, String value);
 
+    TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass);
+
     TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes);
+
+    TomcatApplicationBuilder addServletContainerInitializer(ServletContainerInitializer sci);
 
     TomcatApplicationBuilder addServletContainerInitializer(ServletContainerInitializer sci, Set<Class<?>> classes);
 
