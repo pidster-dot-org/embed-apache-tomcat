@@ -60,6 +60,11 @@ public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServic
     }
 
     @Override
+    public TomcatApplicationBuilder createApplication(String name) {
+        return createApplication(String.format("/%s", name), name, Tomcat.EMPTY);
+    }
+
+    @Override
     public TomcatApplicationBuilder createApplication(String path, String name) {
         return createApplication(path, name, Tomcat.EMPTY);
     }

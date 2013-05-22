@@ -1,10 +1,12 @@
 package org.pidster.tomcat.embed.impl;
 
 import java.net.URL;
-import java.util.HashMap;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContainerInitializer;
@@ -13,12 +15,9 @@ import javax.servlet.ServletContextListener;
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
 import org.apache.catalina.Manager;
-import org.apache.catalina.Wrapper;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.deploy.ApplicationParameter;
 import org.apache.catalina.deploy.ErrorPage;
-import org.apache.catalina.deploy.FilterDef;
-import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.deploy.LoginConfig;
 import org.apache.catalina.deploy.SecurityConstraint;
 import org.apache.catalina.session.StandardManager;
@@ -31,6 +30,7 @@ import org.pidster.tomcat.embed.TomcatHostBuilder;
 public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder> implements TomcatApplicationBuilder {
 
     private final Context context;
+    private final InternalContainerInitializer initializer;
 
     public TomcatApplicationBuilderImpl(TomcatHostBuilderImpl parent, Map<String, String> config) {
         super(parent);
@@ -40,6 +40,10 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         StandardManager manager = new StandardManager();
         manager.setSecureRandomAlgorithm("SHA1PRNG");
         context.setManager(manager);
+
+        this.initializer = new InternalContainerInitializer();
+        Set<Class<?>> classes = new HashSet<>();
+        context.addServletContainerInitializer(initializer, classes);
 
         setContainer(context);
     }
@@ -64,15 +68,21 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     }
 
     @Override
-    public TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes) {
-        return addServletContainerInitializer(listenerClass, classes, new HashMap<String, String>());
+    public TomcatApplicationBuilder setContextAttribute(String attribute, Object value) {
+        initializer.setContextAttribute(attribute, value);
+        return this;
     }
 
     @Override
-    public TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes, Map<String, String> config) {
+    public TomcatApplicationBuilder setContextInitParameter(String initParameter, String value) {
+        initializer.setContextInitParameter(initParameter, value);
+        return this;
+    }
+
+    @Override
+    public TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes) {
         try {
             ServletContainerInitializer instance = listenerClass.newInstance();
-            InstanceConfigurer.configure(instance, config);
             return addServletContainerInitializer(instance, classes);
         } catch (InstantiationException e) {
             throw new IllegalStateException(e);
@@ -106,10 +116,28 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletContextListener(ServletContextListener listener) {
-        // TODO Auto-generated method stub
+        initializer.add(listener);
+        return this;
+    }
 
-        // context.addApplicationListener();
-        // InstanceConfigurer.configure(instance, config);
+    @Override
+    public TomcatApplicationBuilder addServletFilter(Filter filter, String... urlPatterns) {
+        FilterHolder holder = new FilterHolder(filter, urlPatterns);
+        initializer.add(holder);
+        return this;
+    }
+
+    @Override
+    public TomcatApplicationBuilder addServletFilter(Filter filter, Map<String, String> initParameters, String... urlPatterns) {
+        FilterHolder holder = new FilterHolder(filter, initParameters, urlPatterns);
+        initializer.add(holder);
+        return this;
+    }
+
+    @Override
+    public TomcatApplicationBuilder addServletFilter(Filter filter, Map<String, String> initParameters, EnumSet<DispatcherType> dispatcherTypes, String... urlPatterns) {
+        FilterHolder holder = new FilterHolder(filter, initParameters, dispatcherTypes, urlPatterns);
+        initializer.add(holder);
         return this;
     }
 
@@ -119,10 +147,9 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     }
 
     @Override
-    public TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, Map<String, String> config, String... patterns) {
+    public TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, Map<String, String> initParameters, String... patterns) {
         try {
             Filter instance = filterClass.newInstance();
-            InstanceConfigurer.configure(instance, config);
             return addServletFilter(instance, patterns);
         } catch (InstantiationException e) {
             throw new IllegalStateException(e);
@@ -132,34 +159,22 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     }
 
     @Override
-    public TomcatApplicationBuilder addServletFilter(Filter filter, String... patterns) {
-        FilterDef filterDef = new FilterDef();
-        filterDef.setFilterName(filter.getClass().getName());
-        filterDef.setFilter(filter);
-        context.addFilterDef(filterDef);
-
-        FilterMap filterMap = new FilterMap();
-        filterMap.setFilterName(filter.getClass().getName());
-        for (String pattern : patterns) {
-            filterMap.addURLPattern(pattern);
-        }
-
-        context.addFilterMap(filterMap);
-        return this;
+    public TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... patterns) {
+        return addServlet(servletClass.getName(), servletClass, Tomcat.EMPTY, patterns);
     }
 
     @Override
-    public TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... patterns) {
-        return addServlet(servletClass, servletClass.getName(), Tomcat.EMPTY, patterns);
+    public TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, String... patterns) {
+        return addServlet(name, servletClass, Tomcat.EMPTY, patterns);
     }
 
     @Override
     public TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, Map<String, String> config, String... patterns) {
-        return addServlet(servletClass, servletClass.getName(), config, patterns);
+        return addServlet(servletClass.getName(), servletClass, config, patterns);
     }
 
     @Override
-    public TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String name, Map<String, String> config, String... patterns) {
+    public TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, Map<String, String> config, String... patterns) {
         try {
             Servlet instance = servletClass.newInstance();
             return addServlet(instance, name, config, patterns);
@@ -172,29 +187,13 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServlet(Servlet servlet, Map<String, String> config, String... patterns) {
-        return addServlet(servlet, servlet.getClass().getName(), config, patterns);
+        initializer.add(new ServletHolder(servlet, config, patterns));
+        return this;
     }
 
     @Override
     public TomcatApplicationBuilder addServlet(Servlet servlet, String servletName, Map<String, String> config, String... patterns) {
-        Wrapper wrapper = context.createWrapper();
-        wrapper.setName(servletName);
-        wrapper.setParent(context);
-        wrapper.setServlet(servlet);
-
-        Set<String> names = config.keySet();
-        for (String name : names) {
-            String value = config.get(name);
-            wrapper.addInitParameter(name, value);
-        }
-
-        for (String pattern : patterns) {
-            wrapper.addMapping(pattern);
-//            context.addServletMapping(pattern, servletName);
-        }
-
-        context.addChild(wrapper);
-
+        initializer.add(new ServletHolder(servlet, servletName, config, patterns));
         return this;
     }
 

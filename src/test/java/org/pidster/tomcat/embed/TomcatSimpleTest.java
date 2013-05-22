@@ -1,8 +1,13 @@
 package org.pidster.tomcat.embed;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import java.util.Properties;
@@ -14,18 +19,25 @@ import org.junit.Test;
 
 public class TomcatSimpleTest {
 
+    private static final String TARGET = "http://127.0.0.1:8081/test0/foo";
+
     private TomcatRuntime runtime;
+
+    private URL url;
+
 
     @Before
     public void setupTomcat() throws Exception {
+
+        this.url = new URL(TARGET);
 
         Properties properties = new Properties();
         properties.put("catalina.base", "src/test/resources");
         properties.put("catalina.home", "src/test/resources");
 
         Tomcat tomcat = new TomcatFactory(properties).create()
-            .newMinimalServer()
-                .createApplication("/test0", "test0")
+            .newMinimalServer(url.getPort())
+                .createApplication("test0")
                 .addServletContextListener(DummyListener.class)
                 .addServletFilter(DummyFilter.class, "/*")
                 .addServlet(DummyServlet.class, "/foo")
@@ -35,17 +47,19 @@ public class TomcatSimpleTest {
     }
 
     @Test
-    public void test0Foo() throws Exception {
-
-        URL url = new URL("http://127.0.0.1:8090/test0/foo");
+    public void testFoo() throws Exception {
 
         HttpURLConnection connection = connect(url);
         connection.connect();
 
-        try (InputStream is = connection.getInputStream()) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
 
             int responseCode = connection.getResponseCode();
             Assert.assertEquals(200, responseCode);
+
+            while (br.ready()) {
+                System.out.println(br.readLine());
+            }
         }
         catch (IOException e) {
             e.printStackTrace();

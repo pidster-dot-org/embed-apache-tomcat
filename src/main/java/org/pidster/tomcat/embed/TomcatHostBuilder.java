@@ -13,4 +13,6 @@ public interface TomcatHostBuilder extends TomcatContainerBuilder<TomcatServiceB
 
     TomcatApplicationBuilder createApplication(String path, String name);
 
+    TomcatApplicationBuilder createApplication(String name);
+
 }

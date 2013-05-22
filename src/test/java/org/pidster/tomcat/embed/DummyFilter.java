@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DummyFilter implements Filter {
 
@@ -23,8 +24,10 @@ public class DummyFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest hreq = (HttpServletRequest) request;
+        HttpServletResponse hres = (HttpServletResponse) response;
         hreq.setAttribute("man", servletContext.getAttribute("foo"));
-        chain.doFilter(hreq, response);
+        hreq.setAttribute("chu", "bar");
+        chain.doFilter(hreq, hres);
     }
 
     @Override

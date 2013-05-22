@@ -1,9 +1,11 @@
 package org.pidster.tomcat.embed;
 
 import java.net.URL;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContainerInitializer;
@@ -21,9 +23,11 @@ public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatH
 
     TomcatApplicationBuilder withDefaultConfig();
 
-    TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes);
+    TomcatApplicationBuilder setContextAttribute(String attribute, Object value);
 
-    TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes, Map<String, String> config);
+    TomcatApplicationBuilder setContextInitParameter(String initParameter, String value);
+
+    TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes);
 
     TomcatApplicationBuilder addServletContainerInitializer(ServletContainerInitializer sci, Set<Class<?>> classes);
 
@@ -39,11 +43,17 @@ public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatH
 
     TomcatApplicationBuilder addServletFilter(Filter filter, String... patterns);
 
+    TomcatApplicationBuilder addServletFilter(Filter filter, Map<String, String> initParameters, String... urlPatterns);
+
+    TomcatApplicationBuilder addServletFilter(Filter filter, Map<String, String> initParameters, EnumSet<DispatcherType> dispatcherTypes, String... urlPatterns);
+
     TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... mappings);
 
     TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, Map<String, String> config, String... mappings);
 
-    TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String name, Map<String, String> config, String... mappings);
+    TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, String... mappings);
+
+    TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, Map<String, String> config, String... mappings);
 
     TomcatApplicationBuilder addServlet(Servlet servlet, Map<String, String> config, String... patterns);
 
