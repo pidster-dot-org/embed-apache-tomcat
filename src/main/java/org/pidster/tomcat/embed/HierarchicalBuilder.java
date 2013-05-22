@@ -19,7 +19,7 @@ package org.pidster.tomcat.embed;
  * @author pid[at]pidster.org
  *
  */
-public interface ParentalBuilder<P extends Builder<T>, T extends Buildable> extends Builder<T> {
+public interface HierarchicalBuilder<P extends Builder<T>, T extends Buildable> extends Builder<T> {
 
     P parent();
 

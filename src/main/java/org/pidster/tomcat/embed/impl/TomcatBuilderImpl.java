@@ -11,6 +11,7 @@ import org.apache.catalina.Server;
 import org.apache.catalina.core.JasperListener;
 import org.apache.catalina.core.JreMemoryLeakPreventionListener;
 import org.apache.catalina.core.ThreadLocalLeakPreventionListener;
+import org.apache.catalina.deploy.ResourceBase;
 import org.apache.catalina.mbeans.GlobalResourcesLifecycleListener;
 import org.apache.catalina.startup.Catalina;
 import org.pidster.tomcat.embed.Builder;
@@ -20,7 +21,7 @@ import org.pidster.tomcat.embed.TomcatHostBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 
 
-public class TomcatBuilderImpl extends AbstractParentalBuilder<TomcatBuilderImpl, TomcatBuilderImpl> implements Builder<Tomcat>, TomcatBuilder {
+public class TomcatBuilderImpl extends AbstractHierarchicalBuilder<TomcatBuilderImpl, TomcatBuilderImpl> implements Builder<Tomcat>, TomcatBuilder {
 
     private final Catalina catalina = new Catalina();
 
@@ -113,6 +114,7 @@ public class TomcatBuilderImpl extends AbstractParentalBuilder<TomcatBuilderImpl
 
     @Override
     public TomcatHostBuilder newStandardServer(int port, File baseDir) {
+        ResourceBase resource = new ResourceBase();
         return newServer(port)
                 .setCatalinaBase(baseDir)
                 .setCatalinaHome(baseDir)
@@ -120,6 +122,7 @@ public class TomcatBuilderImpl extends AbstractParentalBuilder<TomcatBuilderImpl
                 .addLifecycleListener(JreMemoryLeakPreventionListener.class)
                 .addLifecycleListener(GlobalResourcesLifecycleListener.class)
                 .addLifecycleListener(ThreadLocalLeakPreventionListener.class)
+                .addGlobalResource(resource)
                 .addService("Catalina")
                     // .withDefaultRealm()
                     .setBackgroundProcessorDelay(0)

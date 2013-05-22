@@ -3,36 +3,25 @@ package org.pidster.tomcat.embed.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.catalina.Container;
 import org.pidster.tomcat.embed.Builder;
-import org.pidster.tomcat.embed.ParentalBuilder;
+import org.pidster.tomcat.embed.HierarchicalBuilder;
 import org.pidster.tomcat.embed.Tomcat;
 
 
-public abstract class AbstractParentalBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> implements ParentalBuilder<P, Tomcat> {
+public abstract class AbstractHierarchicalBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> implements HierarchicalBuilder<P, Tomcat> {
 
-    private static final Logger logger = Logger.getLogger(AbstractParentalBuilder.class.getName());
+    private static final Logger logger = Logger.getLogger(AbstractHierarchicalBuilder.class.getName());
 
     private final P parent;
 
-    private Container container;
-
     private static ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-    protected AbstractParentalBuilder(P parent) {
+    protected AbstractHierarchicalBuilder(P parent) {
         this.parent = parent;
     }
 
     protected static ClassLoader loader() {
         return loader;
-    }
-
-    public void setContainer(Container container) {
-        this.container = container;
-    }
-
-    public Container getContainer() {
-        return container;
     }
 
     @Override

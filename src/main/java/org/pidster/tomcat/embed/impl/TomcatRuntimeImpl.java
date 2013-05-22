@@ -13,7 +13,6 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.core.StandardContext;
-import org.apache.catalina.mapper.Mapper;
 import org.apache.catalina.startup.Catalina;
 import org.pidster.tomcat.embed.Callback;
 import org.pidster.tomcat.embed.Tomcat;
