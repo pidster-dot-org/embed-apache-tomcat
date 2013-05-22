@@ -8,6 +8,7 @@ import org.apache.catalina.Cluster;
 import org.apache.catalina.Container;
 import org.apache.catalina.ContainerListener;
 import org.apache.catalina.Realm;
+import org.apache.catalina.Valve;
 import org.pidster.tomcat.embed.Builder;
 import org.pidster.tomcat.embed.TomcatContainerBuilder;
 import org.pidster.tomcat.embed.Tomcat;
@@ -33,11 +34,37 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
     }
 
     @Override
+    public T addValve(Class<? extends Valve> clazz) {
+        Valve instance = InstanceConfigurer.instantiate(clazz);
+        return addValve(instance);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public T addValve(Valve valve) {
+        logger.log(Level.FINE, "addValve({0})", valve.getClass().getName());
+        container.getPipeline().addValve(valve);
+        return (T) this;
+    }
+
+    @Override
+    public T addContainerListener(Class<? extends ContainerListener> clazz) {
+        ContainerListener instance = InstanceConfigurer.instantiate(clazz);
+        return addContainerListener(instance);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public T addContainerListener(ContainerListener listener) {
         logger.log(Level.FINE, "addContainerListener({0})", listener.getClass().getName());
         container.addContainerListener(listener);
         return (T) this;
+    }
+
+    @Override
+    public T addPropertyChangeListener(Class<? extends PropertyChangeListener> clazz) {
+        PropertyChangeListener instance = InstanceConfigurer.instantiate(clazz);
+        return addPropertyChangeListener(instance);
     }
 
     @SuppressWarnings("unchecked")

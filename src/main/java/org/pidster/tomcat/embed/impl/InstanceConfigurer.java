@@ -11,6 +11,16 @@ public class InstanceConfigurer {
 
     private static final Logger logger = Logger.getLogger(InstanceConfigurer.class.getName());
 
+    public static <Z> Z instantiate(Class<Z> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException e) {
+            throw new IllegalStateException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public static <Z> Z instantiate(ClassLoader loader, Class<Z> iface, String implClass, Map<String, String> config) {
 
         try {

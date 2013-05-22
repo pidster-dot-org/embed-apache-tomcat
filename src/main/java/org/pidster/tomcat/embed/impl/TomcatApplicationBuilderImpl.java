@@ -2,7 +2,6 @@ package org.pidster.tomcat.embed.impl;
 
 import java.net.URL;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,8 +41,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         context.setManager(manager);
 
         this.initializer = new InternalContainerInitializer();
-        Set<Class<?>> classes = new HashSet<>();
-        context.addServletContainerInitializer(initializer, classes);
+        context.addServletContainerInitializer(initializer, null);
 
         setContainer(context);
     }

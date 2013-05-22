@@ -57,6 +57,7 @@ public class TomcatTest {
                                 .addServletFilter(DummyFilter.class, EMPTY, "/*")
                                 .addServlet(DummyServlet.class, EMPTY, "/foo")
                                 .addServlet("default", DefaultServlet.class, EMPTY, "/")
+                                .addValve(DummyValve.class)
                                 .addWelcomeFile("index.html")
                             .parent()
                             .addApplication("/test2", "test2", "test2", EMPTY)
