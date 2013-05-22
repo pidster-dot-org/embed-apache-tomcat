@@ -3,7 +3,7 @@ package org.pidster.tomcat.embed;
 import java.io.File;
 
 import org.apache.catalina.Service;
-import org.apache.catalina.deploy.ResourceBase;
+import org.apache.catalina.deploy.ContextResource;
 
 
 public interface TomcatServerBuilder extends TomcatLifecyleBuilder<TomcatServerBuilder>, Collector<TomcatServerBuilder, Service>, HierarchicalBuilder<CatalinaBuilder, Tomcat> {
@@ -14,9 +14,15 @@ public interface TomcatServerBuilder extends TomcatLifecyleBuilder<TomcatServerB
 
     TomcatServerBuilder setCatalinaHome(File catalinaHome);
 
-    TomcatServerBuilder addGlobalResource(ResourceBase resource);
+    TomcatServerBuilder enableNaming();
 
-    TomcatServiceBuilder addService(String name);
+    TomcatServerBuilder setEnableNaming(boolean enableNaming);
+
+    TomcatServerBuilder addGlobalResource(ContextResource resource);
+
+    TomcatServiceBuilder addService();
+
+    TomcatServiceBuilder addService(String jvmRoute);
 
     TomcatServiceBuilder addService(String name, String jvmRoute);
 

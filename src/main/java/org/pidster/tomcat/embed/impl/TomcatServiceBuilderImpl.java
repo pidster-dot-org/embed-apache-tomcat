@@ -1,6 +1,6 @@
 package org.pidster.tomcat.embed.impl;
 
-import static org.pidster.tomcat.embed.Tomcat.EMPTY;
+import static org.pidster.tomcat.embed.Tomcat.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;

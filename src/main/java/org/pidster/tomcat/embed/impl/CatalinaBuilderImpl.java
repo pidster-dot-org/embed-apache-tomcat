@@ -1,6 +1,6 @@
 package org.pidster.tomcat.embed.impl;
 
-import static org.pidster.tomcat.embed.Tomcat.EMPTY;
+import static org.pidster.tomcat.embed.Tomcat.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import org.apache.catalina.Server;
 import org.apache.catalina.core.JasperListener;
 import org.apache.catalina.core.JreMemoryLeakPreventionListener;
 import org.apache.catalina.core.ThreadLocalLeakPreventionListener;
-import org.apache.catalina.deploy.ResourceBase;
+import org.apache.catalina.deploy.ContextResource;
 import org.apache.catalina.mbeans.GlobalResourcesLifecycleListener;
 import org.apache.catalina.startup.Catalina;
 import org.pidster.tomcat.embed.Tomcat;
@@ -28,6 +28,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
 
     public CatalinaBuilderImpl() {
         super(null);
+        this.properties.setProperty("catalina.useNaming", "false");
     }
 
     @Override
@@ -43,8 +44,8 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
     }
 
     @Override
-    public CatalinaBuilder setProperties(Properties properties) {
-        properties.putAll(properties);
+    public CatalinaBuilder addProperties(Properties properties) {
+        this.properties.putAll(properties);
         return this;
     }
 
@@ -107,32 +108,6 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
     }
 
     @Override
-    public TomcatHostBuilder newStandardServer(File baseDir) {
-        return newStandardServer(-1, baseDir);
-    }
-
-    @Override
-    public TomcatHostBuilder newStandardServer(int port, File baseDir) {
-        ResourceBase resource = new ResourceBase();
-        return newServer(port)
-                .setCatalinaBase(baseDir)
-                .setCatalinaHome(baseDir)
-                .addLifecycleListener(JasperListener.class)
-                .addLifecycleListener(JreMemoryLeakPreventionListener.class)
-                .addLifecycleListener(GlobalResourcesLifecycleListener.class)
-                .addLifecycleListener(ThreadLocalLeakPreventionListener.class)
-                .addGlobalResource(resource)
-                .addService("Catalina")
-                    // .withDefaultRealm()
-                    .setBackgroundProcessorDelay(0)
-                    .setStartStopThreads(0)
-                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY)
-                    .addConnector("HTTP/1.1", 8090, EMPTY)
-                    .addConnector("AJP/1.3", 8019, EMPTY)
-                        .addHost("localhost", "webapps");
-    }
-
-    @Override
     public TomcatServerBuilder newServer(String host, int port, String password) {
 
         System.getProperties().putAll(properties);
@@ -143,6 +118,101 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         config.put("shutdown", password);
 
         return new TomcatServerBuilderImpl(this, config);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer() {
+        return newStandardServer(-1, null, DEFAULT_HTTP_PORT, DEFAULT_AJP_PORT);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer(File baseDir) {
+        return newStandardServer(-1, baseDir, DEFAULT_HTTP_PORT, DEFAULT_AJP_PORT);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer(File baseDir, int httpPort, int ajpPort) {
+        return newStandardServer(-1, baseDir, httpPort, ajpPort);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer(int httpPort, int ajpPort) {
+        return newStandardServer(-1, null, httpPort, ajpPort);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer(int port, File baseDir) {
+        return newStandardServer(port, baseDir, DEFAULT_HTTP_PORT, DEFAULT_AJP_PORT);
+    }
+
+    @Override
+    public TomcatHostBuilder newStandardServer(int port, File baseDir, int httpPort, int ajpPort) {
+        ContextResource memoryDatabase = new ContextResource();
+        // memoryResource.setProperty("", "");
+
+        TomcatServerBuilder serverBuilder = newServer(port);
+        if (baseDir != null) {
+            serverBuilder.setCatalinaBase(baseDir);
+            serverBuilder.setCatalinaHome(baseDir);
+        }
+
+        return serverBuilder
+                .enableNaming()
+                .addLifecycleListener(JasperListener.class)
+                .addLifecycleListener(GlobalResourcesLifecycleListener.class)
+                .addLifecycleListener(JreMemoryLeakPreventionListener.class)
+                .addLifecycleListener(ThreadLocalLeakPreventionListener.class)
+                .addGlobalResource(memoryDatabase)
+                .addService(DEFAULT_SERVICE_NAME)
+                    // .withDefaultRealm()
+                    .setBackgroundProcessorDelay(0)
+                    .setStartStopThreads(0)
+                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY)
+                    .addConnector("HTTP/1.1", httpPort, EMPTY)
+                    .addConnector("AJP/1.3", ajpPort, EMPTY)
+                        .addHost("localhost", "webapps");
+    }
+
+    @Override
+    public TomcatHostBuilder newMinimalServer() {
+        return newMinimalServer(-1, null, DEFAULT_HTTP_PORT);
+    }
+
+    @Override
+    public TomcatHostBuilder newMinimalServer(int http) {
+        return newMinimalServer(-1, null, http);
+    }
+
+    @Override
+    public TomcatHostBuilder newMinimalServer(File baseDir) {
+        return newMinimalServer(-1, baseDir, DEFAULT_HTTP_PORT);
+    }
+
+    @Override
+    public TomcatHostBuilder newMinimalServer(File baseDir, int http) {
+        return newMinimalServer(-1, baseDir, http);
+    }
+
+    @Override
+    public TomcatHostBuilder newMinimalServer(int port, File baseDir) {
+        return newMinimalServer(port, baseDir, DEFAULT_HTTP_PORT);
+    }
+
+    @Override
+    public TomcatHostBuilder newMinimalServer(int port, File baseDir, int http) {
+        TomcatServerBuilder serverBuilder = newServer(port);
+        if (baseDir != null) {
+            serverBuilder.setCatalinaBase(baseDir);
+            serverBuilder.setCatalinaHome(baseDir);
+        }
+
+        return serverBuilder
+                .addService(DEFAULT_SERVICE_NAME)
+                    .setBackgroundProcessorDelay(0)
+                    .setStartStopThreads(0)
+                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY)
+                    .addConnector("HTTP/1.1", http, EMPTY)
+                        .addHost("localhost", "webapps");
     }
 
 }

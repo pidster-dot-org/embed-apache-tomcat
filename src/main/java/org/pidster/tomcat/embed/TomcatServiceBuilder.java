@@ -7,12 +7,6 @@ import org.apache.catalina.Host;
 
 public interface TomcatServiceBuilder extends TomcatContainerBuilder<TomcatServerBuilder, TomcatServiceBuilder>, Collector<TomcatServiceBuilder, Host> {
 
-    public static final String PROTOCOL_NIO = "org.apache.coyote.http11.Http11NioProtocol";
-
-    public static final String PROTOCOL_BIO = "org.apache.coyote.http11.Http11Protocol";
-
-    public static final String PROTOCOL_AJP = "org.apache.coyote.ajp.AjpNioProtocol";
-
     TomcatServiceBuilder addStandardConnectors();
 
     TomcatServiceBuilder addBioExecutor(int port, int minSize, int maxSize, Map<String, String> config);

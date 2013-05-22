@@ -28,8 +28,7 @@ public class TomcatTest {
 
         File catalinaBase = new File("src/test/resources");
 
-        Tomcat tomcat = new TomcatFactory().create()
-            .setProperties(properties)
+        Tomcat tomcat = new TomcatFactory(properties).create()
             .newServer("localhost", 8005, "SHUTDOWN")
                 .setCatalinaBase(catalinaBase)
                 .setCatalinaHome(catalinaBase)

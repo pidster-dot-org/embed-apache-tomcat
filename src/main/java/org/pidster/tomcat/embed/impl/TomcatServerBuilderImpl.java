@@ -1,5 +1,6 @@
 package org.pidster.tomcat.embed.impl;
 
+import static org.pidster.tomcat.embed.Tomcat.*;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,9 @@ import java.util.logging.Logger;
 
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
-import org.apache.catalina.deploy.ResourceBase;
+import org.apache.catalina.core.NamingContextListener;
+import org.apache.catalina.deploy.ContextResource;
+import org.apache.catalina.deploy.NamingResources;
 import org.pidster.tomcat.embed.CatalinaBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
@@ -20,21 +23,36 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
 
     static final String[] silences = new String[] {
         "org.apache.coyote.AbstractProtocol",
+        "org.apache.coyote.ajp.AjpNioProtocol",
         "org.apache.coyote.http11.Http11Protocol",
+        "org.apache.coyote.http11.Http11NioProtocol",
+        "org.apache.catalina.core.ApplicationContext",
+        "org.apache.catalina.core.AprLifecycleListener",
         "org.apache.catalina.core.StandardService",
         "org.apache.catalina.core.StandardEngine",
+        "org.apache.catalina.mbeans.GlobalResourcesLifecycleListener",
+        "org.apache.catalina.startup.Catalina",
         "org.apache.catalina.startup.ContextConfig",
-        "org.apache.catalina.core.ApplicationContext",
-        "org.apache.catalina.core.AprLifecycleListener"
+        "org.apache.tomcat.util.net.NioSelectorPool",
     };
 
     private boolean silentLogging = true;
+
+    private boolean enableNaming = false;
 
     public TomcatServerBuilderImpl(CatalinaBuilderImpl parent, Map<String, String> config) {
         super(parent);
 
         String className = "org.apache.catalina.core.StandardServer";
         this.server = InstanceConfigurer.instantiate(loader(), Server.class, className, config);
+
+        for (String s : silences) {
+            if (silentLogging) {
+                Logger.getLogger(s).setLevel(Level.WARNING);
+            } else {
+                // Logger.getLogger(s).setLevel(Level.INFO);
+            }
+        }
 
         setLifecycle(server);
     }
@@ -50,10 +68,11 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
     public CatalinaBuilder parent() {
 
         if (server.getCatalinaBase() == null || !server.getCatalinaBase().exists()) {
+
             if (System.getProperties().containsKey("catalina.base")) {
                 String catalinaBase = System.getProperty("catalina.base");
                 File file = new File(catalinaBase);
-                this.setCatalinaBase(file);
+                setCatalinaBase(file);
             }
         }
 
@@ -65,6 +84,7 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
                     this.setCatalinaHome(file);
                 }
                 else {
+                    // if we reach here, this must be set already
                     this.setCatalinaHome(server.getCatalinaBase());
                 }
             }
@@ -72,14 +92,11 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
 
         for (String s : silences) {
             if (silentLogging) {
-                Logger.getLogger(s).setLevel(Level.SEVERE);
+                Logger.getLogger(s).setLevel(Level.WARNING);
             } else {
-                // Logger.getLogger(s).setLevel(Level.INFO);
+                Logger.getLogger(s).setLevel(Level.INFO);
             }
         }
-
-        System.out.println("FOO!");
-        Thread.dumpStack();
 
         return super.parent().collect(server);
     }
@@ -92,8 +109,8 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
 
     @Override
     public TomcatServerBuilder setCatalinaBase(File catalinaBase) {
-        if (!catalinaBase.exists()) {
-            throw new IllegalStateException("catalina.base MUST exist");
+        if (catalinaBase == null || !catalinaBase.exists()) {
+            throw new IllegalStateException("catalina.base does not exist: " + catalinaBase);
         }
 
         System.setProperty("catalina.base", catalinaBase.getAbsolutePath());
@@ -103,8 +120,8 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
 
     @Override
     public TomcatServerBuilder setCatalinaHome(File catalinaHome) {
-        if (!catalinaHome.exists()) {
-            throw new IllegalStateException("catalina.home MUST exist");
+        if (catalinaHome == null || !catalinaHome.exists()) {
+            throw new IllegalStateException("catalina.home does not exist: " + catalinaHome);
         }
 
         System.setProperty("catalina.home", catalinaHome.getAbsolutePath());
@@ -113,24 +130,78 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
     }
 
     @Override
-    public TomcatServerBuilder addGlobalResource(ResourceBase resource) {
-        // TODO
+    public TomcatServerBuilder enableNaming() {
+        return setEnableNaming(true);
+    }
+
+    @Override
+    public TomcatServerBuilder setEnableNaming(boolean enableNaming) {
+        this.enableNaming = enableNaming;
+        if (enableNaming) {
+            enableJndi();
+        }
         return this;
     }
 
     @Override
-    public TomcatServiceBuilder addService(String name) {
-        Map<String, String> config = new HashMap<>();
-        config.put("name", name);
-        return new TomcatServiceBuilderImpl(this, name, config);
+    public TomcatServerBuilder addGlobalResource(ContextResource resource) {
+        if (!enableNaming) {
+            enableJndi();
+        }
+
+        NamingResources globalNamingResources = new NamingResources();
+        // globalNamingResources.addResource(resource);
+        globalNamingResources.setContainer(server);
+        server.setGlobalNamingResources(globalNamingResources);
+        return this;
+    }
+
+    @Override
+    public TomcatServiceBuilder addService() {
+        return addService(DEFAULT_SERVICE_NAME, null);
+    }
+
+    @Override
+    public TomcatServiceBuilder addService(String jvmRoute) {
+        return addService(DEFAULT_SERVICE_NAME, jvmRoute);
     }
 
     @Override
     public TomcatServiceBuilder addService(String name, String jvmRoute) {
         Map<String, String> config = new HashMap<>();
         config.put("name", name);
-        config.put("jvmRoute", jvmRoute);
+        if (jvmRoute != null) {
+            config.put("jvmRoute", jvmRoute);
+        }
         return new TomcatServiceBuilderImpl(this, name, config);
+    }
+
+    private void enableJndi() {
+        server.addLifecycleListener(new NamingContextListener());
+
+        System.setProperty("catalina.useNaming", "true");
+
+        String value = "org.apache.naming";
+        String oldValue =
+            System.getProperty(javax.naming.Context.URL_PKG_PREFIXES);
+        if (oldValue != null) {
+            if (oldValue.contains(value)) {
+                value = oldValue;
+            } else {
+                value = value + ":" + oldValue;
+            }
+        }
+        System.setProperty(javax.naming.Context.URL_PKG_PREFIXES, value);
+
+        value = System.getProperty
+            (javax.naming.Context.INITIAL_CONTEXT_FACTORY);
+        if (value == null) {
+            System.setProperty
+                (javax.naming.Context.INITIAL_CONTEXT_FACTORY,
+                 "org.apache.naming.java.javaURLContextFactory");
+        }
+
+        this.enableNaming = true;
     }
 
 }

@@ -1,6 +1,5 @@
 package org.pidster.tomcat.embed;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -24,57 +23,15 @@ public class TomcatSimpleTest {
         properties.put("catalina.base", "src/test/resources");
         properties.put("catalina.home", "src/test/resources");
 
-        File catalinaBase = new File("src/test/resources");
-
-        Tomcat tomcat = new TomcatFactory().create()
-            .setProperties(properties)
-            .newStandardServer(catalinaBase)
+        Tomcat tomcat = new TomcatFactory(properties).create()
+            .newMinimalServer()
                 .createApplication("/test0", "test0")
-                .withDefaultConfig()
                 .addServletContextListener(DummyListener.class)
                 .addServletFilter(DummyFilter.class, "/*")
                 .addServlet(DummyServlet.class, "/foo")
             .build();
 
         this.runtime = tomcat.start(5000L);
-    }
-
-    @Test
-    public void test0IndexHtml() throws Exception {
-
-        URL url = new URL("http://127.0.0.1:8090/test0/index.html");
-
-        HttpURLConnection connection = connect(url);
-        connection.connect();
-
-        try (InputStream is = connection.getInputStream()) {
-
-            int responseCode = connection.getResponseCode();
-            Assert.assertEquals(200, responseCode);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            Assert.fail(e.getMessage());
-        }
-    }
-
-    @Test
-    public void test0IndexFile() throws Exception {
-
-        URL url = new URL("http://127.0.0.1:8090/test0/");
-
-        HttpURLConnection connection = connect(url);
-        connection.connect();
-
-        try (InputStream is = connection.getInputStream()) {
-
-            int responseCode = connection.getResponseCode();
-            Assert.assertEquals(200, responseCode);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            Assert.fail(e.getMessage());
-        }
     }
 
     @Test
