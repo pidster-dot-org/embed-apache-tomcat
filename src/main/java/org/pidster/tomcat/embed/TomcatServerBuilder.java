@@ -6,7 +6,9 @@ import org.apache.catalina.Service;
 import org.apache.catalina.deploy.ResourceBase;
 
 
-public interface TomcatServerBuilder extends TomcatLifecyleBuilder<TomcatServerBuilder>, Collector<TomcatServerBuilder, Service>, HierarchicalBuilder<TomcatBuilder, Tomcat> {
+public interface TomcatServerBuilder extends TomcatLifecyleBuilder<TomcatServerBuilder>, Collector<TomcatServerBuilder, Service>, HierarchicalBuilder<CatalinaBuilder, Tomcat> {
+
+    TomcatServerBuilder setSilentLogging(boolean silentLogging);
 
     TomcatServerBuilder setCatalinaBase(File catalinaBase);
 

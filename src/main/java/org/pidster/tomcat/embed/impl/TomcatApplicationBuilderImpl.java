@@ -12,12 +12,8 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
-import org.apache.catalina.Lifecycle;
-import org.apache.catalina.LifecycleEvent;
-import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.Manager;
 import org.apache.catalina.Wrapper;
-import org.apache.catalina.authenticator.NonLoginAuthenticator;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.deploy.ApplicationParameter;
 import org.apache.catalina.deploy.ErrorPage;
@@ -428,28 +424,6 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     public TomcatApplicationBuilder setSendRedirectBody(boolean enable) {
         context.setSendRedirectBody(enable);
         return this;
-    }
-
-    public static class FixContextListener implements LifecycleListener {
-
-        @Override
-        public void lifecycleEvent(LifecycleEvent event) {
-            try {
-                Context context = (Context) event.getLifecycle();
-                if (event.getType().equals(Lifecycle.CONFIGURE_START_EVENT)) {
-                    context.setConfigured(true);
-                }
-                // LoginConfig is required to process @ServletSecurity
-                // annotations
-                if (context.getLoginConfig() == null) {
-                    context.setLoginConfig(
-                            new LoginConfig("NONE", null, null, null));
-                    context.getPipeline().addValve(new NonLoginAuthenticator());
-                }
-            } catch (ClassCastException e) {
-                return;
-            }
-        }
     }
 
 }

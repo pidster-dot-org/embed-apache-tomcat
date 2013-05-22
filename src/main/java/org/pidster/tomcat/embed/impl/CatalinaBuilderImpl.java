@@ -14,25 +14,24 @@ import org.apache.catalina.core.ThreadLocalLeakPreventionListener;
 import org.apache.catalina.deploy.ResourceBase;
 import org.apache.catalina.mbeans.GlobalResourcesLifecycleListener;
 import org.apache.catalina.startup.Catalina;
-import org.pidster.tomcat.embed.Builder;
 import org.pidster.tomcat.embed.Tomcat;
-import org.pidster.tomcat.embed.TomcatBuilder;
+import org.pidster.tomcat.embed.CatalinaBuilder;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 
 
-public class TomcatBuilderImpl extends AbstractHierarchicalBuilder<TomcatBuilderImpl, TomcatBuilderImpl> implements Builder<Tomcat>, TomcatBuilder {
+public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBuilderImpl, CatalinaBuilderImpl> implements CatalinaBuilder {
 
     private final Catalina catalina = new Catalina();
 
     private final Properties properties = new Properties();
 
-    public TomcatBuilderImpl() {
+    public CatalinaBuilderImpl() {
         super(null);
     }
 
     @Override
-    public TomcatBuilder collect(Server child) {
+    public CatalinaBuilder collect(Server child) {
         child.setCatalina(catalina);
         catalina.setServer(child);
         return this;
@@ -44,24 +43,24 @@ public class TomcatBuilderImpl extends AbstractHierarchicalBuilder<TomcatBuilder
     }
 
     @Override
-    public TomcatBuilder setProperties(Properties properties) {
+    public CatalinaBuilder setProperties(Properties properties) {
         properties.putAll(properties);
         return this;
     }
 
     @Override
-    public TomcatBuilder setProperty(String name, String value) {
+    public CatalinaBuilder setProperty(String name, String value) {
         properties.setProperty(name, value);
         return this;
     }
 
     @Override
-    public TomcatBuilder useConfig(String file) {
+    public CatalinaBuilder useConfig(String file) {
         return useConfig(new File(file));
     }
 
     @Override
-    public TomcatBuilder useConfig(File file) {
+    public CatalinaBuilder useConfig(File file) {
         if (!file.exists()) {
             throw new IllegalStateException("Config file does not exist");
         }
@@ -70,19 +69,19 @@ public class TomcatBuilderImpl extends AbstractHierarchicalBuilder<TomcatBuilder
     }
 
     @Override
-    public TomcatBuilder useClassLoader(ClassLoader classLoader) {
+    public CatalinaBuilder useClassLoader(ClassLoader classLoader) {
         catalina.setParentClassLoader(classLoader);
         return this;
     }
 
     @Override
-    public TomcatBuilder setUseShutdownHook(boolean useShutdownHook) {
+    public CatalinaBuilder setUseShutdownHook(boolean useShutdownHook) {
         catalina.setUseShutdownHook(useShutdownHook);
         return this;
     }
 
     @Override
-    public TomcatBuilder setUseNaming(boolean useNaming) {
+    public CatalinaBuilder setUseNaming(boolean useNaming) {
         catalina.setUseNaming(useNaming);
         return this;
     }

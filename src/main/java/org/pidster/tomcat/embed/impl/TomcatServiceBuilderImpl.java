@@ -12,14 +12,12 @@ import org.apache.catalina.Host;
 import org.apache.catalina.Realm;
 import org.apache.catalina.Service;
 import org.apache.catalina.connector.Connector;
-import org.pidster.tomcat.embed.Builder;
-import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
 
 public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatServerBuilder, TomcatServiceBuilder> 
-    implements Builder<Tomcat>, TomcatServiceBuilder {
+    implements TomcatServiceBuilder {
 
     private final Service service;
 

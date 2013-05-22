@@ -5,14 +5,13 @@ import java.util.Map;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.Host;
-import org.pidster.tomcat.embed.Builder;
 import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
 
-public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServiceBuilder, TomcatHostBuilder> implements Builder<Tomcat>, TomcatHostBuilder {
+public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServiceBuilder, TomcatHostBuilder> implements TomcatHostBuilder {
 
     private final Host host;
 

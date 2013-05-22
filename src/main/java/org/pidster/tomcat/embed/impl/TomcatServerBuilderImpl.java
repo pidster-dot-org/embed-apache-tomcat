@@ -3,22 +3,34 @@ package org.pidster.tomcat.embed.impl;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.deploy.ResourceBase;
-import org.pidster.tomcat.embed.Builder;
-import org.pidster.tomcat.embed.Tomcat;
-import org.pidster.tomcat.embed.TomcatBuilder;
+import org.pidster.tomcat.embed.CatalinaBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
 
-public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<TomcatBuilder, TomcatServerBuilder> implements Builder<Tomcat>, TomcatServerBuilder {
+public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBuilder, TomcatServerBuilder> implements TomcatServerBuilder {
 
     private final Server server;
 
-    public TomcatServerBuilderImpl(TomcatBuilderImpl parent, Map<String, String> config) {
+    static final String[] silences = new String[] {
+        "org.apache.coyote.AbstractProtocol",
+        "org.apache.coyote.http11.Http11Protocol",
+        "org.apache.catalina.core.StandardService",
+        "org.apache.catalina.core.StandardEngine",
+        "org.apache.catalina.startup.ContextConfig",
+        "org.apache.catalina.core.ApplicationContext",
+        "org.apache.catalina.core.AprLifecycleListener"
+    };
+
+    private boolean silentLogging = true;
+
+    public TomcatServerBuilderImpl(CatalinaBuilderImpl parent, Map<String, String> config) {
         super(parent);
 
         String className = "org.apache.catalina.core.StandardServer";
@@ -35,7 +47,7 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<TomcatBuil
     }
 
     @Override
-    public TomcatBuilder parent() {
+    public CatalinaBuilder parent() {
 
         if (server.getCatalinaBase() == null || !server.getCatalinaBase().exists()) {
             if (System.getProperties().containsKey("catalina.base")) {
@@ -58,7 +70,24 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<TomcatBuil
             }
         }
 
+        for (String s : silences) {
+            if (silentLogging) {
+                Logger.getLogger(s).setLevel(Level.SEVERE);
+            } else {
+                // Logger.getLogger(s).setLevel(Level.INFO);
+            }
+        }
+
+        System.out.println("FOO!");
+        Thread.dumpStack();
+
         return super.parent().collect(server);
+    }
+
+    @Override
+    public TomcatServerBuilder setSilentLogging(boolean silentLogging) {
+        this.silentLogging = silentLogging;
+        return this;
     }
 
     @Override

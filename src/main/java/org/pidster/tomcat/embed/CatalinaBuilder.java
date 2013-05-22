@@ -6,21 +6,21 @@ import java.util.Properties;
 import org.apache.catalina.Server;
 
 
-public interface TomcatBuilder extends Builder<Tomcat>, Collector<TomcatBuilder, Server> {
+public interface CatalinaBuilder extends Builder<Tomcat>, Collector<CatalinaBuilder, Server> {
 
-    TomcatBuilder setProperties(Properties properties);
+    CatalinaBuilder setProperties(Properties properties);
 
-    TomcatBuilder setProperty(String name, String value);
+    CatalinaBuilder setProperty(String name, String value);
 
-    TomcatBuilder useConfig(String file);
+    CatalinaBuilder useConfig(String file);
 
-    TomcatBuilder useConfig(File file);
+    CatalinaBuilder useConfig(File file);
 
-    TomcatBuilder useClassLoader(ClassLoader classLoader);
+    CatalinaBuilder useClassLoader(ClassLoader classLoader);
 
-    TomcatBuilder setUseShutdownHook(boolean useShutdownHook);
+    CatalinaBuilder setUseShutdownHook(boolean useShutdownHook);
 
-    TomcatBuilder setUseNaming(boolean useNaming);
+    CatalinaBuilder setUseNaming(boolean useNaming);
 
     TomcatServerBuilder newServer();
 

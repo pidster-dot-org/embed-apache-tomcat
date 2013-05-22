@@ -4,8 +4,8 @@ import java.util.ServiceLoader;
 
 public class TomcatFactory {
 
-    public TomcatBuilder create() {
-        ServiceLoader<TomcatBuilder> impls = ServiceLoader.load(TomcatBuilder.class);
+    public CatalinaBuilder create() {
+        ServiceLoader<CatalinaBuilder> impls = ServiceLoader.load(CatalinaBuilder.class);
         if(!impls.iterator().hasNext()) {
             throw new RuntimeException("No implementation");
         }
