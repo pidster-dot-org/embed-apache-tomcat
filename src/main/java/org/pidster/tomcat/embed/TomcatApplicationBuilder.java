@@ -28,10 +28,10 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.catalina.Container;
 import org.apache.catalina.Manager;
-import org.apache.catalina.deploy.ApplicationParameter;
-import org.apache.catalina.deploy.ErrorPage;
-import org.apache.catalina.deploy.LoginConfig;
-import org.apache.catalina.deploy.SecurityConstraint;
+import org.apache.tomcat.util.descriptor.web.ApplicationParameter;
+import org.apache.tomcat.util.descriptor.web.ErrorPage;
+import org.apache.tomcat.util.descriptor.web.LoginConfig;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 
 
 public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder>, Collector<TomcatApplicationBuilder, Container> {

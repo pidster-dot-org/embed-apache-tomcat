@@ -24,7 +24,7 @@ import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
-import org.apache.catalina.deploy.NamingResources;
+import org.apache.catalina.deploy.NamingResourcesImpl;
 import org.apache.catalina.startup.Catalina;
 
 /**
@@ -43,7 +43,7 @@ public class SafeServerImpl implements Server {
     }
 
     @Override
-    public NamingResources getGlobalNamingResources() {
+    public NamingResourcesImpl getGlobalNamingResources() {
         return server.getGlobalNamingResources();
     }
 
@@ -168,7 +168,7 @@ public class SafeServerImpl implements Server {
      * @see org.apache.catalina.Server#setGlobalNamingResources(org.apache.catalina.deploy.NamingResources)
      */
     @Override
-    public void setGlobalNamingResources(NamingResources globalNamingResources) {
+    public void setGlobalNamingResources(NamingResourcesImpl globalNamingResources) {
         throw new UnsupportedOperationException("GlobalNamingResources can't be changed at runtime");
     }
 

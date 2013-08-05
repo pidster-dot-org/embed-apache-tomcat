@@ -18,7 +18,7 @@ package org.pidster.tomcat.embed;
 import java.io.File;
 
 import org.apache.catalina.Service;
-import org.apache.catalina.deploy.ContextResource;
+import org.apache.tomcat.util.descriptor.web.ContextResource;
 
 
 public interface TomcatServerBuilder extends TomcatLifecyleBuilder<TomcatServerBuilder>, Collector<TomcatServerBuilder, Service>, HierarchicalBuilder<CatalinaBuilder, Tomcat> {

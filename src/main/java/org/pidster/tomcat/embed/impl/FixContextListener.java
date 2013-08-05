@@ -20,7 +20,7 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.authenticator.NonLoginAuthenticator;
-import org.apache.catalina.deploy.LoginConfig;
+import org.apache.tomcat.util.descriptor.web.LoginConfig;
 
 /**
  * @author pid[at]pidster.org

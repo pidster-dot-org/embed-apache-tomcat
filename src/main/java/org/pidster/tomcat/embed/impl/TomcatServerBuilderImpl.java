@@ -16,6 +16,7 @@
 package org.pidster.tomcat.embed.impl;
 
 import static org.pidster.tomcat.embed.Tomcat.*;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +26,8 @@ import java.util.logging.Logger;
 import org.apache.catalina.Server;
 import org.apache.catalina.Service;
 import org.apache.catalina.core.NamingContextListener;
-import org.apache.catalina.deploy.ContextResource;
-import org.apache.catalina.deploy.NamingResources;
+import org.apache.catalina.deploy.NamingResourcesImpl;
+import org.apache.tomcat.util.descriptor.web.ContextResource;
 import org.pidster.tomcat.embed.CatalinaBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
@@ -160,7 +161,7 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
             enableJndi();
         }
 
-        NamingResources globalNamingResources = new NamingResources();
+        NamingResourcesImpl globalNamingResources = new NamingResourcesImpl();
         // globalNamingResources.addResource(resource);
         globalNamingResources.setContainer(server);
         server.setGlobalNamingResources(globalNamingResources);
