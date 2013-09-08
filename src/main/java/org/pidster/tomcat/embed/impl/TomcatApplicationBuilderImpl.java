@@ -331,17 +331,18 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         return this;
     }
 
-    @Override
-    public TomcatApplicationBuilder setTldValidation(boolean tldValidation) {
-        context.setTldValidation(tldValidation);
-        return this;
-    }
-
-    @Override
-    public TomcatApplicationBuilder setTldNamespaceAware(boolean tldNamespaceAware) {
-        context.setTldNamespaceAware(tldNamespaceAware);
-        return this;
-    }
+//    @Override
+//    public TomcatApplicationBuilder setTldValidation(boolean tldValidation) {
+//    	context
+//        context.setTldValidation(tldValidation);
+//        return this;
+//    }
+//
+//    @Override
+//    public TomcatApplicationBuilder setTldNamespaceAware(boolean tldNamespaceAware) {
+//        context.setTldNamespaceAware(tldNamespaceAware);
+//        return this;
+//    }
 
     @Override
     public TomcatApplicationBuilder addApplicationParameter(ApplicationParameter parameter) {

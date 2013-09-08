@@ -138,9 +138,9 @@ public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatH
 
     TomcatApplicationBuilder setXmlNamespaceAware(boolean xmlNamespaceAware);
 
-    TomcatApplicationBuilder setTldValidation(boolean tldValidation);
-
-    TomcatApplicationBuilder setTldNamespaceAware(boolean tldNamespaceAware);
+//    TomcatApplicationBuilder setTldValidation(boolean tldValidation);
+//
+//    TomcatApplicationBuilder setTldNamespaceAware(boolean tldNamespaceAware);
 
     TomcatApplicationBuilder setResourceOnlyServlets(String resourceOnlyServlets);
 

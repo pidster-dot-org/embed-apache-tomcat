@@ -16,6 +16,7 @@ repositories {
     // maven { url 'http://dist.gemstone.com/maven/release' }
     // maven { url 'http://repo.typesafe.com/typesafe/releases' }
     // maven { url 'http://download.java.net/maven/2' }
+    maven { url 'https://repository.apache.org/content/groups/public' }
     maven { url 'https://repository.apache.org/content/groups/snapshots' }
     mavenCentral()
 }
