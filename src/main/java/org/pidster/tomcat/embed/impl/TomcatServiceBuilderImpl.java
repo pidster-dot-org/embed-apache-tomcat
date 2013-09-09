@@ -112,7 +112,11 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
     @Override
     public TomcatServiceBuilder addExecutor(String name, String prefix, int minSize, int maxSize, Map<String, String> config) {
         String className = "org.apache.catalina.core.StandardThreadExecutor";
-        Executor executor = InstanceConfigurer.instantiate(loader(), Executor.class, className, config);
+        Map<String, String> c = new HashMap<>();
+        c.putAll(config);
+        c.put("name", name);
+        c.put("namePrefix", prefix);
+        Executor executor = InstanceConfigurer.instantiate(loader(), Executor.class, className, c);
         service.addExecutor(executor);
         executorCount.incrementAndGet();
         return this;
