@@ -37,7 +37,7 @@ public interface Tomcat extends Buildable {
 
     public static final int DEFAULT_SSL_PORT = 8443;
 
-    public static final String DEFAULT_SERVICE_NAME = "Tomcat";
+    public static final String DEFAULT_SERVICE_NAME = "Catalina";
 
     public static final Map<String, String> EMPTY = Collections.<String, String> emptyMap();
 
