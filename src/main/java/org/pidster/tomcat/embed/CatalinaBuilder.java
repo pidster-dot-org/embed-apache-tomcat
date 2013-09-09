@@ -37,38 +37,118 @@ public interface CatalinaBuilder extends Builder<Tomcat>, Collector<CatalinaBuil
 
     CatalinaBuilder setUseNaming(boolean useNaming);
 
+    /**
+     * @return server
+     */
     TomcatServerBuilder newServer();
 
+    /**
+     * @param port
+     * @return server
+     */
     TomcatServerBuilder newServer(int port);
 
+    /**
+     * @param host
+     * @param port
+     * @return server
+     */
     TomcatServerBuilder newServer(String host, int port);
 
+    /**
+     * @param port
+     * @param password
+     * @return server
+     */
     TomcatServerBuilder newServer(int port, String password);
 
+    /**
+     * @param host
+     * @param port
+     * @param password
+     * @return server
+     */
     TomcatServerBuilder newServer(String host, int port, String password);
 
+    /**
+     * @return host
+     */
     TomcatHostBuilder newMinimalServer();
 
+    /**
+     * @param http
+     * @return host
+     */
     TomcatHostBuilder newMinimalServer(int http);
 
+    /**
+     * @param port
+     * @param baseDir
+     * @return host
+     */
     TomcatHostBuilder newMinimalServer(int port, File baseDir);
 
+    /**
+     * @param baseDir
+     * @return host
+     */
     TomcatHostBuilder newMinimalServer(File baseDir);
 
+    /**
+     * @param baseDir
+     * @param http
+     * @return host
+     */
     TomcatHostBuilder newMinimalServer(File baseDir, int http);
 
+    /**
+     * @param port
+     * @param baseDir
+     * @param http
+     * @return host
+     */
     TomcatHostBuilder newMinimalServer(int port, File baseDir, int http);
 
+    /**
+     * @return host
+     */
     TomcatHostBuilder newStandardServer();
 
+    /**
+     * @param baseDir
+     * @return host
+     */
     TomcatHostBuilder newStandardServer(File baseDir);
 
+    /**
+     * @param httpPort
+     * @param ajpPort
+     * @return host
+     */
     TomcatHostBuilder newStandardServer(int httpPort, int ajpPort);
 
+    /**
+     * @param baseDir
+     * @param httpPort
+     * @param ajpPort
+     * @return host
+     */
     TomcatHostBuilder newStandardServer(File baseDir, int httpPort, int ajpPort);
 
+    /**
+     * @param port
+     * @param baseDir
+     * @return host
+     */
     TomcatHostBuilder newStandardServer(int port, File baseDir);
 
+    /**
+     * @param port
+     * @param baseDir
+     * @param httpPort
+     * @param ajpPort
+     * @return host
+     */
     TomcatHostBuilder newStandardServer(int port, File baseDir, int httpPort, int ajpPort);
 
 
