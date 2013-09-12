@@ -171,6 +171,9 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
             serverBuilder.setCatalinaHome(baseDir);
         }
 
+        Map<String, String> connConfig = new HashMap<>();
+        connConfig.put("executorName", "tomcatThreadPool");
+
         return serverBuilder
                 .enableNaming()
                 .addLifecycleListener(JasperListener.class)
@@ -183,8 +186,8 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
                     .setBackgroundProcessorDelay(0)
                     .setStartStopThreads(0)
                     .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY)
-                    .addConnector("HTTP/1.1", httpPort, EMPTY)
-                    .addConnector("AJP/1.3", ajpPort, EMPTY)
+                    .addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig)
+                    .addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig)
                         .addHost("localhost", "webapps");
     }
 
@@ -222,14 +225,14 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         }
 
         Map<String, String> connConfig = new HashMap<>();
-        connConfig.put("executor", "embed-pool-1");
+        connConfig.put("executorName", "tomcatThreadPool");
 
         return serverBuilder
                 .addService(DEFAULT_SERVICE_NAME)
                     .setBackgroundProcessorDelay(0)
                     .setStartStopThreads(0)
-                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY)
-                    .addConnector("HTTP/1.1", http, EMPTY)
+                    .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY)
+                    .addConnector(Tomcat.PROTOCOL_BIO, http, connConfig)
                         .addHost("localhost", "webapps");
     }
 

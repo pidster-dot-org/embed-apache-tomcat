@@ -16,8 +16,11 @@
 package org.pidster.tomcat.embed.impl;
 
 import static org.pidster.tomcat.embed.Tomcat.*;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.catalina.Engine;
@@ -25,6 +28,8 @@ import org.apache.catalina.Executor;
 import org.apache.catalina.Host;
 import org.apache.catalina.Service;
 import org.apache.catalina.connector.Connector;
+import org.apache.coyote.AbstractProtocol;
+import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
@@ -76,11 +81,11 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
 
         Map<String, String> nconfig = new HashMap<String, String>();
         // standard config if reqd
-        addConnector(PROTOCOL_NIO, 8080, nconfig);
+        addConnector(PROTOCOL_NIO, Tomcat.DEFAULT_HTTP_PORT, nconfig);
 
         Map<String, String> aconfig = new HashMap<String, String>();
         // standard config if reqd
-        addConnector(PROTOCOL_AJP, 8009, aconfig);
+        addConnector(PROTOCOL_AJP, Tomcat.DEFAULT_AJP_PORT, aconfig);
 
         return this;
     }
@@ -91,7 +96,7 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
         String prefix = String.format("embed-exec-%s", executorCount.get());
         addExecutor(name, prefix, minSize, maxSize, config);
 
-        config.put("executor", name);
+        config.put("executorName", name);
         addConnector(PROTOCOL_BIO, port, config);
 
         return this;
@@ -103,7 +108,7 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
         String prefix = String.format("embed-exec-%s", executorCount.get());
         addExecutor(name, prefix, minSize, maxSize, config);
 
-        config.put("executor", name);
+        config.put("executorName", name);
         addConnector(PROTOCOL_NIO, port, config);
 
         return this;
@@ -131,11 +136,28 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
     public TomcatServiceBuilder addConnector(String protocol, int port, Map<String, String> config) {
         Connector connector = new Connector(protocol);
         connector.setPort(port);
-        if (service.findExecutors().length > 0) {
-            //
+        if (service.findExecutors().length > 0 && config != null && config.containsKey("executorName")) {
+        	Executor executor = service.getExecutor(config.get("executorName"));
+            if (executor != null) {
+            	AbstractProtocol protocolHandler = (AbstractProtocol) connector.getProtocolHandler();
+            	protocolHandler.setExecutor(executor);
+
+            	Set<Entry<String, String>> entrySet = config.entrySet();
+            	for (Entry<String, String> entry : entrySet) {
+            		protocolHandler.setProperty(entry.getKey(), entry.getValue());
+            	}
+            }
         }
 
         InstanceConfigurer.configure(connector, config);
+
+        if (config != null) {
+        	Set<Entry<String, String>> entrySet = config.entrySet();
+        	for (Entry<String, String> entry : entrySet) {
+        		connector.setProperty(entry.getKey(), entry.getValue());
+        	}
+        }
+
         connector.setService(service);
         service.addConnector(connector);
         connectorCount.incrementAndGet();
