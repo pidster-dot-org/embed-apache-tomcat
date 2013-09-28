@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply from: "$rootDir/gradle/maven.gradle"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+	maven { url 'https://repository.apache.org/content/groups/snapshots' }
+	maven { url 'https://repository.apache.org/content/groups/public' }
+	mavenCentral()
+}
+
+dependencies {
+	compile "org.apache.tomcat:tomcat-annotations-api:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-el-api:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-jsp-api:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-servlet-api:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-websocket-api:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-api:$tomcatVersion"
+
+	compile "org.apache.tomcat:tomcat:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-catalina:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-catalina-ha:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-coyote:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-jasper:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-jasper-el:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-juli:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-util:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-tribes:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-spdy:$tomcatVersion"
+	compile "org.apache.tomcat:tomcat-websocket:$tomcatVersion"
+
+	testCompile "junit:junit:$junitVersion"
+}
+
+test {
+	systemProperty 'catalina.base', 'build/catalina'
+}
+

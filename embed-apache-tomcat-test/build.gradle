@@ -1,0 +1,20 @@
+apply plugin: 'java'
+apply from: "$rootDir/gradle/maven.gradle"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+	maven { url 'https://repository.apache.org/content/groups/snapshots' }
+	maven { url 'https://repository.apache.org/content/groups/public' }
+	mavenCentral()
+}
+
+dependencies {
+	compile project(':embed-apache-tomcat-core')
+	compile "junit:junit:$junitVersion"
+}
+
+test {
+	systemProperty 'catalina.base', 'build/catalina'
+}
