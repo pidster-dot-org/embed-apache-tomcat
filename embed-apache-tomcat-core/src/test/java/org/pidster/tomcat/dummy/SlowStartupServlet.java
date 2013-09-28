@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SlowServlet extends HttpServlet {
+public class SlowStartupServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class SlowServlet extends HttpServlet {
 		super.init(config);
 
 		try {
-			TimeUnit.SECONDS.sleep(10);
+			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e) {
 			// NO-OP
 		}

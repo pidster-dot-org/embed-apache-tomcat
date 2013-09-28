@@ -58,7 +58,6 @@ public class TomcatInitializerTest {
         this.runtime = tomcat.start(5000L);
 
         System.out.println("started");
-    	TimeUnit.SECONDS.sleep(1); // evidence that app startup time is not factored in
     }
 
     @Test

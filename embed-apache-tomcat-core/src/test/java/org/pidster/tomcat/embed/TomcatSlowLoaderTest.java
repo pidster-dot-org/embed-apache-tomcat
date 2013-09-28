@@ -21,7 +21,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -58,7 +57,6 @@ public class TomcatSlowLoaderTest {
         this.runtime = tomcat.start(5000L);
 
         System.out.println("started");
-    	TimeUnit.SECONDS.sleep(1); // evidence that app startup time is not factored in
     }
 
     @Test

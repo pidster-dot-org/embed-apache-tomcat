@@ -32,7 +32,7 @@ public class SlowContainerInitializer implements ServletContainerInitializer {
     public void onStartup(Set<Class<?>> c, ServletContext context)
             throws ServletException {
 
-        ServletRegistration.Dynamic servletReg = context.addServlet("SlowServlet", SlowServlet.class);
+        ServletRegistration.Dynamic servletReg = context.addServlet("SlowStartupServlet", SlowStartupServlet.class);
         servletReg.addMapping("/slow");
     }
 
