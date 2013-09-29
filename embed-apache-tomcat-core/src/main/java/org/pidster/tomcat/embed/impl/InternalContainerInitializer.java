@@ -88,7 +88,9 @@ public class InternalContainerInitializer implements ServletContainerInitializer
             servletReg.setAsyncSupported(servletHolder.isAsyncSupported());
             servletReg.addMapping(servletHolder.urlPatterns());
             servletReg.setLoadOnStartup(servletHolder.loadOnStartup());
-            servletReg.setServletSecurity(servletHolder.securityElement());
+            if (servletHolder.securityElement() != null) {
+            	servletReg.setServletSecurity(servletHolder.securityElement());
+            }
 ;        }
 
         // clear references

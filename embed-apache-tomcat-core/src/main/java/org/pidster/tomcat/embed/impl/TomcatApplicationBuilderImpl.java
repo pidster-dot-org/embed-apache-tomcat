@@ -15,6 +15,9 @@
 */
 package org.pidster.tomcat.embed.impl;
 
+import static org.pidster.tomcat.embed.Tomcat.*;
+import static org.pidster.tomcat.embed.impl.Implementations.*;
+
 import java.io.File;
 import java.net.URL;
 import java.util.EnumSet;
@@ -43,7 +46,6 @@ import org.apache.tomcat.util.descriptor.web.ApplicationParameter;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 import org.apache.tomcat.util.descriptor.web.LoginConfig;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
-import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 
@@ -66,8 +68,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
      */
     public TomcatApplicationBuilderImpl(TomcatHostBuilderImpl parent, Map<String, String> config) {
         super(parent);
-        String className = "org.apache.catalina.core.StandardContext";
-        this.context = InstanceConfigurer.instantiate(loader(), StandardContext.class, className, config);
+        this.context = InstanceConfigurer.instantiate(loader(), StandardContext.class, CONTEXT, config);
         context.addLifecycleListener(new FixContextListener());
         StandardManager manager = new StandardManager();
         manager.setSecureRandomAlgorithm("SHA1PRNG");
@@ -151,7 +152,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass) {
-        return addServletContextListener(listenerClass, Tomcat.EMPTY_MAP);
+        return addServletContextListener(listenerClass, EMPTY_MAP);
     }
 
     @Override
@@ -189,7 +190,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, String... patterns) {
-        return addServletFilter(filterClass, Tomcat.EMPTY_MAP, patterns);
+        return addServletFilter(filterClass, EMPTY_MAP, patterns);
     }
 
     @Override
@@ -200,12 +201,12 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... patterns) {
-        return addServlet(servletClass.getName(), servletClass, Tomcat.EMPTY_MAP, patterns);
+        return addServlet(servletClass.getName(), servletClass, EMPTY_MAP, patterns);
     }
 
     @Override
     public TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, String... patterns) {
-        return addServlet(name, servletClass, Tomcat.EMPTY_MAP, patterns);
+        return addServlet(name, servletClass, EMPTY_MAP, patterns);
     }
 
     @Override

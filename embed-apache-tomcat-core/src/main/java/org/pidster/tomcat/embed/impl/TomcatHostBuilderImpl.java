@@ -15,12 +15,14 @@
 */
 package org.pidster.tomcat.embed.impl;
 
+import static org.pidster.tomcat.embed.Tomcat.*;
+import static org.pidster.tomcat.embed.impl.Implementations.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.Host;
-import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 import org.pidster.tomcat.embed.TomcatBuilderException;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
@@ -42,8 +44,7 @@ public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServic
      */
     protected TomcatHostBuilderImpl(TomcatServiceBuilderImpl parent, Map<String, String> config) {
         super(parent);
-        String className = "org.apache.catalina.core.StandardHost";
-        this.host = InstanceConfigurer.instantiate(loader(), Host.class, className, config);
+        this.host = InstanceConfigurer.instantiate(loader(), Host.class, HOST, config);
 
         setContainer(host);
     }
@@ -84,12 +85,12 @@ public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServic
 
     @Override
     public TomcatApplicationBuilder createApplication(String name) {
-        return createApplication(String.format("/%s", name), name, Tomcat.EMPTY_MAP);
+        return createApplication(String.format("/%s", name), name, EMPTY_MAP);
     }
 
     @Override
     public TomcatApplicationBuilder createApplication(String path, String name) {
-        return createApplication(path, name, Tomcat.EMPTY_MAP);
+        return createApplication(path, name, EMPTY_MAP);
     }
 
     @Override

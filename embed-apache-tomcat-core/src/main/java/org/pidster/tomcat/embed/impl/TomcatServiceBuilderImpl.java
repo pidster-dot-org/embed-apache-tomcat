@@ -16,6 +16,7 @@
 package org.pidster.tomcat.embed.impl;
 
 import static org.pidster.tomcat.embed.Tomcat.*;
+import static org.pidster.tomcat.embed.impl.Implementations.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,6 @@ import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
 /**
- * 
  * @author swilliams
  *
  */
@@ -56,11 +56,8 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
     protected TomcatServiceBuilderImpl(TomcatServerBuilderImpl parent, String name, Map<String, String> config) {
         super(parent);
 
-        String sclassName = "org.apache.catalina.core.StandardService";
-        String eclassName = "org.apache.catalina.core.StandardEngine";
-
-        this.service = InstanceConfigurer.instantiate(loader(), Service.class, sclassName, new HashMap<String, String>());
-        this.engine = InstanceConfigurer.instantiate(loader(), Engine.class, eclassName, config);
+        this.service = InstanceConfigurer.instantiate(loader(), Service.class, SERVICE, new HashMap<String, String>());
+        this.engine = InstanceConfigurer.instantiate(loader(), Engine.class, ENGINE, config);
         engine.setName(name);
         service.setName(engine.getName());
 
@@ -124,12 +121,11 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
 
     @Override
     public TomcatServiceBuilder addExecutor(String name, String prefix, int minSize, int maxSize, Map<String, String> config) {
-        String className = "org.apache.catalina.core.StandardThreadExecutor";
         Map<String, String> c = new HashMap<>();
         c.putAll(config);
         c.put("name", name);
         c.put("namePrefix", prefix);
-        Executor executor = InstanceConfigurer.instantiate(loader(), Executor.class, className, c);
+        Executor executor = InstanceConfigurer.instantiate(loader(), Executor.class, EXECUTOR, c);
         service.addExecutor(executor);
         executorCount.incrementAndGet();
         return this;

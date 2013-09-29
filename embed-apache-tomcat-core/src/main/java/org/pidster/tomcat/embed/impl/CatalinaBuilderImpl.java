@@ -104,7 +104,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
 
     @Override
     public TomcatServerBuilder newServer() {
-        return newServer(8005);
+        return newServer(DEFAULT_SHUTDOWN_PORT);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         }
 
         Map<String, String> connConfig = new HashMap<>();
-        connConfig.put("executorName", "tomcatThreadPool");
+        connConfig.put("executorName", DEFAULT_EXECUTOR_NAME);
 
         return serverBuilder
                 .enableNaming()
@@ -185,7 +185,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
                     // .withDefaultRealm()
                     .setBackgroundProcessorDelay(0)
                     .setStartStopThreads(0)
-                    .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY_MAP)
+                    .addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP)
                     .addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig)
                     .addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig)
                         .addHost("localhost", "webapps");
@@ -225,13 +225,13 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         }
 
         Map<String, String> connConfig = new HashMap<>();
-        connConfig.put("executorName", "tomcatThreadPool");
+        connConfig.put("executorName", DEFAULT_EXECUTOR_NAME);
 
         return serverBuilder
                 .addService(DEFAULT_SERVICE_NAME)
                     .setBackgroundProcessorDelay(0)
                     .setStartStopThreads(0)
-                    .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY_MAP)
+                    .addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP)
                     .addConnector(Tomcat.PROTOCOL_BIO, http, connConfig)
                         .addHost("localhost", "webapps");
     }

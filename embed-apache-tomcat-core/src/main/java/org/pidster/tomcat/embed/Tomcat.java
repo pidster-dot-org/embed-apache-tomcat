@@ -34,13 +34,21 @@ public interface Tomcat extends Buildable {
 
     String PROTOCOL_AJP = "org.apache.coyote.ajp.AjpNioProtocol";
 
+    int DEFAULT_SHUTDOWN_PORT = 8005;
+
     int DEFAULT_HTTP_PORT = 8080;
 
     int DEFAULT_AJP_PORT = 8009;
 
     int DEFAULT_SSL_PORT = 8443;
 
+    int DEFAULT_EXECUTOR_MIN = 5;
+
+    int DEFAULT_EXECUTOR_MAX = 200;
+
     String DEFAULT_SERVICE_NAME = "Catalina";
+
+    String DEFAULT_EXECUTOR_NAME = "tomcatThreadPool";
 
     Map<String, String> EMPTY_MAP = Collections.<String, String> emptyMap();
 

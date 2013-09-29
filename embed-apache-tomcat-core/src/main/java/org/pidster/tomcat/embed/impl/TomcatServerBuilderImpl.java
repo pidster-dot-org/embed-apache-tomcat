@@ -16,6 +16,7 @@
 package org.pidster.tomcat.embed.impl;
 
 import static org.pidster.tomcat.embed.Tomcat.*;
+import static org.pidster.tomcat.embed.impl.Implementations.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -40,21 +41,6 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
 
     private final Server server;
 
-    static final String[] silences = new String[] {
-        "org.apache.coyote.AbstractProtocol",
-        "org.apache.coyote.ajp.AjpNioProtocol",
-        "org.apache.coyote.http11.Http11Protocol",
-        "org.apache.coyote.http11.Http11NioProtocol",
-        "org.apache.catalina.core.ApplicationContext",
-        "org.apache.catalina.core.AprLifecycleListener",
-        "org.apache.catalina.core.StandardService",
-        "org.apache.catalina.core.StandardEngine",
-        "org.apache.catalina.mbeans.GlobalResourcesLifecycleListener",
-        "org.apache.catalina.startup.Catalina",
-        "org.apache.catalina.startup.ContextConfig",
-        "org.apache.tomcat.util.net.NioSelectorPool",
-    };
-
     private boolean silentLogging = true;
 
     private boolean enableNaming = false;
@@ -66,10 +52,9 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
     public TomcatServerBuilderImpl(CatalinaBuilderImpl parent, Map<String, String> config) {
         super(parent);
 
-        String className = "org.apache.catalina.core.StandardServer";
-        this.server = InstanceConfigurer.instantiate(loader(), Server.class, className, config);
+        this.server = InstanceConfigurer.instantiate(loader(), Server.class, SERVER, config);
 
-        for (String s : silences) {
+        for (String s : SILENT_CLASSES) {
             Logger.getLogger(s).setLevel(Level.WARNING);
         }
 
@@ -109,7 +94,7 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
             }
         }
 
-        for (String s : silences) {
+        for (String s : SILENT_CLASSES) {
             if (silentLogging) {
                 Logger.getLogger(s).setLevel(Level.WARNING);
             } else {
