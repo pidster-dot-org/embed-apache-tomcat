@@ -23,10 +23,20 @@ import java.util.logging.Logger;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.pidster.tomcat.embed.TomcatComponentException;
 
-public class InstanceConfigurer {
+/**
+ * @author pidster
+ *
+ */
+public final class InstanceConfigurer {
+
+	private InstanceConfigurer() { }
 
     private static final Logger LOGGER = Logger.getLogger(InstanceConfigurer.class.getName());
 
+    /**
+     * @param clazz
+     * @return instance of class
+     */
     public static <Z> Z newInstance(Class<Z> clazz) {
         try {
             return clazz.newInstance();
@@ -37,6 +47,13 @@ public class InstanceConfigurer {
         }
     }
 
+    /**
+     * @param loader
+     * @param iface
+     * @param implClass
+     * @param config
+     * @return instantiated class
+     */
     public static <Z> Z instantiate(ClassLoader loader, Class<Z> iface, String implClass, Map<String, String> config) {
 
         try {
@@ -60,6 +77,10 @@ public class InstanceConfigurer {
         }
     }
 
+    /**
+     * @param instance
+     * @param config
+     */
     public static void configure(Object instance, Map<String, String> config) {
         Set<String> names = config.keySet();
         for (String name : names) {

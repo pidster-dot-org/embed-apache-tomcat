@@ -91,7 +91,7 @@ public class InternalContainerInitializer implements ServletContainerInitializer
             if (servletHolder.securityElement() != null) {
             	servletReg.setServletSecurity(servletHolder.securityElement());
             }
-;        }
+        }
 
         // clear references
         roleNames.clear();

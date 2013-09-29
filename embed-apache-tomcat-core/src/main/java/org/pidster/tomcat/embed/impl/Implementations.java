@@ -19,21 +19,21 @@ package org.pidster.tomcat.embed.impl;
  * @author pidster
  *
  */
-public class Implementations {
+public interface Implementations {
 
-	public static final String SERVER = "org.apache.catalina.core.StandardServer";
+	String SERVER = "org.apache.catalina.core.StandardServer";
 
-	public static final String SERVICE = "org.apache.catalina.core.StandardService";
+	String SERVICE = "org.apache.catalina.core.StandardService";
 
-	public static final String ENGINE = "org.apache.catalina.core.StandardEngine";
+	String ENGINE = "org.apache.catalina.core.StandardEngine";
 
-	public static final String EXECUTOR = "org.apache.catalina.core.StandardThreadExecutor";
+	String EXECUTOR = "org.apache.catalina.core.StandardThreadExecutor";
 
-	public static final String HOST = "org.apache.catalina.core.StandardHost";
+	String HOST = "org.apache.catalina.core.StandardHost";
 
-	public static final String CONTEXT = "org.apache.catalina.core.StandardContext";
+	String CONTEXT = "org.apache.catalina.core.StandardContext";
 
-    public static final String[] SILENT_CLASSES = new String[] {
+    String[] SILENT_CLASSES = new String[] {
         "org.apache.coyote.AbstractProtocol",
         "org.apache.coyote.ajp.AjpNioProtocol",
         "org.apache.coyote.http11.Http11Protocol",

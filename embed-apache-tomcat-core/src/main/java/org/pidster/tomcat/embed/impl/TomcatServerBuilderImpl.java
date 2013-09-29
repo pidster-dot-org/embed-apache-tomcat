@@ -71,26 +71,21 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
     @Override
     public CatalinaBuilder parent() {
 
-        if (server.getCatalinaBase() == null || !server.getCatalinaBase().exists()) {
-
-            if (System.getProperties().containsKey("catalina.base")) {
-                String catalinaBase = System.getProperty("catalina.base");
-                File file = new File(catalinaBase);
-                setCatalinaBase(file);
-            }
+        if ((server.getCatalinaBase() == null || !server.getCatalinaBase().exists()) || System.getProperties().containsKey("catalina.base")) {
+            String catalinaBase = System.getProperty("catalina.base");
+            File file = new File(catalinaBase);
+            setCatalinaBase(file);
         }
 
-        if (server.getCatalinaHome() == null || !server.getCatalinaHome().exists()) {
-            if (System.getProperties().containsKey("catalina.home")) {
-                String catalinaBase = System.getProperty("catalina.home");
-                File file = new File(catalinaBase);
-                if (file.exists()) {
-                    this.setCatalinaHome(file);
-                }
-                else {
-                    // if we reach here, this must be set already
-                    this.setCatalinaHome(server.getCatalinaBase());
-                }
+        if ((server.getCatalinaHome() == null || !server.getCatalinaHome().exists()) && System.getProperties().containsKey("catalina.home")) {
+            String catalinaBase = System.getProperty("catalina.home");
+            File file = new File(catalinaBase);
+            if (file.exists()) {
+                this.setCatalinaHome(file);
+            }
+            else {
+                // if we reach here, this must be set already
+                this.setCatalinaHome(server.getCatalinaBase());
             }
         }
 

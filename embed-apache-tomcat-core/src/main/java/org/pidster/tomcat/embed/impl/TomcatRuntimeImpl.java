@@ -42,7 +42,7 @@ import org.pidster.tomcat.embed.TomcatStatus;
  */
 public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
-    private static final Logger log = Logger.getLogger(TomcatRuntime.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TomcatRuntime.class.getName());
 
     private final Catalina catalina;
 
@@ -82,14 +82,14 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public TomcatRuntimeImpl start() {
-        log.log(Level.CONFIG, "Starting Tomcat");
+        LOGGER.log(Level.CONFIG, "Starting Tomcat");
 
         try {
             long started = System.currentTimeMillis();
 
             catalina.start();
             semaphore.acquire();
-            log.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
+            LOGGER.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
             return this;
 
         } catch (Exception e) {
@@ -99,14 +99,14 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public TomcatRuntimeImpl start(long timeout) {
-        log.log(Level.CONFIG, "Starting Tomcat, will wait for {0}ms", timeout);
+        LOGGER.log(Level.CONFIG, "Starting Tomcat, will wait for {0}ms", timeout);
 
         try {
             long started = System.currentTimeMillis();
 
             catalina.start();
             semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
-            log.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
+            LOGGER.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
             return this;
 
         } catch (Exception e) {
@@ -116,7 +116,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public void start(final Callback<TomcatRuntime> callback) {
-        log.log(Level.CONFIG, "Starting Tomcat with callback...");
+        LOGGER.log(Level.CONFIG, "Starting Tomcat with callback...");
         new Thread("tomcat-embed-startup") {
             @Override
             public void run() {
@@ -127,7 +127,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
                     semaphore.acquire();
 
                     callback.onSuccess(TomcatRuntimeImpl.this);
-                    log.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
+                    LOGGER.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
                 } catch (Exception e) {
                     callback.onFailure(e);
                 }
@@ -137,7 +137,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public TomcatRuntime deploy(String appName) {
-        log.log(Level.CONFIG, "Deploying {0}", appName);
+        LOGGER.log(Level.CONFIG, "Deploying {0}", appName);
 
         String serviceName = "Catalina";
         Container container = catalina.getServer().findService(serviceName).getContainer();
@@ -153,7 +153,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public TomcatRuntime undeploy(String appName) {
-        log.log(Level.CONFIG, "Undeploying {0}", appName);
+        LOGGER.log(Level.CONFIG, "Undeploying {0}", appName);
         throw new UnsupportedOperationException("Not implemented yet");
 //      return this;
     }
@@ -165,37 +165,37 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     @Override
     public void stop() {
-        log.log(Level.CONFIG, "Stopping Tomcat");
+        LOGGER.log(Level.CONFIG, "Stopping Tomcat");
 
         try {
             catalina.stop();
             semaphore.acquire();
         } catch (Exception e) {
-            log.log(Level.WARNING, "Interrupted during shutdown", e);
+            LOGGER.log(Level.WARNING, "Interrupted during shutdown", e);
         }
     }
 
     @Override
     public void stop(long timeout) {
-        log.log(Level.CONFIG, "Stopping Tomcat, will wait for {0}ms", timeout);
+        LOGGER.log(Level.CONFIG, "Stopping Tomcat, will wait for {0}ms", timeout);
 
         try {
             catalina.stop();
             semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
 
         } catch (Exception e) {
-            log.log(Level.WARNING, "Interrupted during shutdown", e);
+            LOGGER.log(Level.WARNING, "Interrupted during shutdown", e);
         }
     }
 
     @Override
     public void stopOnCompletion(Thread waiting) {
         try {
-            log.log(Level.CONFIG, "Stopping Tomcat when thread {0} completes", waiting.getId());
+            LOGGER.log(Level.CONFIG, "Stopping Tomcat when thread {0} completes", waiting.getId());
             waiting.join();
 
         } catch (InterruptedException e) {
-            log.log(Level.WARNING, "Interrupted TomcatRuntime", e);
+            LOGGER.log(Level.WARNING, "Interrupted TomcatRuntime", e);
         }
         finally {
             stop();
