@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.Servlet;
+import javax.servlet.ServletSecurityElement;
 
 /**
  * @author pid[at]pidster.org
@@ -40,6 +41,8 @@ public class ServletHolder {
 
     private final int loadOnStartup;
 
+	private final ServletSecurityElement securityElement;
+
     public ServletHolder(Servlet servlet, String... urlPatterns) {
         this(servlet, servlet.getClass().getName(), new HashMap<String, String>(), true, true, 0, urlPatterns);
     }
@@ -53,6 +56,10 @@ public class ServletHolder {
     }
 
     public ServletHolder(Servlet servlet, String name, Map<String, String> initParameters, boolean asyncSupported, boolean isMatchAfter, int loadOnStartup, String... urlPatterns) {
+    	this(servlet, name, initParameters, true, true, 0, null, urlPatterns);
+    }
+
+    public ServletHolder(Servlet servlet, String name, Map<String, String> initParameters, boolean asyncSupported, boolean isMatchAfter, int loadOnStartup, ServletSecurityElement securityElement, String... urlPatterns) {
         super();
         this.servlet = servlet;
         this.name = name;
@@ -60,32 +67,33 @@ public class ServletHolder {
         this.asyncSupported = asyncSupported;
         this.isMatchAfter = isMatchAfter;
         this.loadOnStartup = loadOnStartup;
+        this.securityElement = securityElement;
         this.urlPatterns = urlPatterns;
     }
 
     /**
-     * @return
+     * @return name
      */
     public String name() {
         return name;
     }
 
     /**
-     * @return
+     * @return servlet
      */
     public Servlet servlet() {
         return servlet;
     }
 
     /**
-     * @return
+     * @return initParameters
      */
     public Map<String, String> initParameters() {
         return initParameters;
     }
 
     /**
-     * @return
+     * @return asyncSupported
      */
     public boolean isAsyncSupported() {
         return asyncSupported;
@@ -98,19 +106,25 @@ public class ServletHolder {
         return urlPatterns;
     }
 
-
     /**
-     * @return
+     * @return isMatchAfter
      */
     public boolean isMatchAfter() {
         return isMatchAfter;
     }
 
     /**
-     * @return
+     * @return loadOnStartup
      */
     public int loadOnStartup() {
         return loadOnStartup;
     }
+
+    /**
+     * @return securityElement
+     */
+	public ServletSecurityElement securityElement() {
+		return securityElement;
+	}
 
 }

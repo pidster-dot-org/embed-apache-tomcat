@@ -33,9 +33,12 @@ import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
-
-public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatServerBuilder, TomcatServiceBuilder> 
-    implements TomcatServiceBuilder {
+/**
+ * 
+ * @author swilliams
+ *
+ */
+public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatServerBuilder, TomcatServiceBuilder> implements TomcatServiceBuilder {
 
     private final Service service;
 
@@ -45,6 +48,11 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
 
     private final AtomicInteger executorCount = new AtomicInteger(0);
 
+    /**
+     * @param parent
+     * @param name
+     * @param config
+     */
     protected TomcatServiceBuilderImpl(TomcatServerBuilderImpl parent, String name, Map<String, String> config) {
         super(parent);
 
@@ -129,7 +137,7 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
 
     @Override
     public TomcatServiceBuilder addConnector(String protocol, int port) {
-        return addConnector(protocol, port, EMPTY);
+        return addConnector(protocol, port, EMPTY_MAP);
     }
 
     @Override

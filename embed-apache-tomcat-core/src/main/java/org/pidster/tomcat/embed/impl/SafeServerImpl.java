@@ -42,91 +42,163 @@ public class SafeServerImpl implements Server {
         this.server = server;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getGlobalNamingResources()
+     */
     @Override
     public NamingResourcesImpl getGlobalNamingResources() {
         return server.getGlobalNamingResources();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getGlobalNamingContext()
+     */
     @Override
     public Context getGlobalNamingContext() {
         return server.getGlobalNamingContext();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getPort()
+     */
     @Override
     public int getPort() {
         return server.getPort();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getAddress()
+     */
     @Override
     public String getAddress() {
         return server.getAddress();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getShutdown()
+     */
     @Override
     public String getShutdown() {
         return server.getShutdown();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getParentClassLoader()
+     */
     @Override
     public ClassLoader getParentClassLoader() {
         return server.getParentClassLoader();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getCatalina()
+     */
     @Override
     public Catalina getCatalina() {
         return null;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getCatalinaBase()
+     */
     @Override
     public File getCatalinaBase() {
         return server.getCatalinaBase();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#getCatalinaHome()
+     */
     @Override
     public File getCatalinaHome() {
         return server.getCatalinaHome();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#findService(java.lang.String)
+     */
     @Override
     public Service findService(String name) {
         return server.findService(name);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#findServices()
+     */
     @Override
     public Service[] findServices() {
         return server.findServices();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#removeService(org.apache.catalina.Service)
+     */
     @Override
     public void removeService(Service service) {
         server.removeService(service);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Lifecycle#addLifecycleListener(org.apache.catalina.LifecycleListener)
+     */
     @Override
     public void addLifecycleListener(LifecycleListener listener) {
         server.addLifecycleListener(listener);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Lifecycle#findLifecycleListeners()
+     */
     @Override
     public LifecycleListener[] findLifecycleListeners() {
         return server.findLifecycleListeners();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Lifecycle#removeLifecycleListener(org.apache.catalina.LifecycleListener)
+     */
     @Override
     public void removeLifecycleListener(LifecycleListener listener) {
         server.removeLifecycleListener(listener);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Lifecycle#getState()
+     */
     @Override
     public LifecycleState getState() {
         return server.getState();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Lifecycle#getStateName()
+     */
     @Override
     public String getStateName() {
         return server.getStateName();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#setShutdown(java.lang.String)
+     */
     @Override
     public void setShutdown(String shutdown) {
         server.setShutdown(shutdown);
@@ -188,35 +260,58 @@ public class SafeServerImpl implements Server {
         throw new UnsupportedOperationException("Server address can't be changed at runtime");
     }
 
-
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#setParentClassLoader(java.lang.ClassLoader)
+     */
     @Override
     public void setParentClassLoader(ClassLoader parent) {
         throw new UnsupportedOperationException("ParentClassLoader can't be changed at runtime");
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#setCatalina(org.apache.catalina.startup.Catalina)
+     */
     @Override
     public void setCatalina(Catalina catalina) {
         throw new UnsupportedOperationException("Catalina can't be changed at runtime");
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#setCatalinaBase(java.io.File)
+     */
     @Override
     public void setCatalinaBase(File catalinaBase) {
         throw new UnsupportedOperationException("catalina.base can't be changed at runtime");
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#setCatalinaHome(java.io.File)
+     */
     @Override
     public void setCatalinaHome(File catalinaHome) {
         throw new UnsupportedOperationException("catalina.home can't be changed at runtime");
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#addService(org.apache.catalina.Service)
+     */
     @Override
     public void addService(Service service) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("New services can't be added at runtime (yet)");
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.apache.catalina.Server#await()
+     */
     @Override
     public void await() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Don't 'await' on Server!");
     }
 
 

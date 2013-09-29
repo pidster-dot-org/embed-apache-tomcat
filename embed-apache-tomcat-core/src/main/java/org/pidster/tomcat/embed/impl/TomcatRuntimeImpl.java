@@ -36,6 +36,10 @@ import org.pidster.tomcat.embed.TomcatRuntime;
 import org.pidster.tomcat.embed.TomcatRuntimeException;
 import org.pidster.tomcat.embed.TomcatStatus;
 
+/**
+ * @author swilliams
+ *
+ */
 public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     private static final Logger log = Logger.getLogger(TomcatRuntime.class.getName());
@@ -46,6 +50,9 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
     private final Semaphore semaphore = new Semaphore(0);
 
+    /**
+     * @param catalina
+     */
     TomcatRuntimeImpl(Catalina catalina) {
         this.catalina = catalina;
         this.status = TomcatStatus.UNKNOWN;
@@ -119,10 +126,10 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
                     catalina.start();
                     semaphore.acquire();
 
-                    callback.success(TomcatRuntimeImpl.this);
+                    callback.onSuccess(TomcatRuntimeImpl.this);
                     log.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
                 } catch (Exception e) {
-                    callback.failure(e);
+                    callback.onFailure(e);
                 }
             }
         }.start();

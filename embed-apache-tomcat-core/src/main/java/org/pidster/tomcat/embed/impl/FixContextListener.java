@@ -23,7 +23,6 @@ import org.apache.catalina.authenticator.NonLoginAuthenticator;
 import org.apache.tomcat.util.descriptor.web.LoginConfig;
 
 /**
- * @author pid[at]pidster.org
  *
  */
 class FixContextListener implements LifecycleListener {
@@ -38,8 +37,7 @@ class FixContextListener implements LifecycleListener {
             // LoginConfig is required to process @ServletSecurity
             // annotations
             if (context.getLoginConfig() == null) {
-                context.setLoginConfig(
-                        new LoginConfig("NONE", null, null, null));
+                context.setLoginConfig(new LoginConfig("NONE", null, null, null));
                 context.getPipeline().addValve(new NonLoginAuthenticator());
             }
         } catch (ClassCastException e) {

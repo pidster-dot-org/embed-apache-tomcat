@@ -31,7 +31,7 @@ import org.pidster.tomcat.embed.Tomcat;
 
 public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> extends AbstractLifecycleBuilder<P, T> implements TomcatContainerBuilder<P, T> {
 
-    private static final Logger logger = Logger.getLogger(AbstractContainerBuilder.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AbstractContainerBuilder.class.getName());
 
     private Container container;
 
@@ -57,7 +57,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
     @Override
     @SuppressWarnings("unchecked")
     public final T addValve(Valve valve) {
-        logger.log(Level.FINE, "addValve({0})", valve.getClass().getName());
+        LOGGER.log(Level.FINE, "addValve({0})", valve.getClass().getName());
         container.getPipeline().addValve(valve);
         return (T) this;
     }
@@ -71,7 +71,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
     @Override
     @SuppressWarnings("unchecked")
     public final T addContainerListener(ContainerListener listener) {
-        logger.log(Level.FINE, "addContainerListener({0})", listener.getClass().getName());
+        LOGGER.log(Level.FINE, "addContainerListener({0})", listener.getClass().getName());
         container.addContainerListener(listener);
         return (T) this;
     }
@@ -85,7 +85,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
     @SuppressWarnings("unchecked")
     @Override
     public final T addPropertyChangeListener(PropertyChangeListener listener) {
-        logger.log(Level.FINE, "addPropertyChangeListener({0})", listener.getClass().getName());
+        LOGGER.log(Level.FINE, "addPropertyChangeListener({0})", listener.getClass().getName());
         container.addPropertyChangeListener(listener);
         return (T) this;
     }
@@ -93,7 +93,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
     @Override
     @SuppressWarnings("unchecked")
     public final T setCluster(Cluster cluster) {
-        logger.log(Level.FINE, "setCluster({0})", cluster.getClass().getName());
+        LOGGER.log(Level.FINE, "setCluster({0})", cluster.getClass().getName());
         cluster.setContainer(getContainer());
         container.setCluster(cluster);
         return (T) this;
@@ -102,7 +102,7 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
     @Override
     @SuppressWarnings("unchecked")
     public final T setRealm(Realm realm) {
-        logger.log(Level.FINE, "setRealm({0})", realm.getClass().getName());
+        LOGGER.log(Level.FINE, "setRealm({0})", realm.getClass().getName());
         realm.setContainer(getContainer());
         container.setRealm(realm);
         return (T) this;

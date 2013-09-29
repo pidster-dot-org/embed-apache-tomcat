@@ -185,7 +185,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
                     // .withDefaultRealm()
                     .setBackgroundProcessorDelay(0)
                     .setStartStopThreads(0)
-                    .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY)
+                    .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY_MAP)
                     .addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig)
                     .addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig)
                         .addHost("localhost", "webapps");
@@ -231,7 +231,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
                 .addService(DEFAULT_SERVICE_NAME)
                     .setBackgroundProcessorDelay(0)
                     .setStartStopThreads(0)
-                    .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY)
+                    .addExecutor("tomcatThreadPool", "tomcat-exec-", 200, 5, EMPTY_MAP)
                     .addConnector(Tomcat.PROTOCOL_BIO, http, connConfig)
                         .addHost("localhost", "webapps");
     }

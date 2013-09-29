@@ -26,14 +26,19 @@ import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContextListener;
+import javax.servlet.descriptor.JspConfigDescriptor;
 
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
 import org.apache.catalina.Host;
+import org.apache.catalina.Loader;
 import org.apache.catalina.Manager;
+import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.session.StandardManager;
 import org.apache.catalina.startup.ContextConfig;
+import org.apache.tomcat.InstanceManager;
+import org.apache.tomcat.JarScanner;
 import org.apache.tomcat.util.descriptor.web.ApplicationParameter;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 import org.apache.tomcat.util.descriptor.web.LoginConfig;
@@ -42,7 +47,11 @@ import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 
-
+/**
+ * 
+ * @author swilliams
+ *
+ */
 public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder> implements TomcatApplicationBuilder {
 
     private final Context context;
@@ -51,6 +60,10 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     private boolean makeDirs = false;
 
+    /**
+     * @param parent
+     * @param config
+     */
     public TomcatApplicationBuilderImpl(TomcatHostBuilderImpl parent, Map<String, String> config) {
         super(parent);
         String className = "org.apache.catalina.core.StandardContext";
@@ -66,7 +79,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
         setContainer(context);
     }
-
+    
     @Override
     public TomcatApplicationBuilder collect(Container child) {
         child.setParent(context);
@@ -138,7 +151,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass) {
-        return addServletContextListener(listenerClass, Tomcat.EMPTY);
+        return addServletContextListener(listenerClass, Tomcat.EMPTY_MAP);
     }
 
     @Override
@@ -176,7 +189,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, String... patterns) {
-        return addServletFilter(filterClass, Tomcat.EMPTY, patterns);
+        return addServletFilter(filterClass, Tomcat.EMPTY_MAP, patterns);
     }
 
     @Override
@@ -187,12 +200,12 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... patterns) {
-        return addServlet(servletClass.getName(), servletClass, Tomcat.EMPTY, patterns);
+        return addServlet(servletClass.getName(), servletClass, Tomcat.EMPTY_MAP, patterns);
     }
 
     @Override
     public TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, String... patterns) {
-        return addServlet(name, servletClass, Tomcat.EMPTY, patterns);
+        return addServlet(name, servletClass, Tomcat.EMPTY_MAP, patterns);
     }
 
     @Override
@@ -333,19 +346,6 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         return this;
     }
 
-//    @Override
-//    public TomcatApplicationBuilder setTldValidation(boolean tldValidation) {
-//    	context
-//        context.setTldValidation(tldValidation);
-//        return this;
-//    }
-//
-//    @Override
-//    public TomcatApplicationBuilder setTldNamespaceAware(boolean tldNamespaceAware) {
-//        context.setTldNamespaceAware(tldNamespaceAware);
-//        return this;
-//    }
-
     @Override
     public TomcatApplicationBuilder addApplicationParameter(ApplicationParameter parameter) {
         context.addApplicationParameter(parameter);
@@ -431,6 +431,60 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
     }
 
     @Override
+    public TomcatApplicationBuilder setDenyUncoveredHttpMethods(boolean denyUncoveredHttpMethods) {
+        context.setDenyUncoveredHttpMethods(denyUncoveredHttpMethods);
+        return this;
+    }
+
+	@Override
+    public TomcatApplicationBuilder setDocBase(String docBase) {
+		context.setDocBase(docBase);
+        return this;
+	}
+
+	@Override
+	public TomcatApplicationBuilder setIgnoreAnnotations(boolean ignoreAnnotations) {
+		context.setIgnoreAnnotations(ignoreAnnotations);
+        return this;
+	}
+
+	@Override
+	public TomcatApplicationBuilder setJarScanner(JarScanner jarScanner) {
+		context.setJarScanner(jarScanner);
+        return this;
+	}
+
+	@Override
+	public TomcatApplicationBuilder setLogEffectiveWebXml(boolean logEffectiveWebXml) {
+		context.setLogEffectiveWebXml(logEffectiveWebXml);
+        return this;
+	}
+
+	@Override
+	public TomcatApplicationBuilder setInstanceManager(InstanceManager instanceManager) {
+		context.setInstanceManager(instanceManager);
+        return this;
+	}
+
+	@Override
+	public TomcatApplicationBuilder setJspConfigDescriptor(JspConfigDescriptor descriptor) {
+		context.setJspConfigDescriptor(descriptor);
+        return this;
+	}
+
+	@Override
+	public TomcatApplicationBuilder setLoader(Loader loader) {
+		context.setLoader(loader);
+        return this;
+	}
+
+	@Override
+	public TomcatApplicationBuilder setResources(WebResourceRoot resources) {
+		context.setResources(resources);
+        return this;
+	}
+
+	@Override
     public TomcatApplicationBuilder setFireRequestListenersOnForwards(boolean enable) {
         context.setFireRequestListenersOnForwards(enable);
         return this;

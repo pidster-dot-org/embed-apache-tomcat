@@ -32,7 +32,10 @@ import org.pidster.tomcat.embed.CatalinaBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
-
+/**
+ * @author swilliams
+ *
+ */
 public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBuilder, TomcatServerBuilder> implements TomcatServerBuilder {
 
     private final Server server;
@@ -56,6 +59,10 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
 
     private boolean enableNaming = false;
 
+    /**
+     * @param parent
+     * @param config
+     */
     public TomcatServerBuilderImpl(CatalinaBuilderImpl parent, Map<String, String> config) {
         super(parent);
 

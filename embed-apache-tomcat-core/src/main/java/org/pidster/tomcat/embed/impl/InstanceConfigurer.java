@@ -25,7 +25,7 @@ import org.pidster.tomcat.embed.TomcatComponentException;
 
 public class InstanceConfigurer {
 
-    private static final Logger logger = Logger.getLogger(InstanceConfigurer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InstanceConfigurer.class.getName());
 
     public static <Z> Z newInstance(Class<Z> clazz) {
         try {
@@ -45,7 +45,7 @@ public class InstanceConfigurer {
 
             Z instance = subclass.newInstance();
 
-            logger.log(Level.FINE, "Instantiated class {0}", subclass.getName());
+            LOGGER.log(Level.FINE, "Instantiated class {0}", subclass.getName());
 
             configure(instance, config);
 
@@ -67,7 +67,7 @@ public class InstanceConfigurer {
 
             boolean setProperty = IntrospectionUtils.setProperty(instance, name, value);
 
-            logger.log(Level.FINE, "Set field {0} to {1}? {2}", new Object[] { name, value, setProperty });
+            LOGGER.log(Level.FINE, "Set field {0} to {1}? {2}", new Object[] { name, value, setProperty });
         }
     }
 

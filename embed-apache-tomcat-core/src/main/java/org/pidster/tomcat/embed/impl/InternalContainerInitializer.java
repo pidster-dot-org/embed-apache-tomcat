@@ -45,6 +45,10 @@ public class InternalContainerInitializer implements ServletContainerInitializer
 
     private final Set<ServletHolder> servletHolders = new HashSet<>();
 
+    /*
+     * (non-Javadoc)
+     * @see javax.servlet.ServletContainerInitializer#onStartup(java.util.Set, javax.servlet.ServletContext)
+     */
     @Override
     public void onStartup(Set<Class<?>> c, ServletContext context) throws ServletException {
 
@@ -84,8 +88,8 @@ public class InternalContainerInitializer implements ServletContainerInitializer
             servletReg.setAsyncSupported(servletHolder.isAsyncSupported());
             servletReg.addMapping(servletHolder.urlPatterns());
             servletReg.setLoadOnStartup(servletHolder.loadOnStartup());
-            // TODO servletReg.setServletSecurity(constraint);
-        }
+            servletReg.setServletSecurity(servletHolder.securityElement());
+;        }
 
         // clear references
         roleNames.clear();
@@ -96,22 +100,42 @@ public class InternalContainerInitializer implements ServletContainerInitializer
         servletHolders.clear();
     }
 
+    /**
+     * @param e
+     * @return added
+     */
     public boolean add(ServletContextListener e) {
         return instantiatedListeners.add(e);
     }
 
+    /**
+     * @param e
+     * @return added
+     */
     public boolean add(FilterHolder e) {
         return filterHolders.add(e);
     }
 
+    /**
+     * @param e
+     * @return added
+     */
     public boolean add(ServletHolder e) {
         return servletHolders.add(e);
     }
 
+    /**
+     * @param attribute
+     * @param value
+     */
     public void setContextAttribute(String attribute, Object value) {
         attributes.put(attribute, value);
     }
 
+    /**
+     * @param initParameter
+     * @param value
+     */
     public void setContextInitParameter(String initParameter, String value) {
         initParameters.put(initParameter, value);
     }

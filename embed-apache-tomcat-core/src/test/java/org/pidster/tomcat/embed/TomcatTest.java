@@ -15,7 +15,7 @@
 */
 package org.pidster.tomcat.embed;
 
-import static org.pidster.tomcat.embed.Tomcat.EMPTY;
+import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,9 +50,9 @@ public class TomcatTest {
                     // .addStandardConnectors()
                     .setBackgroundProcessorDelay(0)
                     .setStartStopThreads(0)
-                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY)
-                    .addConnector("HTTP/1.1", 8090, EMPTY)
-                    .addConnector("AJP/1.3", 8019, EMPTY)
+                    .addExecutor("embed-pool-1", "tomcat-exec1-", 200, 5, EMPTY_MAP)
+                    .addConnector("HTTP/1.1", 8090, EMPTY_MAP)
+                    .addConnector("AJP/1.3", 8019, EMPTY_MAP)
 //                        .setCluster(cluster)
 //                        .setRealm(realm)
                         .addHost("localhost", "webapps")
@@ -67,16 +67,16 @@ public class TomcatTest {
 //                                .setRealm(realm)
                                 .addValve(DummyValve.class)
                                 .parent()
-                            .createApplication("/test1", "test1", EMPTY)
-                                .addServletContextListener(DummyListener.class, EMPTY)
-                                .addServletFilter(DummyFilter.class, EMPTY, "/*")
-                                .addServlet(DummyServlet.class, EMPTY, "/foo")
-                                .addServlet("default", DefaultServlet.class, EMPTY, "/")
+                            .createApplication("/test1", "test1", EMPTY_MAP)
+                                .addServletContextListener(DummyListener.class, EMPTY_MAP)
+                                .addServletFilter(DummyFilter.class, EMPTY_MAP, "/*")
+                                .addServlet(DummyServlet.class, EMPTY_MAP, "/foo")
+                                .addServlet("default", DefaultServlet.class, EMPTY_MAP, "/")
                                 .addValve(DummyValve.class)
                                 .addWelcomeFile("index.html")
                             .parent()
-                            .addApplication("/test2", "test2", "test2", EMPTY)
-                            .addApplication("/test3", "test3", "test3", EMPTY)
+                            .addApplication("/test2", "test2", "test2", EMPTY_MAP)
+                            .addApplication("/test3", "test3", "test3", EMPTY_MAP)
                         .build();
 
         this.runtime = tomcat.start(5000L);

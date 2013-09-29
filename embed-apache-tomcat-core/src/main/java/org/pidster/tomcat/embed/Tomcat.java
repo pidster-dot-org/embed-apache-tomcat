@@ -1,50 +1,70 @@
 /*
-   Copyright 2013 pid[at]pidster.org
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
+ * Copyright 2013 pidster
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.pidster.tomcat.embed;
 
 import java.util.Collections;
 import java.util.Map;
 
-
+/**
+ * @author pidster
+ *
+ */
 public interface Tomcat extends Buildable {
 
-    public static final String HTTP11 = "HTTP/1.1";
+    String HTTP11 = "HTTP/1.1";
 
-    public static final String AJP13 = "AJP/1.3";
+    String AJP13 = "AJP/1.3";
 
-    public static final String PROTOCOL_NIO = "org.apache.coyote.http11.Http11NioProtocol";
+    String PROTOCOL_NIO = "org.apache.coyote.http11.Http11NioProtocol";
 
-    public static final String PROTOCOL_BIO = "org.apache.coyote.http11.Http11Protocol";
+    String PROTOCOL_BIO = "org.apache.coyote.http11.Http11Protocol";
 
-    public static final String PROTOCOL_AJP = "org.apache.coyote.ajp.AjpNioProtocol";
+    String PROTOCOL_AJP = "org.apache.coyote.ajp.AjpNioProtocol";
 
-    public static final int DEFAULT_HTTP_PORT = 8080;
+    int DEFAULT_HTTP_PORT = 8080;
 
-    public static final int DEFAULT_AJP_PORT = 8009;
+    int DEFAULT_AJP_PORT = 8009;
 
-    public static final int DEFAULT_SSL_PORT = 8443;
+    int DEFAULT_SSL_PORT = 8443;
 
-    public static final String DEFAULT_SERVICE_NAME = "Catalina";
+    String DEFAULT_SERVICE_NAME = "Catalina";
 
-    public static final Map<String, String> EMPTY = Collections.<String, String> emptyMap();
+    Map<String, String> EMPTY_MAP = Collections.<String, String> emptyMap();
 
+    /**
+     * Start the embedded instance synchronously
+     * 
+     * @return runtime
+     */
     TomcatRuntime start();
 
+    /**
+     * Start the embedded instance synchronously, but return after the timeout
+     * 
+     * @param timeout
+     * @return runtime
+     */
     TomcatRuntime start(long timeout);
 
+    /**
+     * Start the embedded instance synchronously, calling the callback with
+     * the runtime instance when complete
+     * 
+     * @param callback
+     */
     void start(Callback<TomcatRuntime> callback);
 
 }

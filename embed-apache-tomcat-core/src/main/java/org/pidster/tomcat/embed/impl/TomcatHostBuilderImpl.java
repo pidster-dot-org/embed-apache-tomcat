@@ -26,13 +26,20 @@ import org.pidster.tomcat.embed.TomcatBuilderException;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
-
+/**
+ * @author swilliams
+ *
+ */
 public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServiceBuilder, TomcatHostBuilder> implements TomcatHostBuilder {
 
     private final Host host;
 
     private final Map<String, TomcatApplicationBuilder> applications = new HashMap<>();
 
+    /**
+     * @param parent
+     * @param config
+     */
     protected TomcatHostBuilderImpl(TomcatServiceBuilderImpl parent, Map<String, String> config) {
         super(parent);
         String className = "org.apache.catalina.core.StandardHost";
@@ -77,12 +84,12 @@ public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServic
 
     @Override
     public TomcatApplicationBuilder createApplication(String name) {
-        return createApplication(String.format("/%s", name), name, Tomcat.EMPTY);
+        return createApplication(String.format("/%s", name), name, Tomcat.EMPTY_MAP);
     }
 
     @Override
     public TomcatApplicationBuilder createApplication(String path, String name) {
-        return createApplication(path, name, Tomcat.EMPTY);
+        return createApplication(path, name, Tomcat.EMPTY_MAP);
     }
 
     @Override
