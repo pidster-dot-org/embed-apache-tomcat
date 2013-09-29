@@ -21,7 +21,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;

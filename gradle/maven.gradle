@@ -1,22 +1,43 @@
 /*
- Copyright 2013 pid[at]pidster.org
+ * Copyright 2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
-
+apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'publishing'
-apply plugin: 'maven-publish'
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// custom maven tasks
+
+task sourceJar(type: Jar) {
+    description = 'Builds a source jar artifact suitable for maven deployment.'
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+task javadocJar(type: Jar) {
+    description = 'Builds a javadoc jar artifact suitable for maven deployment.'
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+javadocJar.dependsOn javadoc
+
+build.dependsOn sourceJar, javadocJar
+
+artifacts {
+    archives sourceJar, javadocJar
+}
 
 if (!hasProperty('sonatypeUsername')) {
     ext.sonatypeUsername = ''
@@ -25,129 +46,84 @@ if (!hasProperty('sonatypePassword')) {
     ext.sonatypePassword = ''
 }
 
-task sourceJar(type: Jar) {
-  description = 'Builds a source jar artifact suitable for maven deployment.'
-  classifier = 'sources'
-  from sourceSets.main.java
-}
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// maven task configuration
 
-task javadocJar(type: Jar) {
-  description = 'Builds a javadoc jar artifact suitable for maven deployment.'
-  classifier = 'javadoc'
-  from javadoc.destinationDir
-}
-javadocJar.dependsOn javadoc
-
-build.dependsOn sourceJar, javadocJar
-
-artifacts {
-  archives sourceJar, javadocJar
-}
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 signing {
-    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-    signing {
-        required { isReleaseVersion }
-        sign configurations.archives
-    }
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
 }
 
-def pomConfig = {
-	name rootProject.name
-	description 'Embed Apache Tomcat'
-	groupId rootProject.group
-	inceptionYear '2013'
-	packaging 'jar'
-	url 'http://pidster.org'
-
-	developers {
-		developer {
-			id 'pidster'
-			name 'Pid'
-			email 'pid@pidster.org'
-		}
-	}
-
-	scm {
-		connection 'scm:https://github.com/pidster-dot-org/embed-apache-tomcat'
-		developerConnection 'scm:git@github.com:pidster-dot-org/embed-apache-tomcat.git'
-		url 'https://github.com/pidster-dot-org/embed-apache-tomcat'
-	}
-
-	licenses {
-		license {
-			name 'The Apache Software License, Version 2.0'
-			url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-			distribution 'repo'
-		}
-	}
-
-//	properties { setProperty('project.build.sourceEncoding', 'UTF8') }
-}
-
-//generatePomFileForMavenCentralPublication {
-//	destination = file("$buildDir/generated-pom.xml")
-//}
-
-
-publishing {
-
-    publications {
-        mavenCentral(MavenPublication) {
-            from components.java
-            artifact sourceJar {
-                classifier "source"
-            }
-            artifact javadocJar {
-                classifier "javadoc"
-            }
-            pom.withXml {
-                asNode().appendNode('description', 'Embed Apache Tomcat')
-                asNode().appendNode('inceptionYear', '2013')
-                asNode().appendNode('url', 'http://pidster.org')
-//				asNode().children().last() + pomConfig
-            }
-
-//            developers {
-//                developer {
-//                    id 'pidster'
-//                    name 'Pid'
-//                    email 'pid@pidster.org'
-//                }
-//            }
-//
-//            scm {
-//                connection 'scm:https://github.com/pidster-dot-org/boot-loader'
-//                developerConnection 'scm:git@github.com:pidster-dot-org/boot-loader.git'
-//                url 'https://github.com/pidster-dot-org/boot-loader'
-//            }
-//
-//            licenses {
-//                license {
-//                    name 'The Apache Software License, Version 2.0'
-//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    distribution 'repo'
-//                }
-//            }
-        }
-    }
+uploadArchives {
+    group 'build'
+    description = "Does a maven deploy of archives artifacts"
 
     repositories {
-        maven {
-            credentials {
-                username project.sonatypeUsername
-                password project.sonatypePassword
+        mavenDeployer {
+            configuration = configurations.archives
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
             }
-            name 'snapshots'
-            url 'https://oss.sonatype.org/content/repositories/snapshots'
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            if (isReleaseVersion) {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            }
+
+            configurePom(pom)
         }
-        maven {
-            credentials {
-                username project.sonatypeUsername
-                password project.sonatypePassword
+    }
+}
+
+install {
+    group = 'build'
+    description = "Does a maven install of archives artifacts to local m2 cache"
+    configurePom(repositories.mavenInstaller.pom)
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// configuration methods
+
+def configurePom(def pom) {
+    pom.project {
+        name project.name
+		description 'Embed Apache Tomcat'
+        groupId rootProject.group
+        inceptionYear '2013'
+        packaging 'jar'
+        url 'http://pidster.org'
+        
+        developers {
+            developer {
+                id 'pidster'
+                name 'Pid ster'
+                email 'pid@pidster.org'
             }
-            name 'staging'
-            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+        }
+
+        scm {
+            connection "scm:git://github.com/pidster-dot-org/${rootProject.name}.git"
+            developerConnection "scm:git@github.com:pidster-dot-org/${rootProject.name}.git"
+            url "https://github.com/pidster-dot-org/${rootProject.name}"
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        properties {
+            setProperty('project.build.sourceEncoding', 'UTF8')
         }
     }
 }
