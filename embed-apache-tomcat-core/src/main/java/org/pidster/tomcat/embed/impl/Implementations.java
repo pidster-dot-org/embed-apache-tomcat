@@ -32,19 +32,4 @@ public interface Implementations {
 	String HOST = "org.apache.catalina.core.StandardHost";
 
 	String CONTEXT = "org.apache.catalina.core.StandardContext";
-
-    String[] SILENT_CLASSES = new String[] {
-        "org.apache.coyote.AbstractProtocol",
-        "org.apache.coyote.ajp.AjpNioProtocol",
-        "org.apache.coyote.http11.Http11Protocol",
-        "org.apache.coyote.http11.Http11NioProtocol",
-        "org.apache.catalina.core.ApplicationContext",
-        "org.apache.catalina.core.AprLifecycleListener",
-        "org.apache.catalina.core.StandardService",
-        "org.apache.catalina.core.StandardEngine",
-        "org.apache.catalina.mbeans.GlobalResourcesLifecycleListener",
-        "org.apache.catalina.startup.Catalina",
-        "org.apache.catalina.startup.ContextConfig",
-        "org.apache.tomcat.util.net.NioSelectorPool",
-    };
 }

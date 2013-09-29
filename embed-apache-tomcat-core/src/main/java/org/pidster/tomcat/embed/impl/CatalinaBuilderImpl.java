@@ -37,7 +37,11 @@ import org.pidster.tomcat.embed.TomcatServerBuilder;
 
 public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBuilderImpl, CatalinaBuilderImpl> implements CatalinaBuilder {
 
-    private final Catalina catalina = new Catalina();
+	private static final String EXECUTOR_NAME_ATTR = "executorName";
+
+	private static final String LOCALHOST = "localhost";
+
+	private final Catalina catalina = new Catalina();
 
     private final Properties properties = new Properties();
 
@@ -109,7 +113,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
 
     @Override
     public TomcatServerBuilder newServer(int port) {
-        return newServer("localhost", port);
+        return newServer(LOCALHOST, port);
     }
 
     @Override
@@ -119,7 +123,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
 
     @Override
     public TomcatServerBuilder newServer(int port, String password) {
-        return newServer("localhost", port, password);
+        return newServer(LOCALHOST, port, password);
     }
 
     @Override
@@ -172,7 +176,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         }
 
         Map<String, String> connConfig = new HashMap<>();
-        connConfig.put("executorName", DEFAULT_EXECUTOR_NAME);
+        connConfig.put(EXECUTOR_NAME_ATTR, DEFAULT_EXECUTOR_NAME);
 
         return serverBuilder
                 .enableNaming()
@@ -188,7 +192,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
                     .addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP)
                     .addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig)
                     .addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig)
-                        .addHost("localhost", "webapps");
+                        .addHost(LOCALHOST, "webapps");
     }
 
     @Override
@@ -225,7 +229,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         }
 
         Map<String, String> connConfig = new HashMap<>();
-        connConfig.put("executorName", DEFAULT_EXECUTOR_NAME);
+        connConfig.put(EXECUTOR_NAME_ATTR, DEFAULT_EXECUTOR_NAME);
 
         return serverBuilder
                 .addService(DEFAULT_SERVICE_NAME)
@@ -233,7 +237,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
                     .setStartStopThreads(0)
                     .addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP)
                     .addConnector(Tomcat.PROTOCOL_BIO, http, connConfig)
-                        .addHost("localhost", "webapps");
+                        .addHost(LOCALHOST, "webapps");
     }
 
 }

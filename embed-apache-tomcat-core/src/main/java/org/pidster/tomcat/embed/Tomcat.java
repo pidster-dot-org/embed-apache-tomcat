@@ -50,6 +50,10 @@ public interface Tomcat extends Buildable {
 
     String DEFAULT_EXECUTOR_NAME = "tomcatThreadPool";
 
+    String CATALINA_HOME = "catalina.home";
+    
+    String CATALINA_BASE = "catalina.home";
+    
     Map<String, String> EMPTY_MAP = Collections.<String, String> emptyMap();
 
     /**

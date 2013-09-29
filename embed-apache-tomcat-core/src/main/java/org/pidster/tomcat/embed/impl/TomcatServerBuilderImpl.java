@@ -39,6 +39,21 @@ import org.pidster.tomcat.embed.TomcatServiceBuilder;
  */
 public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBuilder, TomcatServerBuilder> implements TomcatServerBuilder {
 
+    static final String[] SILENT_CLASSES = new String[] {
+        "org.apache.coyote.AbstractProtocol",
+        "org.apache.coyote.ajp.AjpNioProtocol",
+        "org.apache.coyote.http11.Http11Protocol",
+        "org.apache.coyote.http11.Http11NioProtocol",
+        "org.apache.catalina.core.ApplicationContext",
+        "org.apache.catalina.core.AprLifecycleListener",
+        "org.apache.catalina.core.StandardService",
+        "org.apache.catalina.core.StandardEngine",
+        "org.apache.catalina.mbeans.GlobalResourcesLifecycleListener",
+        "org.apache.catalina.startup.Catalina",
+        "org.apache.catalina.startup.ContextConfig",
+        "org.apache.tomcat.util.net.NioSelectorPool",
+    };
+
     private final Server server;
 
     private boolean silentLogging = true;
@@ -72,13 +87,13 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
     public CatalinaBuilder parent() {
 
         if ((server.getCatalinaBase() == null || !server.getCatalinaBase().exists()) || System.getProperties().containsKey("catalina.base")) {
-            String catalinaBase = System.getProperty("catalina.base");
+            String catalinaBase = System.getProperty(CATALINA_BASE);
             File file = new File(catalinaBase);
             setCatalinaBase(file);
         }
 
         if ((server.getCatalinaHome() == null || !server.getCatalinaHome().exists()) && System.getProperties().containsKey("catalina.home")) {
-            String catalinaBase = System.getProperty("catalina.home");
+            String catalinaBase = System.getProperty(CATALINA_HOME);
             File file = new File(catalinaBase);
             if (file.exists()) {
                 this.setCatalinaHome(file);
@@ -112,7 +127,7 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
             throw new IllegalStateException("catalina.base does not exist: " + catalinaBase);
         }
 
-        System.setProperty("catalina.base", catalinaBase.getAbsolutePath());
+        System.setProperty(CATALINA_BASE, catalinaBase.getAbsolutePath());
         server.setCatalinaBase(catalinaBase);
         return this;
     }
@@ -123,7 +138,7 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
             throw new IllegalStateException("catalina.home does not exist: " + catalinaHome);
         }
 
-        System.setProperty("catalina.home", catalinaHome.getAbsolutePath());
+        System.setProperty(CATALINA_HOME, catalinaHome.getAbsolutePath());
         server.setCatalinaBase(catalinaHome);
         return this;
     }
