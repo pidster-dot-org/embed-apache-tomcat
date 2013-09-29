@@ -147,19 +147,19 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
         Context context = new StandardContext();
         host.addChild(context);
 
-        throw new RuntimeException("Not implemented yet");
+        throw new UnsupportedOperationException("Not implemented yet");
 //        return this;
     }
 
     @Override
     public TomcatRuntime undeploy(String appName) {
         log.log(Level.CONFIG, "Undeploying {0}", appName);
-        throw new RuntimeException("Not implemented yet");
+        throw new UnsupportedOperationException("Not implemented yet");
 //      return this;
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         stop();
     }
 

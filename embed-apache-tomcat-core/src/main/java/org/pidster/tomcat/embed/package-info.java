@@ -13,25 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pidster.tomcat.embed.junit;
-
-import java.util.Set;
-
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 /**
  * @author pidster
  *
  */
-public class TestServletContainerInitializer implements
-		ServletContainerInitializer {
-
-	@Override
-	public void onStartup(Set<Class<?>> c, ServletContext ctx)
-			throws ServletException {
-		// TODO Auto-generated method stub
-	}
-
-}
+package org.pidster.tomcat.embed;
