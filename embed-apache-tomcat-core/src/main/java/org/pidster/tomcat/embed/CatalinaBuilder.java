@@ -22,14 +22,14 @@ import org.apache.catalina.Server;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface CatalinaBuilder extends Builder<Tomcat>, Collector<CatalinaBuilder, Server> {
 
-	/**
-	 * @param properties
+    /**
+     * @param properties
      * @return this builder
-	 */
+     */
     CatalinaBuilder addProperties(Properties properties);
 
     /**
@@ -182,6 +182,5 @@ public interface CatalinaBuilder extends Builder<Tomcat>, Collector<CatalinaBuil
      * @return host
      */
     TomcatHostBuilder newStandardServer(int port, File baseDir, int httpPort, int ajpPort);
-
 
 }

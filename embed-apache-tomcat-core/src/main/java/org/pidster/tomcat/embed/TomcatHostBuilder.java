@@ -21,17 +21,17 @@ import org.apache.catalina.Context;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface TomcatHostBuilder extends TomcatContainerBuilder<TomcatServiceBuilder, TomcatHostBuilder>, Collector<TomcatHostBuilder, Context> {
 
-	/**
-	 * @param path
-	 * @param name
-	 * @param docBase
-	 * @param config
+    /**
+     * @param path
+     * @param name
+     * @param docBase
+     * @param config
      * @return this builder
-	 */
+     */
     TomcatHostBuilder addApplication(String path, String name, String docBase, Map<String, String> config);
 
     /**

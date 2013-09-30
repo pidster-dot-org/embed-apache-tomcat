@@ -22,60 +22,60 @@ import org.apache.tomcat.util.descriptor.web.ContextResource;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface TomcatServerBuilder extends TomcatLifecyleBuilder<TomcatServerBuilder>, Collector<TomcatServerBuilder, Service>, HierarchicalBuilder<CatalinaBuilder, Tomcat> {
 
-	/**
-	 * @param silentLogging
-	 * @return this builder
-	 */
+    /**
+     * @param silentLogging
+     * @return this builder
+     */
     TomcatServerBuilder setSilentLogging(boolean silentLogging);
 
     /**
      * @param catalinaBase
-	 * @return this builder
+     * @return this builder
      */
     TomcatServerBuilder setCatalinaBase(File catalinaBase);
 
     /**
      * @param catalinaHome
-	 * @return this builder
+     * @return this builder
      */
     TomcatServerBuilder setCatalinaHome(File catalinaHome);
 
     /**
-	 * @return this builder
+     * @return this builder
      */
     TomcatServerBuilder enableNaming();
 
     /**
      * @param enableNaming
-	 * @return this builder
+     * @return this builder
      */
     TomcatServerBuilder setEnableNaming(boolean enableNaming);
 
     /**
      * @param resource
-	 * @return this builder
+     * @return this builder
      */
     TomcatServerBuilder addGlobalResource(ContextResource resource);
 
     /**
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addService();
 
     /**
      * @param jvmRoute
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addService(String jvmRoute);
 
     /**
      * @param name
      * @param jvmRoute
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addService(String name, String jvmRoute);
 

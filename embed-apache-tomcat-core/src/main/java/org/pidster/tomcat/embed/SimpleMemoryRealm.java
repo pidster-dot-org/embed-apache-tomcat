@@ -25,7 +25,7 @@ import org.apache.catalina.realm.RealmBase;
 
 /**
  * @author pidster
- *
+ * 
  */
 public class SimpleMemoryRealm extends RealmBase {
 
@@ -49,8 +49,7 @@ public class SimpleMemoryRealm extends RealmBase {
         if (p == null) {
             String pass = userPass.get(username);
             if (pass != null) {
-                p = new GenericPrincipal(username, pass,
-                        userRoles.get(username));
+                p = new GenericPrincipal(username, pass, userRoles.get(username));
                 userPrincipals.put(username, p);
             }
         }

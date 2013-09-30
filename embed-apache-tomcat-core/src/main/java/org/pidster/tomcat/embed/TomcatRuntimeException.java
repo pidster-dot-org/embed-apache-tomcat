@@ -17,7 +17,7 @@ package org.pidster.tomcat.embed;
 
 /**
  * @author pidster
- *
+ * 
  */
 public class TomcatRuntimeException extends RuntimeException {
 

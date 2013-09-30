@@ -21,15 +21,15 @@ import org.apache.catalina.Host;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface TomcatServiceBuilder extends TomcatContainerBuilder<TomcatServerBuilder, TomcatServiceBuilder>, Collector<TomcatServiceBuilder, Host> {
 
-	/**
-	 * Adds the standard pair of HTTP and AJP connectors
-	 * 
-	 * @return this builder
-	 */
+    /**
+     * Adds the standard pair of HTTP and AJP connectors
+     * 
+     * @return this builder
+     */
     TomcatServiceBuilder addStandardConnectors();
 
     /**
@@ -37,7 +37,7 @@ public interface TomcatServiceBuilder extends TomcatContainerBuilder<TomcatServe
      * @param minSize
      * @param maxSize
      * @param config
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addBioExecutor(int port, int minSize, int maxSize, Map<String, String> config);
 
@@ -46,7 +46,7 @@ public interface TomcatServiceBuilder extends TomcatContainerBuilder<TomcatServe
      * @param minSize
      * @param maxSize
      * @param config
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addNioExecutor(int port, int minSize, int maxSize, Map<String, String> config);
 
@@ -56,14 +56,14 @@ public interface TomcatServiceBuilder extends TomcatContainerBuilder<TomcatServe
      * @param minSize
      * @param maxSize
      * @param config
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addExecutor(String name, String prefix, int minSize, int maxSize, Map<String, String> config);
 
     /**
      * @param protocol
      * @param port
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addConnector(String protocol, int port);
 
@@ -71,7 +71,7 @@ public interface TomcatServiceBuilder extends TomcatContainerBuilder<TomcatServe
      * @param protocol
      * @param port
      * @param config
-	 * @return this builder
+     * @return this builder
      */
     TomcatServiceBuilder addConnector(String protocol, int port, Map<String, String> config);
 

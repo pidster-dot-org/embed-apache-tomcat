@@ -19,16 +19,17 @@ package org.pidster.tomcat.embed;
  * Common super-interface for builders
  * 
  * @author pidster
- *
- * @param <B> a Buildable type
+ * 
+ * @param <B>
+ *            a Buildable type
  */
 public interface Builder<B extends Buildable> {
 
-	/**
-	 * Build an instance
-	 * 
-	 * @return the built instance
-	 */
+    /**
+     * Build an instance
+     * 
+     * @return the built instance
+     */
     B build();
 
 }

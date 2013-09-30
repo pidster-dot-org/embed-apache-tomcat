@@ -19,7 +19,7 @@ package org.pidster.tomcat.embed;
  * Marker interface for things that are buildable
  * 
  * @author pid[at]pidster.org
- *
+ * 
  */
 public interface Buildable {
 

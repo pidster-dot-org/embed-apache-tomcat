@@ -19,18 +19,20 @@ import org.apache.catalina.Server;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface TomcatRuntime extends AutoCloseable {
 
-	/**
-	 * @param appName to be deployed
+    /**
+     * @param appName
+     *            to be deployed
      * @return this runtime
-	 */
+     */
     TomcatRuntime deploy(String appName);
 
     /**
-     * @param appName to be undeployed
+     * @param appName
+     *            to be undeployed
      * @return this runtime
      */
     TomcatRuntime undeploy(String appName);

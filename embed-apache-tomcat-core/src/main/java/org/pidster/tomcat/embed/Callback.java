@@ -16,21 +16,23 @@
 package org.pidster.tomcat.embed;
 
 /**
- * A Callback is used to pass the result of an operation 
- * back to a caller that may be asynchronous
- *
+ * A Callback is used to pass the result of an operation back to a caller that
+ * may be asynchronous
+ * 
  * @author pidster
- *
+ * 
  */
 public interface Callback<T> {
 
-	/**
-	 * @param result of operation
-	 */
+    /**
+     * @param result
+     *            of operation
+     */
     void onSuccess(T result);
 
     /**
-     * @param throwable when failed
+     * @param throwable
+     *            when failed
      */
     void onFailure(Throwable throwable);
 

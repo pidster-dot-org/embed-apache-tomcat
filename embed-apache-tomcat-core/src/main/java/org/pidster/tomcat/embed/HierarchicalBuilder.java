@@ -17,13 +17,13 @@ package org.pidster.tomcat.embed;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface HierarchicalBuilder<P extends Builder<T>, T extends Buildable> extends Builder<T> {
 
-	/**
-	 * @return parent
-	 */
+    /**
+     * @return parent
+     */
     P parent();
 
 }

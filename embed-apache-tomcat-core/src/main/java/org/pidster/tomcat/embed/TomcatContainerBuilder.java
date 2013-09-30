@@ -24,16 +24,18 @@ import org.apache.catalina.Valve;
 
 /**
  * @author pidster
- *
- * @param <P> parent builder
- * @param <T> this builder
+ * 
+ * @param <P>
+ *            parent builder
+ * @param <T>
+ *            this builder
  */
 public interface TomcatContainerBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> extends HierarchicalBuilder<P, Tomcat>, TomcatLifecyleBuilder<T> {
 
-	/**
-	 * @param valveClass
-	 * @return this type
-	 */
+    /**
+     * @param valveClass
+     * @return this type
+     */
     T addValve(Class<? extends Valve> valveClass);
 
     /**

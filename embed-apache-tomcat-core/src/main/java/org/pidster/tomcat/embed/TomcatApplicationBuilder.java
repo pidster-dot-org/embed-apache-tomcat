@@ -40,343 +40,343 @@ import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface TomcatApplicationBuilder extends TomcatContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder>, Collector<TomcatApplicationBuilder, Container> {
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder withDefaultConfig();
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder makeDirs();
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setContextAttribute(String attribute, Object value);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setContextInitParameter(String initParameter, String value);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletContainerInitializer(Class<? extends ServletContainerInitializer> listenerClass, Set<Class<?>> classes);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletContainerInitializer(ServletContainerInitializer sci);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletContainerInitializer(ServletContainerInitializer sci, Set<Class<?>> classes);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletContextListener(Class<? extends ServletContextListener> listenerClass, Map<String, String> config);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletContextListener(ServletContextListener listener);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, String... mappings);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletFilter(Class<? extends Filter> filterClass, Map<String, String> config, String... mappings);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletFilter(Filter filter, String... patterns);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletFilter(Filter filter, Map<String, String> initParameters, String... urlPatterns);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServletFilter(Filter filter, Map<String, String> initParameters, EnumSet<DispatcherType> dispatcherTypes, String... urlPatterns);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, String... mappings);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServlet(Class<? extends Servlet> servletClass, Map<String, String> config, String... mappings);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, String... mappings);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServlet(String name, Class<? extends Servlet> servletClass, Map<String, String> config, String... mappings);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServlet(Servlet servlet, Map<String, String> config, String... patterns);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addServlet(Servlet servlet, String name, Map<String, String> config, String... patterns);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addApplicationParameter(ApplicationParameter parameter);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addConstraint(SecurityConstraint constraint);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addErrorPage(ErrorPage errorPage);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addLocaleEncodingMappingParameter(String locale, String encoding);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addMimeMapping(String extension, String mimeType);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addParameter(String name, String value);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addRoleMapping(String role, String link);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addSecurityRole(String role);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addWatchedResource(String name);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder addWelcomeFile(String name);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setAllowCasualMultipartParsing(boolean allowCasualMultipartParsing);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSessionManager(Manager sessionManager);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setConfigFile(URL configFile);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setCookies(boolean cookies);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setUseHttpOnly(boolean useHttpOnly);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSessionCookieName(String sessionCookieName);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSessionCookieDomain(String sessionCookieDomain);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSessionCookiePath(String sessionCookiePath);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSessionCookiePathUsesTrailingSlash(boolean sessionCookiePathUsesTrailingSlash);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setCrossContext(boolean crossContext);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setDistributable(boolean distributable);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setLoginConfig(LoginConfig config);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setReloadable(boolean reloadable);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setPrivileged(boolean privileged);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSessionTimeout(int timeout);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSwallowAbortedUploads(boolean swallowAbortedUploads);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSwallowOutput(boolean swallowOutput);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setXmlValidation(boolean xmlValidation);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setXmlNamespaceAware(boolean xmlNamespaceAware);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setResourceOnlyServlets(String resourceOnlyServlets);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setEffectiveMajorVersion(int major);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setEffectiveMinorVersion(int minor);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setWebappVersion(String webappVersion);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setFireRequestListenersOnForwards(boolean enable);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setPreemptiveAuthentication(boolean enable);
 
-	/**
-	 * @return this
-	 */
+    /**
+     * @return this
+     */
     TomcatApplicationBuilder setSendRedirectBody(boolean enable);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setDenyUncoveredHttpMethods(boolean denyUncoveredHttpMethods);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setDenyUncoveredHttpMethods(boolean denyUncoveredHttpMethods);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setDocBase(String docBase);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setDocBase(String docBase);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setIgnoreAnnotations(boolean ignoreAnnotations);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setIgnoreAnnotations(boolean ignoreAnnotations);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setJarScanner(JarScanner jarScanner);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setJarScanner(JarScanner jarScanner);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setLogEffectiveWebXml(boolean logEffectiveWebXml);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setLogEffectiveWebXml(boolean logEffectiveWebXml);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setInstanceManager(InstanceManager instanceManager);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setInstanceManager(InstanceManager instanceManager);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setJspConfigDescriptor(JspConfigDescriptor descriptor);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setJspConfigDescriptor(JspConfigDescriptor descriptor);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setLoader(Loader loader);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setLoader(Loader loader);
 
-	/**
-	 * @return this
-	 */
-	TomcatApplicationBuilder setResources(WebResourceRoot resources);
+    /**
+     * @return this
+     */
+    TomcatApplicationBuilder setResources(WebResourceRoot resources);
 
 }

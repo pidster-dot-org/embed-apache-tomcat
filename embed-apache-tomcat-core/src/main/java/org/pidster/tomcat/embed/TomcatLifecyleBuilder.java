@@ -19,19 +19,19 @@ import org.apache.catalina.LifecycleListener;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface TomcatLifecyleBuilder<T extends Builder<Tomcat>> {
 
-	/**
-	 * @param listener
-	 * @return this builder
-	 */
+    /**
+     * @param listener
+     * @return this builder
+     */
     T addLifecycleListener(Class<? extends LifecycleListener> listener);
 
     /**
      * @param listener
-	 * @return this builder
+     * @return this builder
      */
     T addLifecycleListener(LifecycleListener listener);
 

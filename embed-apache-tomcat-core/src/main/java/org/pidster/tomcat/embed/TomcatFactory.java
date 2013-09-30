@@ -20,7 +20,7 @@ import java.util.ServiceLoader;
 
 /**
  * @author pidster
- *
+ * 
  */
 public class TomcatFactory {
 
@@ -48,7 +48,7 @@ public class TomcatFactory {
      */
     public CatalinaBuilder create() {
         ServiceLoader<CatalinaBuilder> impls = ServiceLoader.load(CatalinaBuilder.class);
-        if(!impls.iterator().hasNext()) {
+        if (!impls.iterator().hasNext()) {
             throw new TomcatBuilderException("No implementation");
         }
 
@@ -56,8 +56,7 @@ public class TomcatFactory {
             CatalinaBuilder builder = impls.iterator().next();
             builder.addProperties(properties);
             return builder;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new TomcatBuilderException(e);
         }
     }

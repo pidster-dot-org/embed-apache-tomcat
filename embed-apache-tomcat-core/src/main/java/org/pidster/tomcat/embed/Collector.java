@@ -17,16 +17,18 @@ package org.pidster.tomcat.embed;
 
 /**
  * @author pidster
- *
- * @param <P> parent
- * @param <C> child
+ * 
+ * @param <P>
+ *            parent
+ * @param <C>
+ *            child
  */
 public interface Collector<P, C> {
 
-	/**
-	 * @param child
-	 * @return parent
-	 */
+    /**
+     * @param child
+     * @return parent
+     */
     P collect(C child);
 
 }
