@@ -1,5 +1,5 @@
 /*
-   Copyright 2013 pid[at]pidster.org
+   Copyright 2013 pidster
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import javax.servlet.ServletSecurityElement;
  * @author pid[at]pidster.org
  * 
  */
-public class ServletHolder {
+public final class ServletHolder {
 
     private final Servlet servlet;
 
