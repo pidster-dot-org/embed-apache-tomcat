@@ -75,7 +75,7 @@ public class TomcatServerRule implements TestRule {
         };
     }
 
-    private void start() throws Exception {
+    private void start() throws InstantiationException, IllegalAccessException {
 
         TomcatApplicationBuilderFactory builderFactory = factoryClass.newInstance();
         TomcatApplicationBuilder builder = builderFactory.getBuilder(annotation);
