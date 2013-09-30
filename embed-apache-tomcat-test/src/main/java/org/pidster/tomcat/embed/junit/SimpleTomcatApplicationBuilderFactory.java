@@ -31,15 +31,20 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
     @Override
     public TomcatApplicationBuilder getBuilder(TomcatServerConfig annotation) {
 
-        String baseDir = annotation.baseDir();
-        if ("".equals(baseDir)) {
+        String baseDir;
+        if (annotation == null || "".equals(annotation.baseDir())) {
             baseDir = System.getProperty("user.dir");
+        }
+        else {
+            baseDir = annotation.baseDir();
         }
 
         File baseFile = new File(baseDir);
-        String appName = annotation.appName();
-        if ("".equals(appName)) {
+        String appName;
+        if (annotation == null || "".equals(annotation.appName())) {
             appName = "test";
+        } else {
+            appName = annotation.appName();
         }
 
         File appDir = new File(baseDir, String.format("webapps/%s", appName));
@@ -47,10 +52,19 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
             appDir.mkdirs();
         }
 
-        TomcatApplicationBuilder builder = new TomcatFactory().create().newMinimalServer(baseFile, annotation.port()).createApplication(annotation.appName()).setStartStopThreads(1).withDefaultConfig();
+        int port;
+        if (annotation == null) {
+            port = TomcatServerConfig.DEFAULT_HTTP_PORT;
+        } else {
+            port = annotation.port();
+        }
 
-        for (Class<? extends ServletContainerInitializer> initializer : annotation.value()) {
-            builder.addServletContainerInitializer(initializer);
+        TomcatApplicationBuilder builder = new TomcatFactory().create().newMinimalServer(baseFile, port).createApplication(appName).setStartStopThreads(1).withDefaultConfig();
+
+        if (annotation != null) {
+            for (Class<? extends ServletContainerInitializer> initializer : annotation.value()) {
+                builder.addServletContainerInitializer(initializer);
+            }
         }
 
         return builder;
