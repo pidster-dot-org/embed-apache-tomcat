@@ -21,30 +21,44 @@ import org.junit.Test;
 
 /**
  * @author pidster
- *
+ * 
  */
 public class TomcatServerRuleTest {
 
-	@Rule
-	public final TomcatServerRule server = new TomcatServerRule();
+    @Rule
+    public final TomcatServerRule server = new TomcatServerRule();
 
-	@Test
-	@TomcatServerConfig(port=48080)
-	public void testOne() {
-		System.out.println("port1: " + server.getPort());
-		// server.deploy("foo");
-	}
+    @Test
+    @TomcatServerConfig(port = 48080)
+    public void testOne() {
+        System.out.println("port1: " + server.getPort());
+    }
 
-	@Test
-	@TomcatServerConfig(port=48081, value={WsSci.class})
-	public void testTwo() {
-		System.out.println("port2: " + server.getPort());
-	}
+    @Test
+    @TomcatServerConfig(port = 48081, value = { WsSci.class })
+    public void testTwo() {
+        System.out.println("port2: " + server.getPort());
+    }
 
-	@Test
-	@TomcatServerConfig(port=48082, value={TestServletContainerInitializer.class})
-	public void testThree() {
-		System.out.println("port3: " + server.getPort());
-	}
+    @Test
+    @TomcatServerConfig(port = 48082, value = { TestServletContainerInitializer.class })
+    public void testThree() {
+        System.out.println("port3: " + server.getPort());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testDeploy() {
+        server.deploy("foo");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testUndeploy() {
+        server.undeploy("foo");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAddServletContainerInitializerAfterStart() {
+        server.addInitializer(new TestServletContainerInitializer());
+    }
 
 }

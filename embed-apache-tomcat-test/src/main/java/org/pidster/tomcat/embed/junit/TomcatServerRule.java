@@ -98,8 +98,20 @@ public class TomcatServerRule implements TestRule {
     }
 
     /**
+     * @param initializer
+     * @return this rule
+     */
+    public TomcatServerRule addInitializer(ServletContainerInitializer initializer) {
+        if (runtime != null) {
+            throw new IllegalStateException("Can't add a ServletContainerInitializer after start has been called");
+        }
+        initializers.add(initializer);
+        return this;
+    }
+
+    /**
      * @param appName
-     * @return runtime
+     * @return this rule
      */
     public TomcatServerRule deploy(String appName) {
         runtime.deploy(appName);
@@ -108,7 +120,7 @@ public class TomcatServerRule implements TestRule {
 
     /**
      * @param appName
-     * @return runtime
+     * @return this rule
      */
     public TomcatServerRule undeploy(String appName) {
         runtime.undeploy(appName);
