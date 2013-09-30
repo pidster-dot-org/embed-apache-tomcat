@@ -12,11 +12,16 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
-import static org.pidster.tomcat.embed.Tomcat.*;
-import static org.pidster.tomcat.embed.impl.Implementations.*;
+import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
+import static org.pidster.tomcat.embed.Tomcat.PROTOCOL_AJP;
+import static org.pidster.tomcat.embed.Tomcat.PROTOCOL_BIO;
+import static org.pidster.tomcat.embed.Tomcat.PROTOCOL_NIO;
+import static org.pidster.tomcat.embed.impl.Implementations.ENGINE;
+import static org.pidster.tomcat.embed.impl.Implementations.EXECUTOR;
+import static org.pidster.tomcat.embed.impl.Implementations.SERVICE;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +41,7 @@ import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
 /**
  * @author swilliams
- *
+ * 
  */
 public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatServerBuilder, TomcatServiceBuilder> implements TomcatServiceBuilder {
 
@@ -141,25 +146,25 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
         Connector connector = new Connector(protocol);
         connector.setPort(port);
         if (service.findExecutors().length > 0 && config != null && config.containsKey("executorName")) {
-        	Executor executor = service.getExecutor(config.get("executorName"));
+            Executor executor = service.getExecutor(config.get("executorName"));
             if (executor != null) {
-            	AbstractProtocol protocolHandler = (AbstractProtocol) connector.getProtocolHandler();
-            	protocolHandler.setExecutor(executor);
+                AbstractProtocol protocolHandler = (AbstractProtocol) connector.getProtocolHandler();
+                protocolHandler.setExecutor(executor);
 
-            	Set<Entry<String, String>> entrySet = config.entrySet();
-            	for (Entry<String, String> entry : entrySet) {
-            		protocolHandler.setProperty(entry.getKey(), entry.getValue());
-            	}
+                Set<Entry<String, String>> entrySet = config.entrySet();
+                for (Entry<String, String> entry : entrySet) {
+                    protocolHandler.setProperty(entry.getKey(), entry.getValue());
+                }
             }
         }
 
         InstanceConfigurer.configure(connector, config);
 
         if (config != null) {
-        	Set<Entry<String, String>> entrySet = config.entrySet();
-        	for (Entry<String, String> entry : entrySet) {
-        		connector.setProperty(entry.getKey(), entry.getValue());
-        	}
+            Set<Entry<String, String>> entrySet = config.entrySet();
+            for (Entry<String, String> entry : entrySet) {
+                connector.setProperty(entry.getKey(), entry.getValue());
+            }
         }
 
         connector.setService(service);

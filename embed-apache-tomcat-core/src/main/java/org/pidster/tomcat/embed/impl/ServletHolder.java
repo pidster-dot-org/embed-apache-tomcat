@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import javax.servlet.ServletSecurityElement;
 
 /**
  * @author pid[at]pidster.org
- *
+ * 
  */
 public class ServletHolder {
 
@@ -41,7 +41,7 @@ public class ServletHolder {
 
     private final int loadOnStartup;
 
-	private final ServletSecurityElement securityElement;
+    private final ServletSecurityElement securityElement;
 
     public ServletHolder(Servlet servlet, String... urlPatterns) {
         this(servlet, servlet.getClass().getName(), new HashMap<String, String>(), true, true, 0, urlPatterns);
@@ -56,7 +56,7 @@ public class ServletHolder {
     }
 
     public ServletHolder(Servlet servlet, String name, Map<String, String> initParameters, boolean asyncSupported, boolean isMatchAfter, int loadOnStartup, String... urlPatterns) {
-    	this(servlet, name, initParameters, true, true, 0, null, urlPatterns);
+        this(servlet, name, initParameters, true, true, 0, null, urlPatterns);
     }
 
     public ServletHolder(Servlet servlet, String name, Map<String, String> initParameters, boolean asyncSupported, boolean isMatchAfter, int loadOnStartup, ServletSecurityElement securityElement, String... urlPatterns) {
@@ -123,8 +123,8 @@ public class ServletHolder {
     /**
      * @return securityElement
      */
-	public ServletSecurityElement securityElement() {
-		return securityElement;
-	}
+    public ServletSecurityElement securityElement() {
+        return securityElement;
+    }
 
 }

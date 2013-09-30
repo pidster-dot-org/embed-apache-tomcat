@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import javax.servlet.ServletRegistration;
 
 /**
  * @author pid[at]pidster.org
- *
+ * 
  */
 public class InternalContainerInitializer implements ServletContainerInitializer {
 
@@ -47,7 +47,9 @@ public class InternalContainerInitializer implements ServletContainerInitializer
 
     /*
      * (non-Javadoc)
-     * @see javax.servlet.ServletContainerInitializer#onStartup(java.util.Set, javax.servlet.ServletContext)
+     * 
+     * @see javax.servlet.ServletContainerInitializer#onStartup(java.util.Set,
+     * javax.servlet.ServletContext)
      */
     @Override
     public void onStartup(Set<Class<?>> c, ServletContext context) throws ServletException {
@@ -76,8 +78,7 @@ public class InternalContainerInitializer implements ServletContainerInitializer
             filterReg.setAsyncSupported(filterHolder.setAsyncSupported());
             if (filterHolder.servletNames().length > 0) {
                 filterReg.addMappingForServletNames(filterHolder.dispatcherTypes(), filterHolder.isMatchAfter(), filterHolder.servletNames());
-            }
-            else {
+            } else {
                 filterReg.addMappingForUrlPatterns(filterHolder.dispatcherTypes(), filterHolder.isMatchAfter(), filterHolder.urlPatterns());
             }
         }
@@ -89,7 +90,7 @@ public class InternalContainerInitializer implements ServletContainerInitializer
             servletReg.addMapping(servletHolder.urlPatterns());
             servletReg.setLoadOnStartup(servletHolder.loadOnStartup());
             if (servletHolder.securityElement() != null) {
-            	servletReg.setServletSecurity(servletHolder.securityElement());
+                servletReg.setServletSecurity(servletHolder.securityElement());
             }
         }
 

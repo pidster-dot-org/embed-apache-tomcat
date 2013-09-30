@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import java.util.EnumSet;
@@ -24,7 +24,7 @@ import javax.servlet.Filter;
 
 /**
  * @author pid[at]pidster.org
- *
+ * 
  */
 public class FilterHolder {
 
@@ -56,10 +56,7 @@ public class FilterHolder {
         this(filter, filter.getClass().getName(), initParameters, true, new String[] {}, urlPatterns, true, dispatcherTypes);
     }
 
-    public FilterHolder(Filter filter, String name,
-            Map<String, String> initParameters, boolean asyncSupported,
-            String[] servletNames, String[] urlPatterns, boolean isMatchAfter,
-            EnumSet<DispatcherType> dispatcherTypes) {
+    public FilterHolder(Filter filter, String name, Map<String, String> initParameters, boolean asyncSupported, String[] servletNames, String[] urlPatterns, boolean isMatchAfter, EnumSet<DispatcherType> dispatcherTypes) {
         super();
         this.filter = filter;
         this.name = name;

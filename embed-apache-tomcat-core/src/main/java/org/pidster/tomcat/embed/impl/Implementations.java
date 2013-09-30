@@ -17,19 +17,19 @@ package org.pidster.tomcat.embed.impl;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface Implementations {
 
-	String SERVER = "org.apache.catalina.core.StandardServer";
+    String SERVER = "org.apache.catalina.core.StandardServer";
 
-	String SERVICE = "org.apache.catalina.core.StandardService";
+    String SERVICE = "org.apache.catalina.core.StandardService";
 
-	String ENGINE = "org.apache.catalina.core.StandardEngine";
+    String ENGINE = "org.apache.catalina.core.StandardEngine";
 
-	String EXECUTOR = "org.apache.catalina.core.StandardThreadExecutor";
+    String EXECUTOR = "org.apache.catalina.core.StandardThreadExecutor";
 
-	String HOST = "org.apache.catalina.core.StandardHost";
+    String HOST = "org.apache.catalina.core.StandardHost";
 
-	String CONTEXT = "org.apache.catalina.core.StandardContext";
+    String CONTEXT = "org.apache.catalina.core.StandardContext";
 }

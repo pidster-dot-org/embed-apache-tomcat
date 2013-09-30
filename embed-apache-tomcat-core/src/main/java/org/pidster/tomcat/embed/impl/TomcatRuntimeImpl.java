@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import java.util.concurrent.Semaphore;
@@ -38,7 +38,7 @@ import org.pidster.tomcat.embed.TomcatStatus;
 
 /**
  * @author swilliams
- *
+ * 
  */
 public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
@@ -148,14 +148,14 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
         host.addChild(context);
 
         throw new UnsupportedOperationException("Not implemented yet");
-//        return this;
+        // return this;
     }
 
     @Override
     public TomcatRuntime undeploy(String appName) {
         LOGGER.log(Level.CONFIG, "Undeploying {0}", appName);
         throw new UnsupportedOperationException("Not implemented yet");
-//      return this;
+        // return this;
     }
 
     @Override
@@ -196,8 +196,7 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
 
         } catch (InterruptedException e) {
             LOGGER.log(Level.WARNING, "Interrupted TomcatRuntime", e);
-        }
-        finally {
+        } finally {
             stop();
         }
     }

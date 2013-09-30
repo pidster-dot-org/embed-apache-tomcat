@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import java.util.logging.Level;
@@ -25,7 +25,12 @@ import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatComponentException;
 import org.pidster.tomcat.embed.TomcatLifecyleBuilder;
 
-
+/**
+ * @author pidster
+ * 
+ * @param <P>
+ * @param <T>
+ */
 public abstract class AbstractLifecycleBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> extends AbstractHierarchicalBuilder<P, T> implements TomcatLifecyleBuilder<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractLifecycleBuilder.class.getName());

@@ -12,10 +12,17 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
-import static org.pidster.tomcat.embed.Tomcat.*;
+import static org.pidster.tomcat.embed.Tomcat.DEFAULT_AJP_PORT;
+import static org.pidster.tomcat.embed.Tomcat.DEFAULT_EXECUTOR_MAX;
+import static org.pidster.tomcat.embed.Tomcat.DEFAULT_EXECUTOR_MIN;
+import static org.pidster.tomcat.embed.Tomcat.DEFAULT_EXECUTOR_NAME;
+import static org.pidster.tomcat.embed.Tomcat.DEFAULT_HTTP_PORT;
+import static org.pidster.tomcat.embed.Tomcat.DEFAULT_SERVICE_NAME;
+import static org.pidster.tomcat.embed.Tomcat.DEFAULT_SHUTDOWN_PORT;
+import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
 
 import java.io.File;
 import java.util.HashMap;
@@ -29,19 +36,22 @@ import org.apache.catalina.core.ThreadLocalLeakPreventionListener;
 import org.apache.catalina.mbeans.GlobalResourcesLifecycleListener;
 import org.apache.catalina.startup.Catalina;
 import org.apache.tomcat.util.descriptor.web.ContextResource;
-import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.CatalinaBuilder;
+import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatHostBuilder;
 import org.pidster.tomcat.embed.TomcatServerBuilder;
 
-
+/**
+ * @author pidster
+ * 
+ */
 public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBuilderImpl, CatalinaBuilderImpl> implements CatalinaBuilder {
 
-	private static final String EXECUTOR_NAME_ATTR = "executorName";
+    private static final String EXECUTOR_NAME_ATTR = "executorName";
 
-	private static final String LOCALHOST = "localhost";
+    private static final String LOCALHOST = "localhost";
 
-	private final Catalina catalina = new Catalina();
+    private final Catalina catalina = new Catalina();
 
     private final Properties properties = new Properties();
 
@@ -178,21 +188,10 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         Map<String, String> connConfig = new HashMap<>();
         connConfig.put(EXECUTOR_NAME_ATTR, DEFAULT_EXECUTOR_NAME);
 
-        return serverBuilder
-                .enableNaming()
-                .addLifecycleListener(JasperListener.class)
-                .addLifecycleListener(GlobalResourcesLifecycleListener.class)
-                .addLifecycleListener(JreMemoryLeakPreventionListener.class)
-                .addLifecycleListener(ThreadLocalLeakPreventionListener.class)
-                .addGlobalResource(memoryDatabase)
+        return serverBuilder.enableNaming().addLifecycleListener(JasperListener.class).addLifecycleListener(GlobalResourcesLifecycleListener.class).addLifecycleListener(JreMemoryLeakPreventionListener.class).addLifecycleListener(ThreadLocalLeakPreventionListener.class).addGlobalResource(memoryDatabase)
                 .addService(DEFAULT_SERVICE_NAME)
-                    // .withDefaultRealm()
-                    .setBackgroundProcessorDelay(0)
-                    .setStartStopThreads(0)
-                    .addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP)
-                    .addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig)
-                    .addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig)
-                        .addHost(LOCALHOST, "webapps");
+                // .withDefaultRealm()
+                .setBackgroundProcessorDelay(0).setStartStopThreads(0).addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP).addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig).addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig).addHost(LOCALHOST, "webapps");
     }
 
     @Override
@@ -231,13 +230,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         Map<String, String> connConfig = new HashMap<>();
         connConfig.put(EXECUTOR_NAME_ATTR, DEFAULT_EXECUTOR_NAME);
 
-        return serverBuilder
-                .addService(DEFAULT_SERVICE_NAME)
-                    .setBackgroundProcessorDelay(0)
-                    .setStartStopThreads(0)
-                    .addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP)
-                    .addConnector(Tomcat.PROTOCOL_BIO, http, connConfig)
-                        .addHost(LOCALHOST, "webapps");
+        return serverBuilder.addService(DEFAULT_SERVICE_NAME).setBackgroundProcessorDelay(0).setStartStopThreads(0).addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP).addConnector(Tomcat.PROTOCOL_BIO, http, connConfig).addHost(LOCALHOST, "webapps");
     }
 
 }

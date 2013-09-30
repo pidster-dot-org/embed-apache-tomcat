@@ -12,11 +12,11 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
-import static org.pidster.tomcat.embed.Tomcat.*;
-import static org.pidster.tomcat.embed.impl.Implementations.*;
+import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
+import static org.pidster.tomcat.embed.impl.Implementations.CONTEXT;
 
 import java.io.File;
 import java.net.URL;
@@ -52,7 +52,7 @@ import org.pidster.tomcat.embed.TomcatHostBuilder;
 /**
  * 
  * @author swilliams
- *
+ * 
  */
 public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder> implements TomcatApplicationBuilder {
 
@@ -80,7 +80,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
         setContainer(context);
     }
-    
+
     @Override
     public TomcatApplicationBuilder collect(Container child) {
         child.setParent(context);
@@ -246,7 +246,7 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
 
     @Override
     public TomcatApplicationBuilder setSessionManager(Manager sessionManager) {
-    	sessionManager.setContext(context);
+        sessionManager.setContext(context);
         context.setManager(sessionManager);
         return this;
     }
@@ -437,55 +437,55 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
         return this;
     }
 
-	@Override
+    @Override
     public TomcatApplicationBuilder setDocBase(String docBase) {
-		context.setDocBase(docBase);
+        context.setDocBase(docBase);
         return this;
-	}
+    }
 
-	@Override
-	public TomcatApplicationBuilder setIgnoreAnnotations(boolean ignoreAnnotations) {
-		context.setIgnoreAnnotations(ignoreAnnotations);
+    @Override
+    public TomcatApplicationBuilder setIgnoreAnnotations(boolean ignoreAnnotations) {
+        context.setIgnoreAnnotations(ignoreAnnotations);
         return this;
-	}
+    }
 
-	@Override
-	public TomcatApplicationBuilder setJarScanner(JarScanner jarScanner) {
-		context.setJarScanner(jarScanner);
+    @Override
+    public TomcatApplicationBuilder setJarScanner(JarScanner jarScanner) {
+        context.setJarScanner(jarScanner);
         return this;
-	}
+    }
 
-	@Override
-	public TomcatApplicationBuilder setLogEffectiveWebXml(boolean logEffectiveWebXml) {
-		context.setLogEffectiveWebXml(logEffectiveWebXml);
+    @Override
+    public TomcatApplicationBuilder setLogEffectiveWebXml(boolean logEffectiveWebXml) {
+        context.setLogEffectiveWebXml(logEffectiveWebXml);
         return this;
-	}
+    }
 
-	@Override
-	public TomcatApplicationBuilder setInstanceManager(InstanceManager instanceManager) {
-		context.setInstanceManager(instanceManager);
+    @Override
+    public TomcatApplicationBuilder setInstanceManager(InstanceManager instanceManager) {
+        context.setInstanceManager(instanceManager);
         return this;
-	}
+    }
 
-	@Override
-	public TomcatApplicationBuilder setJspConfigDescriptor(JspConfigDescriptor descriptor) {
-		context.setJspConfigDescriptor(descriptor);
+    @Override
+    public TomcatApplicationBuilder setJspConfigDescriptor(JspConfigDescriptor descriptor) {
+        context.setJspConfigDescriptor(descriptor);
         return this;
-	}
+    }
 
-	@Override
-	public TomcatApplicationBuilder setLoader(Loader loader) {
-		context.setLoader(loader);
+    @Override
+    public TomcatApplicationBuilder setLoader(Loader loader) {
+        context.setLoader(loader);
         return this;
-	}
+    }
 
-	@Override
-	public TomcatApplicationBuilder setResources(WebResourceRoot resources) {
-		context.setResources(resources);
+    @Override
+    public TomcatApplicationBuilder setResources(WebResourceRoot resources) {
+        context.setResources(resources);
         return this;
-	}
+    }
 
-	@Override
+    @Override
     public TomcatApplicationBuilder setFireRequestListenersOnForwards(boolean enable) {
         context.setFireRequestListenersOnForwards(enable);
         return this;

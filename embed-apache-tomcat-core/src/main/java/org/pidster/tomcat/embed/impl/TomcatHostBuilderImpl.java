@@ -12,11 +12,11 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
-import static org.pidster.tomcat.embed.Tomcat.*;
-import static org.pidster.tomcat.embed.impl.Implementations.*;
+import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
+import static org.pidster.tomcat.embed.impl.Implementations.HOST;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,7 @@ import org.pidster.tomcat.embed.TomcatServiceBuilder;
 
 /**
  * @author swilliams
- *
+ * 
  */
 public class TomcatHostBuilderImpl extends AbstractContainerBuilder<TomcatServiceBuilder, TomcatHostBuilder> implements TomcatHostBuilder {
 

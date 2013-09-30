@@ -12,14 +12,19 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import org.pidster.tomcat.embed.Builder;
 import org.pidster.tomcat.embed.HierarchicalBuilder;
 import org.pidster.tomcat.embed.Tomcat;
 
-
+/**
+ * @author pidster
+ * 
+ * @param <P>
+ * @param <T>
+ */
 public abstract class AbstractHierarchicalBuilder<P extends Builder<Tomcat>, T extends Builder<Tomcat>> implements HierarchicalBuilder<P, Tomcat> {
 
     private final P parent;

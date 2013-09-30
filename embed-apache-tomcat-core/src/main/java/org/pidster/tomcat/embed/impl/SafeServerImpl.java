@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import java.io.File;
@@ -29,7 +29,7 @@ import org.apache.catalina.startup.Catalina;
 
 /**
  * @author pid[at]pidster.org
- *
+ * 
  */
 public class SafeServerImpl implements Server {
 
@@ -44,6 +44,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getGlobalNamingResources()
      */
     @Override
@@ -53,6 +54,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getGlobalNamingContext()
      */
     @Override
@@ -62,6 +64,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getPort()
      */
     @Override
@@ -71,6 +74,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getAddress()
      */
     @Override
@@ -80,6 +84,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getShutdown()
      */
     @Override
@@ -89,6 +94,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getParentClassLoader()
      */
     @Override
@@ -98,6 +104,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getCatalina()
      */
     @Override
@@ -107,6 +114,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getCatalinaBase()
      */
     @Override
@@ -116,6 +124,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#getCatalinaHome()
      */
     @Override
@@ -125,6 +134,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#findService(java.lang.String)
      */
     @Override
@@ -134,6 +144,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#findServices()
      */
     @Override
@@ -143,7 +154,9 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
-     * @see org.apache.catalina.Server#removeService(org.apache.catalina.Service)
+     * 
+     * @see
+     * org.apache.catalina.Server#removeService(org.apache.catalina.Service)
      */
     @Override
     public void removeService(Service service) {
@@ -152,7 +165,10 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
-     * @see org.apache.catalina.Lifecycle#addLifecycleListener(org.apache.catalina.LifecycleListener)
+     * 
+     * @see
+     * org.apache.catalina.Lifecycle#addLifecycleListener(org.apache.catalina
+     * .LifecycleListener)
      */
     @Override
     public void addLifecycleListener(LifecycleListener listener) {
@@ -161,6 +177,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Lifecycle#findLifecycleListeners()
      */
     @Override
@@ -170,7 +187,10 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
-     * @see org.apache.catalina.Lifecycle#removeLifecycleListener(org.apache.catalina.LifecycleListener)
+     * 
+     * @see
+     * org.apache.catalina.Lifecycle#removeLifecycleListener(org.apache.catalina
+     * .LifecycleListener)
      */
     @Override
     public void removeLifecycleListener(LifecycleListener listener) {
@@ -179,6 +199,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Lifecycle#getState()
      */
     @Override
@@ -188,6 +209,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Lifecycle#getStateName()
      */
     @Override
@@ -197,6 +219,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#setShutdown(java.lang.String)
      */
     @Override
@@ -204,7 +227,9 @@ public class SafeServerImpl implements Server {
         server.setShutdown(shutdown);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Lifecycle#init()
      */
     @Override
@@ -212,7 +237,9 @@ public class SafeServerImpl implements Server {
         throw new UnsupportedOperationException("Server.init() method should not be called directly");
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Lifecycle#start()
      */
     @Override
@@ -220,7 +247,9 @@ public class SafeServerImpl implements Server {
         throw new UnsupportedOperationException("Server.start() method should not be called directly");
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Lifecycle#stop()
      */
     @Override
@@ -228,7 +257,9 @@ public class SafeServerImpl implements Server {
         throw new UnsupportedOperationException("Server.stop() method should not be called directly");
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Lifecycle#destroy()
      */
     @Override
@@ -236,15 +267,21 @@ public class SafeServerImpl implements Server {
         throw new UnsupportedOperationException("Server.destroy() method should not be called directly");
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.catalina.Server#setGlobalNamingResources(org.apache.catalina.deploy.NamingResources)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.catalina.Server#setGlobalNamingResources(org.apache.catalina
+     * .deploy.NamingResources)
      */
     @Override
     public void setGlobalNamingResources(NamingResourcesImpl globalNamingResources) {
         throw new UnsupportedOperationException("GlobalNamingResources can't be changed at runtime");
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#setPort(int)
      */
     @Override
@@ -252,7 +289,9 @@ public class SafeServerImpl implements Server {
         throw new UnsupportedOperationException("Server port can't be changed at runtime");
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#setAddress(java.lang.String)
      */
     @Override
@@ -262,7 +301,9 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
-     * @see org.apache.catalina.Server#setParentClassLoader(java.lang.ClassLoader)
+     * 
+     * @see
+     * org.apache.catalina.Server#setParentClassLoader(java.lang.ClassLoader)
      */
     @Override
     public void setParentClassLoader(ClassLoader parent) {
@@ -271,7 +312,10 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
-     * @see org.apache.catalina.Server#setCatalina(org.apache.catalina.startup.Catalina)
+     * 
+     * @see
+     * org.apache.catalina.Server#setCatalina(org.apache.catalina.startup.Catalina
+     * )
      */
     @Override
     public void setCatalina(Catalina catalina) {
@@ -280,6 +324,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#setCatalinaBase(java.io.File)
      */
     @Override
@@ -289,6 +334,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#setCatalinaHome(java.io.File)
      */
     @Override
@@ -298,6 +344,7 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#addService(org.apache.catalina.Service)
      */
     @Override
@@ -307,12 +354,12 @@ public class SafeServerImpl implements Server {
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.apache.catalina.Server#await()
      */
     @Override
     public void await() {
         throw new UnsupportedOperationException("Don't 'await' on Server!");
     }
-
 
 }

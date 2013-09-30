@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 package org.pidster.tomcat.embed.impl;
 
 import java.util.Map;
@@ -25,11 +25,12 @@ import org.pidster.tomcat.embed.TomcatComponentException;
 
 /**
  * @author pidster
- *
+ * 
  */
 public final class InstanceConfigurer {
 
-	private InstanceConfigurer() { }
+    private InstanceConfigurer() {
+    }
 
     private static final Logger LOGGER = Logger.getLogger(InstanceConfigurer.class.getName());
 
