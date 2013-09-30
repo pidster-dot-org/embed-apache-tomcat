@@ -57,7 +57,7 @@ public final class ServletHolder {
     }
 
     public ServletHolder(Servlet servlet, String name, Map<String, String> initParameters, boolean asyncSupported, boolean isMatchAfter, int loadOnStartup, String... urlPatterns) {
-        this(servlet, name, initParameters, true, true, 0, null, urlPatterns);
+        this(servlet, name, initParameters, true, true, loadOnStartup, null, urlPatterns);
     }
 
     public ServletHolder(Servlet servlet, String name, Map<String, String> initParameters, boolean asyncSupported, boolean isMatchAfter, int loadOnStartup, ServletSecurityElement securityElement, String... urlPatterns) {
