@@ -60,12 +60,8 @@ public class TomcatServerRule implements TestRule {
     }
 
     @Override
-    public final Statement apply(Statement base, Description description) {
+    public final Statement apply(final Statement base, Description description) {
         this.annotation = description.getAnnotation(TomcatServerConfig.class);
-        return statement(base, description);
-    }
-
-    private Statement statement(final Statement base, Description description) {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
