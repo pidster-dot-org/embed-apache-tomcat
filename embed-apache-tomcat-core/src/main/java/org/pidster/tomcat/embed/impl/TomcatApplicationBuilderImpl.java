@@ -16,7 +16,7 @@
 package org.pidster.tomcat.embed.impl;
 
 import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
-import static org.pidster.tomcat.embed.impl.Implementations.CONTEXT;
+import static org.pidster.tomcat.embed.impl.Constants.CONTEXT;
 
 import java.io.File;
 import java.net.URL;

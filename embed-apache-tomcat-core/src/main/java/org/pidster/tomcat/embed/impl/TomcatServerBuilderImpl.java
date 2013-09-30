@@ -18,7 +18,7 @@ package org.pidster.tomcat.embed.impl;
 import static org.pidster.tomcat.embed.Tomcat.CATALINA_BASE;
 import static org.pidster.tomcat.embed.Tomcat.CATALINA_HOME;
 import static org.pidster.tomcat.embed.Tomcat.DEFAULT_SERVICE_NAME;
-import static org.pidster.tomcat.embed.impl.Implementations.SERVER;
+import static org.pidster.tomcat.embed.impl.Constants.SERVER;
 
 import java.io.File;
 import java.util.HashMap;

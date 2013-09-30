@@ -19,9 +19,9 @@ import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
 import static org.pidster.tomcat.embed.Tomcat.PROTOCOL_AJP;
 import static org.pidster.tomcat.embed.Tomcat.PROTOCOL_BIO;
 import static org.pidster.tomcat.embed.Tomcat.PROTOCOL_NIO;
-import static org.pidster.tomcat.embed.impl.Implementations.ENGINE;
-import static org.pidster.tomcat.embed.impl.Implementations.EXECUTOR;
-import static org.pidster.tomcat.embed.impl.Implementations.SERVICE;
+import static org.pidster.tomcat.embed.impl.Constants.ENGINE;
+import static org.pidster.tomcat.embed.impl.Constants.EXECUTOR;
+import static org.pidster.tomcat.embed.impl.Constants.SERVICE;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +106,7 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
         String prefix = String.format("embed-exec-%s", executorCount.get());
         addExecutor(name, prefix, minSize, maxSize, config);
 
-        config.put("executorName", name);
+        config.put(Constants.EXECUTOR_NAME_ATTR, name);
         addConnector(PROTOCOL_BIO, port, config);
 
         return this;
@@ -118,7 +118,7 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
         String prefix = String.format("embed-exec-%s", executorCount.get());
         addExecutor(name, prefix, minSize, maxSize, config);
 
-        config.put("executorName", name);
+        config.put(Constants.EXECUTOR_NAME_ATTR, name);
         addConnector(PROTOCOL_NIO, port, config);
 
         return this;
@@ -145,8 +145,8 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
     public TomcatServiceBuilder addConnector(String protocol, int port, Map<String, String> config) {
         Connector connector = new Connector(protocol);
         connector.setPort(port);
-        if (service.findExecutors().length > 0 && config != null && config.containsKey("executorName")) {
-            Executor executor = service.getExecutor(config.get("executorName"));
+        if (service.findExecutors().length > 0 && config != null && config.containsKey(Constants.EXECUTOR_NAME_ATTR)) {
+            Executor executor = service.getExecutor(config.get(Constants.EXECUTOR_NAME_ATTR));
             if (executor != null) {
                 AbstractProtocol protocolHandler = (AbstractProtocol) connector.getProtocolHandler();
                 protocolHandler.setExecutor(executor);

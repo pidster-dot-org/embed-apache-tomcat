@@ -19,7 +19,7 @@ package org.pidster.tomcat.embed.impl;
  * @author pidster
  * 
  */
-public interface Implementations {
+public interface Constants {
 
     String SERVER = "org.apache.catalina.core.StandardServer";
 
@@ -32,4 +32,6 @@ public interface Implementations {
     String HOST = "org.apache.catalina.core.StandardHost";
 
     String CONTEXT = "org.apache.catalina.core.StandardContext";
+
+    String EXECUTOR_NAME_ATTR = "executorName";
 }

@@ -16,7 +16,7 @@
 package org.pidster.tomcat.embed.impl;
 
 import static org.pidster.tomcat.embed.Tomcat.EMPTY_MAP;
-import static org.pidster.tomcat.embed.impl.Implementations.HOST;
+import static org.pidster.tomcat.embed.impl.Constants.HOST;
 
 import java.util.HashMap;
 import java.util.Map;
