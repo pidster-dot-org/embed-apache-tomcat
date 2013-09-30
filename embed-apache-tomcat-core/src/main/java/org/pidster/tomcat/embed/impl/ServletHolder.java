@@ -16,6 +16,7 @@
 package org.pidster.tomcat.embed.impl;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public final class ServletHolder {
      * @return initParameters
      */
     public Map<String, String> initParameters() {
-        return initParameters;
+        return Collections.unmodifiableMap(initParameters);
     }
 
     /**
@@ -101,7 +102,7 @@ public final class ServletHolder {
     }
 
     /**
-     * @return
+     * @return urlPatterns
      */
     public String[] urlPatterns() {
         return Arrays.copyOf(urlPatterns, urlPatterns.length);

@@ -16,6 +16,7 @@
 package org.pidster.tomcat.embed.impl;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,56 +71,56 @@ public final class FilterHolder {
     }
 
     /**
-     * @return
+     * @return name
      */
     public String name() {
         return name;
     }
 
     /**
-     * @return
+     * @return filter
      */
     public Filter filter() {
         return filter;
     }
 
     /**
-     * @return
+     * @return initParameters
      */
     public Map<String, String> initParameters() {
-        return initParameters;
+        return Collections.unmodifiableMap(initParameters);
     }
 
     /**
-     * @return
+     * @return asyncSupported
      */
     public boolean setAsyncSupported() {
         return asyncSupported;
     }
 
     /**
-     * @return
+     * @return urlPatterns
      */
     public String[] urlPatterns() {
         return Arrays.copyOf(urlPatterns, urlPatterns.length);
     }
 
     /**
-     * @return
+     * @return servletNames
      */
     public String[] servletNames() {
         return Arrays.copyOf(servletNames, servletNames.length);
     }
 
     /**
-     * @return
+     * @return dispatcherTypes
      */
     public EnumSet<DispatcherType> dispatcherTypes() {
         return dispatcherTypes;
     }
 
     /**
-     * @return
+     * @return isMatchAfter
      */
     public boolean isMatchAfter() {
         return isMatchAfter;
