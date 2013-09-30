@@ -33,7 +33,11 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
 
         String baseDir;
         if (annotation == null || "".equals(annotation.baseDir())) {
-            baseDir = System.getProperty("user.dir");
+            if (System.getProperties().containsKey("catalina.base")) {
+                baseDir = System.getProperty("catalina.base");
+            } else {
+                baseDir = System.getProperty("user.dir") + File.separator + "build";
+            }
         }
         else {
             baseDir = annotation.baseDir();
@@ -59,7 +63,11 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
             port = annotation.port();
         }
 
-        TomcatApplicationBuilder builder = new TomcatFactory().create().newMinimalServer(baseFile, port).createApplication(appName).setStartStopThreads(1).withDefaultConfig();
+        TomcatApplicationBuilder builder = new TomcatFactory().create()
+            .newMinimalServer(baseFile, port)
+                .createApplication(appName)
+                .setStartStopThreads(1)
+                .withDefaultConfig();
 
         if (annotation != null) {
             for (Class<? extends ServletContainerInitializer> initializer : annotation.value()) {

@@ -17,5 +17,5 @@ dependencies {
 }
 
 test {
-	systemProperty 'catalina.base', 'build/catalina'
+	systemProperty 'catalina.base', "${buildDir}/catalina"
 }
