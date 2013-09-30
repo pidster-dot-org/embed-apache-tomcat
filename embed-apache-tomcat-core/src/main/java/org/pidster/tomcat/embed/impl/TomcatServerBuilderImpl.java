@@ -165,10 +165,13 @@ public class TomcatServerBuilderImpl extends AbstractLifecycleBuilder<CatalinaBu
             enableJndi();
         }
 
-        NamingResourcesImpl globalNamingResources = new NamingResourcesImpl();
-        // globalNamingResources.addResource(resource);
-        globalNamingResources.setContainer(server);
-        server.setGlobalNamingResources(globalNamingResources);
+        if (server.getGlobalNamingResources() == null) {
+            NamingResourcesImpl globalNamingResources = new NamingResourcesImpl();
+            server.setGlobalNamingResources(globalNamingResources);
+            globalNamingResources.setContainer(server);
+        }
+
+        server.getGlobalNamingResources().addResource(resource);
         return this;
     }
 

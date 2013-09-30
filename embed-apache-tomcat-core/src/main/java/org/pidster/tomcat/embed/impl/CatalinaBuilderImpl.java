@@ -175,7 +175,6 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
     @Override
     public TomcatHostBuilder newStandardServer(int port, File baseDir, int httpPort, int ajpPort) {
         ContextResource memoryDatabase = new ContextResource();
-        // memoryResource.setProperty("", "");
 
         TomcatServerBuilder serverBuilder = newServer(port);
         if (baseDir != null) {
@@ -188,7 +187,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
 
         return serverBuilder.enableNaming().addLifecycleListener(JasperListener.class).addLifecycleListener(GlobalResourcesLifecycleListener.class).addLifecycleListener(JreMemoryLeakPreventionListener.class).addLifecycleListener(ThreadLocalLeakPreventionListener.class).addGlobalResource(memoryDatabase)
                 .addService(DEFAULT_SERVICE_NAME)
-                // .withDefaultRealm()
+                // TODO .withDefaultRealm()
                 .setBackgroundProcessorDelay(0).setStartStopThreads(0).addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP).addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig).addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig).addHost(LOCALHOST, "webapps");
     }
 
