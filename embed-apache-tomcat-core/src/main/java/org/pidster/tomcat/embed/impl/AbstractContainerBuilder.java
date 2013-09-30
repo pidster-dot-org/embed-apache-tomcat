@@ -87,8 +87,8 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
         return addPropertyChangeListener(instance);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public final T addPropertyChangeListener(PropertyChangeListener listener) {
         LOGGER.log(Level.FINE, "addPropertyChangeListener({0})", listener.getClass().getName());
         container.addPropertyChangeListener(listener);
@@ -113,15 +113,15 @@ public abstract class AbstractContainerBuilder<P extends Builder<Tomcat>, T exte
         return (T) this;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public final T setBackgroundProcessorDelay(int delay) {
         container.setBackgroundProcessorDelay(delay);
         return (T) this;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public final T setStartStopThreads(int startStopThreads) {
         container.setStartStopThreads(startStopThreads);
         return (T) this;
