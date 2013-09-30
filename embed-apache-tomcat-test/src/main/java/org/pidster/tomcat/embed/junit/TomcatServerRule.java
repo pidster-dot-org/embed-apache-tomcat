@@ -41,6 +41,8 @@ public class TomcatServerRule implements TestRule {
 
     private int port;
 
+    private long timeout;
+
     private Set<ServletContainerInitializer> initializers = new HashSet<>();
 
     /**
@@ -86,15 +88,23 @@ public class TomcatServerRule implements TestRule {
             builder.addServletContainerInitializer(initializer);
         }
 
-        this.port = annotation.port();
+        if (annotation != null) {
+            this.port = annotation.port();
+            this.timeout = annotation.timeout();
+        } else {
+            this.port = TomcatServerConfig.DEFAULT_HTTP_PORT;
+            this.timeout = TomcatServerConfig.DEFAULT_TIMEOUT;
+        }
 
         Tomcat tomcat = builder.build();
 
-        this.runtime = tomcat.start(annotation.timeout());
+        this.runtime = tomcat.start(timeout);
     }
 
     private void stop() {
-        runtime.stop(annotation.timeout());
+        if (runtime != null) {
+            runtime.stop(timeout);
+        }
     }
 
     /**
