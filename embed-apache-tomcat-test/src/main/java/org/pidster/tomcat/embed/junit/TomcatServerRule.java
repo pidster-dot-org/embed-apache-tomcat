@@ -29,79 +29,97 @@ import org.pidster.tomcat.embed.TomcatRuntime;
 
 /**
  * @author pidster
- *
+ * 
  */
 public class TomcatServerRule implements TestRule {
 
-	private Class<? extends TomcatApplicationBuilderFactory> factoryClass;
+    private Class<? extends TomcatApplicationBuilderFactory> factoryClass;
 
-	private TomcatServerConfig annotation;
+    private TomcatServerConfig annotation;
 
-	private TomcatRuntime runtime;
+    private TomcatRuntime runtime;
 
-	private int port;
+    private int port;
 
-	private Set<ServletContainerInitializer> initializers = new HashSet<>();
+    private Set<ServletContainerInitializer> initializers = new HashSet<>();
 
-	public TomcatServerRule() {
-		this(SimpleTomcatApplicationBuilderFactory.class);
-	}
+    /**
+     * 
+     */
+    public TomcatServerRule() {
+        this(SimpleTomcatApplicationBuilderFactory.class);
+    }
 
-	public TomcatServerRule(Class<? extends TomcatApplicationBuilderFactory> factoryClass) {
-		this.factoryClass = factoryClass;
-	}
+    /**
+     * @param factoryClass
+     */
+    public TomcatServerRule(Class<? extends TomcatApplicationBuilderFactory> factoryClass) {
+        this.factoryClass = factoryClass;
+    }
 
-	@Override
-	public final Statement apply(Statement base, Description description) {
-		this.annotation = description.getAnnotation(TomcatServerConfig.class);
-		return statement(base, description);
-	}
+    @Override
+    public final Statement apply(Statement base, Description description) {
+        this.annotation = description.getAnnotation(TomcatServerConfig.class);
+        return statement(base, description);
+    }
 
-	private Statement statement(final Statement base, Description description) {
-		return new Statement() {
-			@Override
-			public void evaluate() throws Throwable {
-				try {
-					start();
-					base.evaluate();
-				}
-				finally {
-					stop();
-				}
-			}
-		};
-	}
+    private Statement statement(final Statement base, Description description) {
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                try {
+                    start();
+                    base.evaluate();
+                } finally {
+                    stop();
+                }
+            }
+        };
+    }
 
-	private void start() throws Exception {
+    private void start() throws Exception {
 
-		TomcatApplicationBuilderFactory builderFactory = factoryClass.newInstance();
-		TomcatApplicationBuilder builder = builderFactory.getBuilder(annotation);
+        TomcatApplicationBuilderFactory builderFactory = factoryClass.newInstance();
+        TomcatApplicationBuilder builder = builderFactory.getBuilder(annotation);
 
-		for (ServletContainerInitializer initializer : initializers) {
-			builder.addServletContainerInitializer(initializer);
-		}		
+        for (ServletContainerInitializer initializer : initializers) {
+            builder.addServletContainerInitializer(initializer);
+        }
 
-		this.port = annotation.port();
+        this.port = annotation.port();
 
-		Tomcat tomcat = builder.build();
+        Tomcat tomcat = builder.build();
 
-		this.runtime = tomcat.start(annotation.timeout());
-	}
+        this.runtime = tomcat.start(annotation.timeout());
+    }
 
-	private void stop() {
-		runtime.stop(annotation.timeout());
-	}
+    private void stop() {
+        runtime.stop(annotation.timeout());
+    }
 
-	public final TomcatRuntime deploy(String appName) {
-		return runtime.deploy(appName);
-	}
+    /**
+     * @param appName
+     * @return runtime
+     */
+    public TomcatServerRule deploy(String appName) {
+        runtime.deploy(appName);
+        return this;
+    }
 
-	public final TomcatRuntime undeploy(String appName) {
-		return runtime.undeploy(appName);
-	}
+    /**
+     * @param appName
+     * @return runtime
+     */
+    public TomcatServerRule undeploy(String appName) {
+        runtime.undeploy(appName);
+        return this;
+    }
 
-	public final int getPort() {
-		return port;
-	}
+    /**
+     * @return port
+     */
+    public int getPort() {
+        return port;
+    }
 
 }

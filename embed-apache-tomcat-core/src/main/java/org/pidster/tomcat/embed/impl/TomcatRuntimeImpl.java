@@ -20,15 +20,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.catalina.Container;
-import org.apache.catalina.Context;
-import org.apache.catalina.Engine;
-import org.apache.catalina.Host;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.Server;
-import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Catalina;
 import org.pidster.tomcat.embed.Callback;
 import org.pidster.tomcat.embed.Tomcat;
@@ -138,24 +133,13 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
     @Override
     public TomcatRuntime deploy(String appName) {
         LOGGER.log(Level.CONFIG, "Deploying {0}", appName);
-
-        String serviceName = "Catalina";
-        Container container = catalina.getServer().findService(serviceName).getContainer();
-        Engine engine = (Engine) container;
-        Host host = (Host) engine.findChild(engine.getDefaultHost());
-
-        Context context = new StandardContext();
-        host.addChild(context);
-
         throw new UnsupportedOperationException("Not implemented yet");
-        // return this;
     }
 
     @Override
     public TomcatRuntime undeploy(String appName) {
         LOGGER.log(Level.CONFIG, "Undeploying {0}", appName);
         throw new UnsupportedOperationException("Not implemented yet");
-        // return this;
     }
 
     @Override

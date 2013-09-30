@@ -19,10 +19,14 @@ import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 
 /**
  * @author pidster
- *
+ * 
  */
 public interface TomcatApplicationBuilderFactory {
 
-	TomcatApplicationBuilder getBuilder(TomcatServerConfig annotation);
+    /**
+     * @param annotation
+     * @return builder
+     */
+    TomcatApplicationBuilder getBuilder(TomcatServerConfig annotation);
 
 }

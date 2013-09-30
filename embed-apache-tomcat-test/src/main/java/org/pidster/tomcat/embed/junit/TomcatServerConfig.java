@@ -26,24 +26,47 @@ import javax.servlet.ServletContainerInitializer;
 
 /**
  * @author pidster
- *
+ * 
  */
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 public @interface TomcatServerConfig {
 
-	int port() default 48080;
+    /**
+     * 
+     */
+    public static final int DEFAULT_HTTP_PORT = 48080;
 
-	long timeout() default 1000L;
+    /**
+     * 
+     */
+    public static final long DEFAULT_TIMEOUT = 1000L;
 
-	String baseDir() default "";
+    /**
+     * @return port
+     */
+    int port() default DEFAULT_HTTP_PORT;
 
-	String appName() default "";
-	
-	Class<? extends ServletContainerInitializer>[] value() default {};
+    /**
+     * @return timeout
+     */
+    long timeout() default DEFAULT_TIMEOUT;
 
-	Class<? extends TomcatApplicationBuilderFactory> builderFactory() default SimpleTomcatApplicationBuilderFactory.class;
+    /**
+     * @return baseDir
+     */
+    String baseDir() default "";
+
+    /**
+     * @return appName
+     */
+    String appName() default "";
+
+    /**
+     * @return initializer
+     */
+    Class<? extends ServletContainerInitializer>[] value() default {};
 
 }

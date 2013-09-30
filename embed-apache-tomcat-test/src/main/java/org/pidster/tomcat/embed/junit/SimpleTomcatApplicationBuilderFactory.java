@@ -24,40 +24,36 @@ import org.pidster.tomcat.embed.TomcatFactory;
 
 /**
  * @author pidster
- *
+ * 
  */
 public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationBuilderFactory {
 
-	@Override
-	public TomcatApplicationBuilder getBuilder(TomcatServerConfig annotation) {
+    @Override
+    public TomcatApplicationBuilder getBuilder(TomcatServerConfig annotation) {
 
-		String baseDir = annotation.baseDir();
-		if ("".equals(baseDir)) {
-			baseDir = System.getProperty("user.dir");
-		}
+        String baseDir = annotation.baseDir();
+        if ("".equals(baseDir)) {
+            baseDir = System.getProperty("user.dir");
+        }
 
-		File baseFile = new File(baseDir);
-		String appName = annotation.appName();
-		if ("".equals(appName)) {
-			appName = "test";
-		}
+        File baseFile = new File(baseDir);
+        String appName = annotation.appName();
+        if ("".equals(appName)) {
+            appName = "test";
+        }
 
-		File appDir = new File(baseDir, String.format("webapps/%s", appName));
-		if (!appDir.exists()) {
-			appDir.mkdirs();
-		}
+        File appDir = new File(baseDir, String.format("webapps/%s", appName));
+        if (!appDir.exists()) {
+            appDir.mkdirs();
+        }
 
-		TomcatApplicationBuilder builder = new TomcatFactory().create()
-				.newMinimalServer(baseFile, annotation.port())
-					.createApplication(annotation.appName())
-						.setStartStopThreads(1)
-						.withDefaultConfig();
+        TomcatApplicationBuilder builder = new TomcatFactory().create().newMinimalServer(baseFile, annotation.port()).createApplication(annotation.appName()).setStartStopThreads(1).withDefaultConfig();
 
-		for (Class<? extends ServletContainerInitializer> initializer : annotation.value()) {
-			builder.addServletContainerInitializer(initializer);
-		}
+        for (Class<? extends ServletContainerInitializer> initializer : annotation.value()) {
+            builder.addServletContainerInitializer(initializer);
+        }
 
-		return builder;
-	}
+        return builder;
+    }
 
 }
