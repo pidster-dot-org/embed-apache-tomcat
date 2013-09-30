@@ -1,0 +1,8 @@
+apply plugin: 'jacoco'
+
+test {
+    jacoco {
+        append = false
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+}

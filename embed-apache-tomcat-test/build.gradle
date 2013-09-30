@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply from: "$rootDir/gradle/maven.gradle"
+apply from: "$rootDir/gradle/jacoco.gradle"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
