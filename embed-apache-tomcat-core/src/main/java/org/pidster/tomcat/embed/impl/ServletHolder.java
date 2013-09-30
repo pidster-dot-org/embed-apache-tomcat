@@ -15,6 +15,7 @@
  */
 package org.pidster.tomcat.embed.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,7 +69,7 @@ public final class ServletHolder {
         this.isMatchAfter = isMatchAfter;
         this.loadOnStartup = loadOnStartup;
         this.securityElement = securityElement;
-        this.urlPatterns = urlPatterns;
+        this.urlPatterns = Arrays.copyOf(urlPatterns, urlPatterns.length);
     }
 
     /**
@@ -103,7 +104,7 @@ public final class ServletHolder {
      * @return
      */
     public String[] urlPatterns() {
-        return urlPatterns;
+        return Arrays.copyOf(urlPatterns, urlPatterns.length);
     }
 
     /**

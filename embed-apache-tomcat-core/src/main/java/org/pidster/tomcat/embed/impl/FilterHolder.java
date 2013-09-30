@@ -15,6 +15,7 @@
  */
 package org.pidster.tomcat.embed.impl;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +63,8 @@ public final class FilterHolder {
         this.name = name;
         this.initParameters = initParameters;
         this.asyncSupported = asyncSupported;
-        this.servletNames = servletNames;
-        this.urlPatterns = urlPatterns;
+        this.servletNames = Arrays.copyOf(servletNames, servletNames.length);
+        this.urlPatterns = Arrays.copyOf(urlPatterns, urlPatterns.length);
         this.isMatchAfter = isMatchAfter;
         this.dispatcherTypes = dispatcherTypes;
     }
@@ -100,14 +101,14 @@ public final class FilterHolder {
      * @return
      */
     public String[] urlPatterns() {
-        return urlPatterns;
+        return Arrays.copyOf(urlPatterns, urlPatterns.length);
     }
 
     /**
      * @return
      */
     public String[] servletNames() {
-        return servletNames;
+        return Arrays.copyOf(servletNames, servletNames.length);
     }
 
     /**
