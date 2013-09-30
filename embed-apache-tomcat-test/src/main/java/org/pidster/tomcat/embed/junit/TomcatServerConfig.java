@@ -37,12 +37,12 @@ public @interface TomcatServerConfig {
     /**
      * 
      */
-    public static final int DEFAULT_HTTP_PORT = 48080;
+    int DEFAULT_HTTP_PORT = 48080;
 
     /**
      * 
      */
-    public static final long DEFAULT_TIMEOUT = 1000L;
+    long DEFAULT_TIMEOUT = 1000L;
 
     /**
      * @return port
