@@ -19,6 +19,7 @@ import java.io.File;
 
 import javax.servlet.ServletContainerInitializer;
 
+import org.pidster.tomcat.embed.Tomcat;
 import org.pidster.tomcat.embed.TomcatApplicationBuilder;
 import org.pidster.tomcat.embed.TomcatFactory;
 
@@ -31,36 +32,13 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
     @Override
     public TomcatApplicationBuilder getBuilder(TomcatServerConfig annotation) {
 
-        String baseDir;
-        if (annotation == null || "".equals(annotation.baseDir())) {
-            if (System.getProperties().containsKey("catalina.base")) {
-                baseDir = System.getProperty("catalina.base");
-            } else {
-                baseDir = System.getProperty("user.dir") + File.separator + "build";
-            }
-        }
-        else {
-            baseDir = annotation.baseDir();
-        }
+        File baseFile = getBaseDir(annotation);
+        String appName = getAppName(annotation);
+        int port = getPort(annotation);
 
-        File baseFile = new File(baseDir);
-        String appName;
-        if (annotation == null || "".equals(annotation.appName())) {
-            appName = "test";
-        } else {
-            appName = annotation.appName();
-        }
-
-        File appDir = new File(baseDir, String.format("webapps/%s", appName));
+        File appDir = new File(baseFile, String.format("webapps/%s", appName));
         if (!appDir.exists() && !appDir.mkdirs()) {
             throw new IllegalStateException("Unable to create app dir at: " + appDir);
-        }
-
-        int port;
-        if (annotation == null) {
-            port = TomcatServerConfig.DEFAULT_HTTP_PORT;
-        } else {
-            port = annotation.port();
         }
 
         TomcatApplicationBuilder builder = new TomcatFactory().create()
@@ -76,6 +54,55 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
         }
 
         return builder;
+    }
+
+    /**
+     * @param annotation
+     * @return
+     */
+    private int getPort(TomcatServerConfig annotation) {
+        int port;
+        if (annotation == null) {
+            port = TomcatServerConfig.DEFAULT_HTTP_PORT;
+        } else {
+            port = annotation.port();
+        }
+        return port;
+    }
+
+    /**
+     * @param annotation
+     * @return
+     */
+    private String getAppName(TomcatServerConfig annotation) {
+        String appName;
+        if (annotation == null || "".equals(annotation.appName())) {
+            appName = "test";
+        } else {
+            appName = annotation.appName();
+        }
+        return appName;
+    }
+
+    /**
+     * @param annotation
+     * @return
+     */
+    private File getBaseDir(TomcatServerConfig annotation) {
+        String baseDir;
+        if (annotation == null || "".equals(annotation.baseDir())) {
+            if (System.getProperties().containsKey(Tomcat.CATALINA_BASE)) {
+                baseDir = System.getProperty(Tomcat.CATALINA_BASE);
+            } else {
+                baseDir = System.getProperty("user.dir") + File.separator + "build";
+            }
+        }
+        else {
+            baseDir = annotation.baseDir();
+        }
+
+        File baseFile = new File(baseDir);
+        return baseFile;
     }
 
 }
