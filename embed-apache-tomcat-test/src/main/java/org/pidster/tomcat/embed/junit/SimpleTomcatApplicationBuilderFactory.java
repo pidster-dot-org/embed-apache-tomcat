@@ -101,8 +101,7 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
             baseDir = annotation.baseDir();
         }
 
-        File baseFile = new File(baseDir);
-        return baseFile;
+        return new File(baseDir);
     }
 
 }
