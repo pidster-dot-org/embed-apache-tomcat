@@ -15,7 +15,9 @@
  */
 package org.pidster.tomcat.embed.impl;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,14 +84,18 @@ public final class InstanceConfigurer {
      * @param instance
      * @param config
      */
-    public static void configure(Object instance, Map<String, String> config) {
-        Set<String> names = config.keySet();
-        for (String name : names) {
-            String value = config.get(name);
+    public static void configure(Object instance, Map<String, String> params) {
 
-            boolean setProperty = IntrospectionUtils.setProperty(instance, name, value);
+        Map<String, String> config = new HashMap<>();
+        if (params != null) {
+            config.putAll(params);
+        }
 
-            LOGGER.log(Level.FINE, "Set field {0} to {1}? {2}", new Object[] { name, value, setProperty });
+        Set<Entry<String, String>> entrySet = config.entrySet();
+        for (Entry<String, String> entry : entrySet) {
+            boolean setProperty = IntrospectionUtils.setProperty(instance, entry.getKey(), entry.getValue());
+
+            LOGGER.log(Level.FINE, "Set field {0} to {1}? {2}", new Object[] { entry.getKey(), entry.getValue(), setProperty });
         }
     }
 
