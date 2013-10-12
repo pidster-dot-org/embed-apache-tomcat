@@ -23,6 +23,8 @@ import java.net.URL;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -55,6 +57,8 @@ import org.pidster.tomcat.embed.TomcatHostBuilder;
  * 
  */
 public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<TomcatHostBuilder, TomcatApplicationBuilder> implements TomcatApplicationBuilder {
+
+    private static final Logger LOGGER = Logger.getLogger(TomcatApplicationBuilderImpl.class.getName());
 
     private final Context context;
 
@@ -97,7 +101,10 @@ public class TomcatApplicationBuilderImpl extends AbstractContainerBuilder<Tomca
             Host host = (Host) context.getParent();
             File appBase = new File(host.getAppBase());
             File docBase = new File(appBase, context.getPath());
-            docBase.mkdirs();
+
+            if (docBase.mkdirs()) {
+                LOGGER.log(Level.WARNING, "mkdirs was 'true' but {0} was not created", docBase);
+            }
         }
 
         return parent;
