@@ -23,6 +23,7 @@ import static org.pidster.tomcat.embed.impl.Constants.ENGINE;
 import static org.pidster.tomcat.embed.impl.Constants.EXECUTOR;
 import static org.pidster.tomcat.embed.impl.Constants.SERVICE;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -142,29 +143,33 @@ public class TomcatServiceBuilderImpl extends AbstractContainerBuilder<TomcatSer
     }
 
     @Override
-    public TomcatServiceBuilder addConnector(String protocol, int port, Map<String, String> config) {
+    public TomcatServiceBuilder addConnector(final String protocol, final int port, final Map<String, String> config) {
         Connector connector = new Connector(protocol);
         connector.setPort(port);
-        if (service.findExecutors().length > 0 && config != null && config.containsKey(Constants.EXECUTOR_NAME_ATTR)) {
-            Executor executor = service.getExecutor(config.get(Constants.EXECUTOR_NAME_ATTR));
+
+        Map<String, String> internal = new HashMap<>();
+        if (config != null) {
+            internal = Collections.unmodifiableMap(config);
+        }
+
+        if (service.findExecutors().length > 0 && internal.containsKey(Constants.EXECUTOR_NAME_ATTR)) {
+            Executor executor = service.getExecutor(internal.get(Constants.EXECUTOR_NAME_ATTR));
             if (executor != null) {
                 AbstractProtocol protocolHandler = (AbstractProtocol) connector.getProtocolHandler();
                 protocolHandler.setExecutor(executor);
 
-                Set<Entry<String, String>> entrySet = config.entrySet();
+                Set<Entry<String, String>> entrySet = internal.entrySet();
                 for (Entry<String, String> entry : entrySet) {
                     protocolHandler.setProperty(entry.getKey(), entry.getValue());
                 }
             }
         }
 
-        InstanceConfigurer.configure(connector, config);
+        InstanceConfigurer.configure(connector, internal);
 
-        if (config != null) {
-            Set<Entry<String, String>> entrySet = config.entrySet();
-            for (Entry<String, String> entry : entrySet) {
-                connector.setProperty(entry.getKey(), entry.getValue());
-            }
+        Set<Entry<String, String>> entrySet = internal.entrySet();
+        for (Entry<String, String> entry : entrySet) {
+            connector.setProperty(entry.getKey(), entry.getValue());
         }
 
         connector.setService(service);
