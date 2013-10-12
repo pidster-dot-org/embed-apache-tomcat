@@ -100,8 +100,12 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
             long started = System.currentTimeMillis();
 
             catalina.start();
-            semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
-            LOGGER.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
+            boolean acquired = semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
+            if (acquired) {
+                LOGGER.log(Level.INFO, "Started Tomcat in {0}ms", System.currentTimeMillis() - started);
+            } else {
+                LOGGER.log(Level.WARNING, "Tomcat did not complete startup before {0}ms elapsed!", System.currentTimeMillis() - started);
+            }
             return this;
 
         } catch (Exception e) {
@@ -164,8 +168,16 @@ public class TomcatRuntimeImpl implements Tomcat, TomcatRuntime {
         LOGGER.log(Level.CONFIG, "Stopping Tomcat, will wait for {0}ms", timeout);
 
         try {
+            long started = System.currentTimeMillis();
+
             catalina.stop();
-            semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
+
+            boolean acquired = semaphore.tryAcquire(timeout, TimeUnit.MILLISECONDS);
+            if (acquired) {
+                LOGGER.log(Level.INFO, "Stopped Tomcat in {0}ms", System.currentTimeMillis() - started);
+            } else {
+                LOGGER.log(Level.WARNING, "Tomcat did not complete startup before {0}ms elapsed!", System.currentTimeMillis() - started);
+            }
 
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Interrupted during shutdown", e);
