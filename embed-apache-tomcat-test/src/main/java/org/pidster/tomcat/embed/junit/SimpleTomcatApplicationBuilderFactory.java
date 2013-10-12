@@ -52,8 +52,8 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
         }
 
         File appDir = new File(baseDir, String.format("webapps/%s", appName));
-        if (!appDir.exists()) {
-            appDir.mkdirs();
+        if (!appDir.exists() && !appDir.mkdirs()) {
+            throw new IllegalStateException("Unable to create app dir at: " + appDir);
         }
 
         int port;
