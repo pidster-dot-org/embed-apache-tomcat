@@ -1,8 +1,20 @@
 apply plugin: 'jacoco'
 
+jacocoTestReport.mustRunAfter test
+
+jacoco {
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+    }
+}
+
 test {
     jacoco {
-        append = false
-        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+        //
     }
 }

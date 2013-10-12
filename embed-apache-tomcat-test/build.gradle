@@ -1,6 +1,6 @@
 apply plugin: 'java'
-apply from: "$rootDir/gradle/maven.gradle"
-apply from: "$rootDir/gradle/jacoco.gradle"
+apply from: "${rootDir}/gradle/maven.gradle"
+apply from: "${rootDir}/gradle/jacoco.gradle"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -19,3 +19,6 @@ dependencies {
 test {
 	systemProperty 'catalina.base', "${buildDir}/catalina"
 }
+
+rootProject.tasks.sonarRunner.dependsOn jacocoTestReport
+
