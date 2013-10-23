@@ -58,7 +58,7 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
 
     /**
      * @param annotation
-     * @return
+     * @return port
      */
     private int getPort(TomcatServerConfig annotation) {
         int port;
@@ -72,7 +72,7 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
 
     /**
      * @param annotation
-     * @return
+     * @return name
      */
     private String getAppName(TomcatServerConfig annotation) {
         String appName;
@@ -86,7 +86,7 @@ public class SimpleTomcatApplicationBuilderFactory implements TomcatApplicationB
 
     /**
      * @param annotation
-     * @return
+     * @return baseDir
      */
     private File getBaseDir(TomcatServerConfig annotation) {
         String baseDir;

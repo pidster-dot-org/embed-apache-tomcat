@@ -67,6 +67,6 @@ Using Gradle and the current snapshot, the dependency is:
     }
 
     dependencies {
-		    compile "org.pidster:embed-apache-tomcat:0.1-SNAPSHOT"
+		    compile "org.pidster:embed-apache-tomcat-core:0.2"
     }
 

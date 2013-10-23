@@ -82,7 +82,7 @@ public final class InstanceConfigurer {
 
     /**
      * @param instance
-     * @param config
+     * @param params
      */
     public static void configure(Object instance, Map<String, String> params) {
 
