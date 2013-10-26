@@ -63,7 +63,7 @@ You can embed Tomcat in a unit test (e.g. JUnit) as follows:
 Using Gradle and the current snapshot, the dependency is:
 
     repositories {
-        maven { url 'https://repository.apache.org/content/groups/snapshots' }
+        mavenCentral()
     }
 
     dependencies {

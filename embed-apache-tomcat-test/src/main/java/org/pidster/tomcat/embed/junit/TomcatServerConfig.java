@@ -35,9 +35,9 @@ import javax.servlet.ServletContainerInitializer;
 public @interface TomcatServerConfig {
 
     /**
-     * 
+     * Port zero will cause a random(ish) port to be selected
      */
-    int DEFAULT_HTTP_PORT = 48080;
+    int DEFAULT_HTTP_PORT = 0;
 
     /**
      * 
