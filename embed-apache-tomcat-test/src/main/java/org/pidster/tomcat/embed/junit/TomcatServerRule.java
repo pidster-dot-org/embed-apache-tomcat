@@ -20,6 +20,9 @@ import java.util.Set;
 
 import javax.servlet.ServletContainerInitializer;
 
+import org.apache.catalina.Service;
+import org.apache.catalina.connector.Connector;
+import org.apache.coyote.AbstractProtocol;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -38,8 +41,6 @@ public class TomcatServerRule implements TestRule {
     private TomcatServerConfig annotation;
 
     private TomcatRuntime runtime;
-
-    private int port;
 
     private long timeout;
 
@@ -85,10 +86,8 @@ public class TomcatServerRule implements TestRule {
         }
 
         if (annotation != null) {
-            this.port = annotation.port();
             this.timeout = annotation.timeout();
         } else {
-            this.port = TomcatServerConfig.DEFAULT_HTTP_PORT;
             this.timeout = TomcatServerConfig.DEFAULT_TIMEOUT;
         }
 
@@ -137,7 +136,14 @@ public class TomcatServerRule implements TestRule {
      * @return port
      */
     public int getPort() {
-        return port;
+        try {
+            Service service = runtime.getServer().findServices()[0];
+            Connector connector = service.findConnectors()[0];
+            AbstractProtocol<?> abstractProtocol = (AbstractProtocol<?>) connector.getProtocolHandler();
+            return abstractProtocol.getLocalPort();
+        } catch (Exception e) {
+            throw new IllegalStateException("Listening port value was not retrievable", e);
+        }
     }
 
 }

@@ -15,7 +15,6 @@
  */
 package org.pidster.tomcat.embed.junit;
 
-import org.apache.tomcat.websocket.server.WsSci;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -35,15 +34,20 @@ public class TomcatServerRuleTest {
     }
 
     @Test
-    @TomcatServerConfig(port = 48081, value = { WsSci.class })
+    @TomcatServerConfig(port = 48081, value = TestServletContainerInitializer.class)
     public void testTwo() {
         System.out.println("port2: " + server.getPort());
     }
 
     @Test
-    @TomcatServerConfig(port = 48082, value = { TestServletContainerInitializer.class })
+    @TomcatServerConfig(port = 0, value = TestServletContainerInitializer.class)
     public void testThree() {
         System.out.println("port3: " + server.getPort());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAddServletContainerInitializerAfterStart() {
+        server.addInitializer(new TestServletContainerInitializer());
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -54,11 +58,6 @@ public class TomcatServerRuleTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testUndeploy() {
         server.undeploy("foo");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testAddServletContainerInitializerAfterStart() {
-        server.addInitializer(new TestServletContainerInitializer());
     }
 
 }
