@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.catalina.Server;
+import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.core.JreMemoryLeakPreventionListener;
 import org.apache.catalina.core.ThreadLocalLeakPreventionListener;
 import org.apache.catalina.mbeans.GlobalResourcesLifecycleListener;
@@ -46,7 +47,9 @@ import org.pidster.tomcat.embed.TomcatServerBuilder;
  */
 public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBuilderImpl, CatalinaBuilderImpl> implements CatalinaBuilder {
 
-    private static final String LOCALHOST = "localhost";
+    public static final String SHUTDOWN_COMMAND = "SHUTDOWN";
+
+    public static final String LOCALHOST = "localhost";
 
     private final Catalina catalina = new Catalina();
 
@@ -125,7 +128,7 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
 
     @Override
     public TomcatServerBuilder newServer(String host, int port) {
-        return newServer(host, port, "SHUTDOWN");
+        return newServer(host, port, SHUTDOWN_COMMAND);
     }
 
     @Override
@@ -174,6 +177,8 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
     @Override
     public TomcatHostBuilder newStandardServer(int port, File baseDir, int httpPort, int ajpPort) {
         ContextResource memoryDatabase = new ContextResource();
+        memoryDatabase.setName("name");
+        memoryDatabase.setDescription("desc");
 
         TomcatServerBuilder serverBuilder = newServer(port);
         if (baseDir != null) {
@@ -185,11 +190,20 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         connConfig.put(Constants.EXECUTOR_NAME_ATTR, DEFAULT_EXECUTOR_NAME);
 
         return serverBuilder.enableNaming()
-        			// .addLifecycleListener(JasperListener.class)
-        			.addLifecycleListener(GlobalResourcesLifecycleListener.class).addLifecycleListener(JreMemoryLeakPreventionListener.class).addLifecycleListener(ThreadLocalLeakPreventionListener.class).addGlobalResource(memoryDatabase)
+        			// .addLifecycleListener(SecurityListener.class)
+        			.addLifecycleListener(AprLifecycleListener.class)
+        			.addLifecycleListener(JreMemoryLeakPreventionListener.class)
+        			.addLifecycleListener(GlobalResourcesLifecycleListener.class)
+        			.addLifecycleListener(ThreadLocalLeakPreventionListener.class)
+        			.addGlobalResource(memoryDatabase)
                 .addService(DEFAULT_SERVICE_NAME)
                 // TODO .withDefaultRealm()
-                .setBackgroundProcessorDelay(0).setStartStopThreads(0).addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP).addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig).addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig).addHost(LOCALHOST, "webapps");
+                .setBackgroundProcessorDelay(0)
+                .setStartStopThreads(0)
+                .addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP)
+                .addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig)
+                .addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig)
+                .addHost(LOCALHOST, "webapps");
     }
 
     @Override
