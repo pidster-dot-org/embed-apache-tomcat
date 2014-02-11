@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.catalina.Server;
-import org.apache.catalina.core.JasperListener;
 import org.apache.catalina.core.JreMemoryLeakPreventionListener;
 import org.apache.catalina.core.ThreadLocalLeakPreventionListener;
 import org.apache.catalina.mbeans.GlobalResourcesLifecycleListener;
@@ -185,7 +184,9 @@ public class CatalinaBuilderImpl extends AbstractHierarchicalBuilder<CatalinaBui
         Map<String, String> connConfig = new HashMap<>();
         connConfig.put(Constants.EXECUTOR_NAME_ATTR, DEFAULT_EXECUTOR_NAME);
 
-        return serverBuilder.enableNaming().addLifecycleListener(JasperListener.class).addLifecycleListener(GlobalResourcesLifecycleListener.class).addLifecycleListener(JreMemoryLeakPreventionListener.class).addLifecycleListener(ThreadLocalLeakPreventionListener.class).addGlobalResource(memoryDatabase)
+        return serverBuilder.enableNaming()
+        			// .addLifecycleListener(JasperListener.class)
+        			.addLifecycleListener(GlobalResourcesLifecycleListener.class).addLifecycleListener(JreMemoryLeakPreventionListener.class).addLifecycleListener(ThreadLocalLeakPreventionListener.class).addGlobalResource(memoryDatabase)
                 .addService(DEFAULT_SERVICE_NAME)
                 // TODO .withDefaultRealm()
                 .setBackgroundProcessorDelay(0).setStartStopThreads(0).addExecutor(DEFAULT_EXECUTOR_NAME, "tomcat-exec-", DEFAULT_EXECUTOR_MIN, DEFAULT_EXECUTOR_MAX, EMPTY_MAP).addConnector(Tomcat.PROTOCOL_BIO, httpPort, connConfig).addConnector(Tomcat.PROTOCOL_AJP, ajpPort, connConfig).addHost(LOCALHOST, "webapps");
